@@ -12,7 +12,7 @@ public:
 
     void evaluate();
     Qlist<Element> selection(QList<Population> populations);
-    void mutation();
+    Population mutation(float mutationTax);
     QList<Element> crossOver();
 
 private:

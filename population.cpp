@@ -11,6 +11,10 @@ Element Population::getElement(int index){
     return pop.at(index);
 }
 
+Population::evaluate(){
+
+}
+
 
 /*
  * Seleciona os x melhores
@@ -26,6 +30,7 @@ QList<Element> Population::selection(QList<Population> populations){
 
 }
 
-Population::mutation(){
+Population *Population::mutation(float mutationTax){
+
 
 }
