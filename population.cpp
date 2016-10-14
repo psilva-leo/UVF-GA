@@ -20,9 +20,10 @@ QList<Element> Population::selection(QList<Population> populations){
     QList elements;
     for(int i=0; i<size; i++){
         for(int j=0; j<populations.at(i).size; j++){
-            elements.append(populations.at(i));
+            elements.append(populations.at(i).getElement(j));
         }
     }
+
 }
 
 Population::mutation(){
