@@ -1,17 +1,26 @@
-#include "population.h"
+#include <population.h>
 
+/**
+ * @brief Creates a population with a number of individuals
+ * @param size - Qty of elements inside the populaiton
+ */
 Population::Population(int size){
     for(int i=0; i>size; i++){
-        Element temp = Element();
-        pop.append(temp);
+        Element temp(GEN_SIZE);
+        _pop.append(temp);
     }
 }
 
+
 Element Population::getElement(int index){
-    return pop.at(index);
+    return _pop.at(index);
 }
 
-Population::evaluate(){
+void Population::insertElement(Element& newElement){
+    this->_pop.append(newElement);
+}
+
+void Population::evaluate(){
 
 }
 
@@ -20,20 +29,20 @@ Population::evaluate(){
  * Seleciona os x melhores
  */
 QList<Element> Population::selection(QList<Population> populations){
-    int size = populations.size();
-    QList elements;
-    for(int i=0; i<size; i++){
-        for(int j=0; j<populations.at(i).size; j++){
-            elements.append(populations.at(i).getElement(j));
-        }
-    }
+//    int size = populations.size();
+//    QList<Element> elements;
+//    for(int i=0; i<size; i++){
+//        for(int j=0; j<populations.at(i).size; j++){
+//            elements.append(populations.at(i).getElement(j));
+//        }
+//    }
 
 }
 
 Population *Population::mutation(float tax){
     int i;
-    int qtyMuted = (int) flor(this->size*tax);
-    Population *newPop = new Population();
+    int qtyMuted = (int) floor(this->size*tax);
+    Population *newPop = new Population(0);
 
     // Gerate the index's list of the pupulation whose will receive the mutation
     QList<int> mutedId;
@@ -43,29 +52,46 @@ Population *Population::mutation(float tax){
         mutedId.append(aux);
     }
 
-    Element *aux;
+    Element elemAux;
+    Genotype genAux;
 
     // Seek the ID vector to make the mutaion
     for(i=0; i<this->size; i++)
     {
-        aux = this->pop.at(metedId.at(i));
-        for(int j=0; j<aux->size; j++)
+        // Copy the Element of List
+        elemAux = _pop.takeAt(mutedId.at(i));
+
+        // Removes from the list
+        _pop.removeAt(mutedId.at(i));
+
+        for(int j=0; j<elemAux.getSize(); j++)
         {
-            aux->gen.at(j) =* frand(MUT_MAX_LIMIT, MUT_MIN_LIMIT);
+            // Gets the gen of the element to mutate
+            genAux = elemAux.getGen(j);
+
+            // Uses the operator defined to multiply by the mutation factor
+            genAux*Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT);
+
+            // Modify the gen inside the Element
+            elemAux.setGen(genAux, j);
         }
-        newPop->pop.append(aux);
+
+        // Insert the Mutated Element inside the new population
+        newPop->_pop.append(elemAux);
     }
 
     // Insert last elements that doesn't receive mutation
-    for(i=0; i<this->pop.size(); i++)
+    int length = this->_pop.size();
+    for(i=0; i<length; i++)
     {
-        newPop->pop.append(this->pop.end());
+        elemAux = this->getElement(i);
+        newPop->insertElement(elemAux);
     }
 
     return newPop;
 }
 
-
+/*
 double Population::randf(double max, double min)
 {
     int i;
@@ -95,3 +121,4 @@ double Population::randf(double max, double min)
 
     return acc;
 }
+*/

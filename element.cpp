@@ -1,17 +1,36 @@
 #include "element.h"
 
+Element::Element(){}
+
 Element::Element(int size){
-    this->size = size;
+    this->_size = size;
 
     for(int i=0; i<size; i++)
     {
-        Genotype temp = new Genotype(1.0, 0.0);
-        genotypes.append(0.0);
+        Genotype temp;
+        _gen.append(temp);
     }
 }
 
-double Element::getFitness(){
-    return gen.last();
+Element::~Element(){
+
+}
+
+int Element::getSize(){
+    return this->_size;
+}
+
+void Element::setGen(Genotype& gen, int position){
+    this->_gen.replace(position, gen);
+}
+
+
+Genotype Element::getFitness(){
+    return _gen.last();
+}
+
+Genotype Element::getGen(int i){
+    return _gen.takeAt(i);
 }
 
 /*

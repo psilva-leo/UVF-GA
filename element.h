@@ -2,19 +2,24 @@
 #define ELEMENT_H
 
 #include <QList>
+#include <genotype.h>
 
-class Element
-{
+class Element{
 public:
+    Element(int size);
     Element();
     ~Element();
 
-    double getFitness();
+    Genotype getFitness();
+    Genotype getGen(int i);
+    void setGen(Genotype& gen, int position);
     double evaluate();
+    int getSize();
+
 private:
-    int size;
-    QList<Genotype> gen;
-    double fitness;
+    int _size;
+    QList<Genotype> _gen;
+    double _fitness;
 };
 
 #endif // ELEMENT_H

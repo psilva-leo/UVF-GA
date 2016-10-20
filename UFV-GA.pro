@@ -12,9 +12,11 @@ TEMPLATE = app
 SOURCES += main.cpp \
     element.cpp \
     genotype.cpp \
-    population.cpp
+    population.cpp \
+    utils.cpp
 
 HEADERS += \
     element.h \
     genotype.h \
-    population.h
+    population.h \
+    utils.h

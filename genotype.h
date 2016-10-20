@@ -7,6 +7,7 @@
 class Genotype
 {
 public:
+    Genotype();
     Genotype(double min, double max);
     ~Genotype();
 
@@ -14,6 +15,8 @@ public:
     void setMax(double max);
     void setValue(double x);
     double getValue();
+
+    Genotype operator*(double nun);
 private:
     double min, max, value;
 };

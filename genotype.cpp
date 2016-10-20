@@ -1,4 +1,8 @@
-#include "genotype.h"
+#include <genotype.h>
+
+Genotype::Genotype(){}
+
+Genotype::~Genotype(){}
 
 Genotype::Genotype(double min, double max)
 {
@@ -8,10 +12,20 @@ Genotype::Genotype(double min, double max)
     this->value = (double)rand()/RAND_MAX;
 }
 
-Genotype::setMax(double max){
+void Genotype::setMax(double max){
     this->max = max;
 }
 
-Genotype::setMin(double min){
+void Genotype::setMin(double min){
     this->min = min;
+}
+
+void Genotype::setValue(double x){
+    this->value = x;
+}
+
+Genotype Genotype::operator*(double nun){
+    Genotype aux(0,0);
+    aux.setValue(this->value*nun);
+    return aux;
 }

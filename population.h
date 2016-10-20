@@ -5,29 +5,36 @@
 #define MUT_MAX_LIMIT 2.5
 #define MUT_MIN_LIMIT -2.0
 
-#include<element.h>
+#define GEN_SIZE 4
+
 #include<cstdio>
 #include<cstdlib>
 #include<cmath>
 
+#include<element.h>
+#include<genotype.h>
+#include<utils.h>
+
 class Population{
 
 public:
-    Population();
+    Population(int size);
+    ~Population();
 
-    Element getElement(int index);
     void evaluate();
-    Population mutation(float tax);
+    void insertElement(Element& newElement);
+    Element getElement(int index);
+    Population *mutation(float tax);
     QList<Element> crossOver();
-    Qlist<Element> selection(QList<Population> populations);
+    QList<Element> selection(QList<Population> populations);
 
-public:
-    double randf(double max, double min);
+//public:
+//    double randf(double max, double min);
 
 private:
     int size;
     Element better;
-    QList pop<Element>;
+    QList<Element> _pop;
 
 };
 
