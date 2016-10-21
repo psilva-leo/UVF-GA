@@ -11,6 +11,7 @@ int main(int argc, char *argv[]){
     srand(time(NULL));
 
     P->generate();
+
     //P->print();
 
 //    seleciona(inicial) => selecionados (x elementos)

@@ -8,7 +8,7 @@ Population::Population(int size){
     this->_size = size;
 
     for(int i=0; i>size; i++){
-        Element temp(GEN_SIZE);
+        Element temp = Element(GEN_SIZE);
         _pop.append(temp);
     }
 }
@@ -18,10 +18,9 @@ Population::~Population(){}
 void Population::generate(){
     int j;
 
-    Genotype genAux;
+    Genotype genAux();
 
-    QList<Element>::iterator i;
-    for(i = _pop.begin(); i != _pop.end(); ++i)
+    for(QList<Element>::iterator i = _pop.begin(); i != _pop.end(); ++i)
     {
         for(j = 0; j<GEN_SIZE; j++)
         {
@@ -83,7 +82,7 @@ Population *Population::mutation(float tax){
         // Removes from the list
         _pop.removeAt(mutedId.at(i));
 
-        for(int j=0; j<elemAux.getSize(); j++)
+        for(int j=0; j<elemAux.getGenQty(); j++)
         {
             // Gets the gen of the element to mutate
             genAux = elemAux.getGen(j);

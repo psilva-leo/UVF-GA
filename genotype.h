@@ -4,6 +4,9 @@
 #include<cstdio>
 #include<cstdlib>
 
+#define GEN_MAX_VALUE 10.0
+#define GEN_MIN_VALUE -10.0
+
 class Genotype
 {
 public:

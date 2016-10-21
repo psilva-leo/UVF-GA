@@ -2,7 +2,12 @@
 
 Genotype::Genotype(){}
 
-Genotype::~Genotype(){}
+Genotype::~Genotype(){
+    this->min = 0.0;
+    this->max = 0.0;
+
+    this->value = 0.0;
+}
 
 Genotype::Genotype(double min, double max)
 {

@@ -6,18 +6,17 @@
 
 class Element{
 public:
-    Element(int size);
-    Element();
+    Element(int genQty);
     ~Element();
 
     Genotype getFitness();
     Genotype getGen(int i);
     void setGen(Genotype& gen, int position);
     double evaluate();
-    int getSize();
+    int getGenQty();
 
 private:
-    int _size;
+    int _genQty;
     QList<Genotype> _gen;
     double _fitness;
 };

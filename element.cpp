@@ -1,23 +1,18 @@
 #include "element.h"
 
-Element::Element(){}
+Element::Element(int genQty){
+    this->_genQty = genQty;
 
-Element::Element(int size){
-    this->_size = size;
-
-    for(int i=0; i<size; i++)
+    for(int i=0; i<genQty; i++)
     {
         Genotype temp;
         _gen.append(temp);
     }
 }
 
-Element::~Element(){
 
-}
-
-int Element::getSize(){
-    return this->_size;
+int Element::getGenQty(){
+    return this->_genQty;
 }
 
 void Element::setGen(Genotype& gen, int position){
