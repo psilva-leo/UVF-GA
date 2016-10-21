@@ -7,14 +7,14 @@
 
 #define GEN_SIZE 4
 
-#include<cstdio>
-#include<cstdlib>
-#include<cmath>
-#include<iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+#include <iostream>
 
-#include<chromosome.h>
-#include<genotype.h>
-#include<utils.h>
+#include "chromosome.h"
+#include "genotype.h"
+#include <UVF-GA/utils/utils.h>
 
 using namespace std;
 

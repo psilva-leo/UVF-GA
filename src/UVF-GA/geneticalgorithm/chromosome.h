@@ -2,7 +2,7 @@
 #define ELEMENT_H
 
 #include <QList>
-#include <genotype.h>
+#include <UVF-GA/geneticalgorithm/genotype.h>
 
 class Chromosome{
 public:

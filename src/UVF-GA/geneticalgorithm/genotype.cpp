@@ -1,4 +1,4 @@
-#include <genotype.h>
+#include "genotype.h"
 
 Genotype::Genotype(){}
 

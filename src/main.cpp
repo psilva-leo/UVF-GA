@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
-#include <population.h>
+#include <UVF-GA/geneticalgorithm/population.h>
 #include <time.h>
 
 int main(int argc, char *argv[]){
