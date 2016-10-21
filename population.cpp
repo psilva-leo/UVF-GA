@@ -4,11 +4,11 @@
  * @brief Creates a population with a number of individuals
  * @param size - Qty of elements inside the populaiton
  */
-Population::Population(int size){
+Population::Population(int size) : _better(size){
     this->_size = size;
 
     for(int i=0; i>size; i++){
-        Element temp = Element(GEN_SIZE);
+        Chromosome temp = Chromosome(GEN_SIZE);
         _pop.append(temp);
     }
 }
@@ -18,9 +18,9 @@ Population::~Population(){}
 void Population::generate(){
     int j;
 
-    Genotype genAux();
+    Genotype genAux = Genotype();
 
-    for(QList<Element>::iterator i = _pop.begin(); i != _pop.end(); ++i)
+    for(QList<Chromosome>::iterator i = _pop.begin(); i != _pop.end(); ++i)
     {
         for(j = 0; j<GEN_SIZE; j++)
         {
@@ -31,11 +31,11 @@ void Population::generate(){
     }
 }
 
-Element Population::getElement(int index){
+Chromosome Population::getElement(int index){
     return _pop.at(index);
 }
 
-void Population::insertElement(Element& newElement){
+void Population::insertElement(Chromosome& newElement){
     this->_pop.append(newElement);
 }
 
@@ -46,15 +46,16 @@ void Population::evaluate(){
 
 
 //TODO: Population->Selection
-QList<Element> Population::selection(QList<Population> populations){
-//    int size = populations.size();
-//    QList<Element> elements;
-//    for(int i=0; i<size; i++){
-//        for(int j=0; j<populations.at(i).size; j++){
-//            elements.append(populations.at(i).getElement(j));
-//        }
-//    }
-
+QList<Chromosome> Population::selection(QList<Population> populations){
+    int size = populations.size();
+    QList<Chromosome> elements;
+    for(int i=0; i<size; i++){
+        for(int j=0; j<populations.at(i)._size; j++){
+            //elements.append(populations.at(i).getElement(j));
+            printf(" ");
+        }
+    }
+    return elements;
 }
 
 Population *Population::mutation(float tax){
@@ -70,7 +71,7 @@ Population *Population::mutation(float tax){
         mutedId.append(aux);
     }
 
-    Element elemAux;
+    Chromosome elemAux = Chromosome(_pop[0].getGenQty());
     Genotype genAux;
 
     // Seek the ID vector to make the mutaion
@@ -111,12 +112,12 @@ Population *Population::mutation(float tax){
 
 void Population::print(){
     int i, j;
-    Element auxElem;
+    Chromosome auxElem = Chromosome(_pop[0].getGenQty());
 
     for(i=0; i<this->_size; i++)
     {
         auxElem = this->getElement(i);
-        std:cout << "(" << i <<")\t-\t";
+        cout << "(" << i <<")\t-\t";
         cout << "FITNESS[" << auxElem.getFitness().getValue() << "]\t";
         cout << "GEN";
         for(j=0; j<GEN_SIZE; j++)

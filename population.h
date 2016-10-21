@@ -12,8 +12,7 @@
 #include<cmath>
 #include<iostream>
 
-
-#include<element.h>
+#include<chromosome.h>
 #include<genotype.h>
 #include<utils.h>
 
@@ -28,19 +27,19 @@ public:
     //Genetic Functions
     void generate();
     void evaluate();
-    QList<Element> crossOver();
+    QList<Chromosome> crossOver();
     Population *mutation(float tax);
-    QList<Element> selection(QList<Population> populations);
+    QList<Chromosome> selection(QList<Population> populations);
 
     // Other Functins
-    void insertElement(Element& newElement);
-    Element getElement(int index);
+    void insertElement(Chromosome& newElement);
+    Chromosome getElement(int index);
     void print();
 
 private:
     int _size;                   /* Population Length */
-    Element _better;             /* Better Individual of Population */
-    QList<Element> _pop;
+    Chromosome _better;             /* Better Individual of Population */
+    QList<Chromosome> _pop;
 
 };
 

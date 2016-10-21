@@ -10,13 +10,13 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    element.cpp \
     genotype.cpp \
     population.cpp \
-    utils.cpp
+    utils.cpp \
+    chromosome.cpp
 
 HEADERS += \
-    element.h \
     genotype.h \
     population.h \
-    utils.h
+    utils.h \
+    chromosome.h

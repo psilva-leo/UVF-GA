@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <population.h>
+#include <time.h>
 
 int main(int argc, char *argv[]){
 //    //if(argc < 2){return -1;}

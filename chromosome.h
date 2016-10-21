@@ -4,10 +4,9 @@
 #include <QList>
 #include <genotype.h>
 
-class Element{
+class Chromosome{
 public:
-    Element(int genQty);
-    ~Element();
+    Chromosome(int genQty);
 
     Genotype getFitness();
     Genotype getGen(int i);
