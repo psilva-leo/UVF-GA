@@ -6,14 +6,12 @@
 int main(int argc, char *argv[]){
 //    //if(argc < 2){return -1;}
 //    //Population P = new Population(argv[1]);
-//    Population P = new Population(10);
+    Population *P = new Population(10);
 
+    srand(time(NULL));
 
-
-//    geração
-
-
-
+    P->generate();
+    //P->print();
 
 //    seleciona(inicial) => selecionados (x elementos)
 
@@ -26,6 +24,6 @@ int main(int argc, char *argv[]){
 //    seleciona(selecionados, pop_atual2) (x elementos)
 
 
-
-   return 0;
+    delete P;
+    return 0;
 }

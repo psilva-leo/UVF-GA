@@ -5,12 +5,32 @@
  * @param size - Qty of elements inside the populaiton
  */
 Population::Population(int size){
+    this->_size = size;
+
     for(int i=0; i>size; i++){
         Element temp(GEN_SIZE);
         _pop.append(temp);
     }
 }
 
+Population::~Population(){}
+
+void Population::generate(){
+    int j;
+
+    Genotype genAux;
+
+    QList<Element>::iterator i;
+    for(i = _pop.begin(); i != _pop.end(); ++i)
+    {
+        for(j = 0; j<GEN_SIZE; j++)
+        {
+            genAux = Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT);
+            cout << genAux.getValue() << endl;
+            i->setGen(genAux, j);
+        }
+    }
+}
 
 Element Population::getElement(int index){
     return _pop.at(index);
@@ -20,14 +40,13 @@ void Population::insertElement(Element& newElement){
     this->_pop.append(newElement);
 }
 
+//TODO: Population->Evaluate
 void Population::evaluate(){
 
 }
 
 
-/*
- * Seleciona os x melhores
- */
+//TODO: Population->Selection
 QList<Element> Population::selection(QList<Population> populations){
 //    int size = populations.size();
 //    QList<Element> elements;
@@ -41,14 +60,14 @@ QList<Element> Population::selection(QList<Population> populations){
 
 Population *Population::mutation(float tax){
     int i;
-    int qtyMuted = (int) floor(this->size*tax);
+    int qtyMuted = (int) floor(this->_size*tax);
     Population *newPop = new Population(0);
 
     // Gerate the index's list of the pupulation whose will receive the mutation
     QList<int> mutedId;
     for(int aux, i=0; i<qtyMuted; i++){
         //Decrease the length of rand number to match with ID's
-        aux = rand()%(this->size-i);
+        aux = rand()%(this->_size-i);
         mutedId.append(aux);
     }
 
@@ -56,7 +75,7 @@ Population *Population::mutation(float tax){
     Genotype genAux;
 
     // Seek the ID vector to make the mutaion
-    for(i=0; i<this->size; i++)
+    for(i=0; i<this->_size; i++)
     {
         // Copy the Element of List
         elemAux = _pop.takeAt(mutedId.at(i));
@@ -89,6 +108,24 @@ Population *Population::mutation(float tax){
     }
 
     return newPop;
+}
+
+void Population::print(){
+    int i, j;
+    Element auxElem;
+
+    for(i=0; i<this->_size; i++)
+    {
+        auxElem = this->getElement(i);
+        std:cout << "(" << i <<")\t-\t";
+        cout << "FITNESS[" << auxElem.getFitness().getValue() << "]\t";
+        cout << "GEN";
+        for(j=0; j<GEN_SIZE; j++)
+        {
+            cout << "[" << auxElem.getGen(j).getValue() << "]";
+        }
+        cout << "\n";
+    }
 }
 
 /*

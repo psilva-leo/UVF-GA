@@ -17,6 +17,7 @@ public:
     double getValue();
 
     Genotype operator*(double nun);
+    Genotype operator=(double nun);
 private:
     double min, max, value;
 };
