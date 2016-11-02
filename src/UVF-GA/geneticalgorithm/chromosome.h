@@ -8,9 +8,9 @@ class Chromosome{
 public:
     Chromosome(int genQty);
 
-    Genotype getFitness();
+    double getFitness();
     Genotype getGen(int i);
-    void setGen(Genotype& gen, int position);
+    void insertGen(Genotype& gen);
     double evaluate();
     int getGenQty();
 

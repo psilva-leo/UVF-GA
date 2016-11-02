@@ -32,8 +32,8 @@ public:
     QList<Chromosome> selection(QList<Population> populations);
 
     // Other Functins
-    void insertElement(Chromosome& newElement);
-    Chromosome getElement(int index);
+    void insertChromosome(Chromosome& newElement);
+    Chromosome getChromosome(int index);
     void print();
 
 private:

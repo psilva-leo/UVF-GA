@@ -30,7 +30,7 @@ TEMPLATE = app
 DESTDIR = bin
 TARGET = UVF-GA
 VERSION = 1.0
-CONFIG -= c++11
+CONFIG += c++11
 
 # Qt config
 CONFIG += console

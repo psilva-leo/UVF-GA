@@ -15,13 +15,13 @@ int Chromosome::getGenQty(){
     return this->_genQty;
 }
 
-void Chromosome::setGen(Genotype& gen, int position){
-    this->_gen.replace(position, gen);
+void Chromosome::insertGen(Genotype& gen){
+    this->_gen.append(gen);
 }
 
 
-Genotype Chromosome::getFitness(){
-    return _gen.last();
+double Chromosome::getFitness(){
+    return _gen.last().getValue();
 }
 
 Genotype Chromosome::getGen(int i){

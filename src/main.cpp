@@ -3,15 +3,23 @@
 #include <iostream>
 #include <UVF-GA/geneticalgorithm/population.h>
 #include <time.h>
+#include <QList>
+
+#define POPSIZE 10
 
 int main(int argc, char *argv[]){
 //    //if(argc < 2){return -1;}
 //    //Population P = new Population(argv[1]);
-    Population *P = new Population(10);
+
+    Population P = Population(POPSIZE);
 
     srand(time(NULL));
 
-    P->generate();
+    P.generate();
+    P.print();
+    QList<Population> pop;
+    pop.append(P);
+    P.selection(pop);
 
     //P->print();
 
@@ -26,6 +34,5 @@ int main(int argc, char *argv[]){
 //    seleciona(selecionados, pop_atual2) (x elementos)
 
 
-    delete P;
     return 0;
 }
