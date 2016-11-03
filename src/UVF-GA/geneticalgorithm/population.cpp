@@ -24,30 +24,34 @@ void Population::generate(){
     for(int i=0; i<this->_size; i++){
         Chromosome temp = Chromosome(GEN_SIZE);
         for(j = 0; j<GEN_SIZE; j++){
-            genAux.setValue(Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT));
-            temp.insertGen(genAux);
+            temp.getGen(j)->setValue(Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT));
         }
-        this->insertChromosome(temp);
+        this->appendChromosome(temp);
     }
 }
 
-Chromosome Population::getChromosome(int index){
-    return _pop[index];
+Chromosome* Population::getChromosome(int index){
+    return &_pop[index];
 }
 
-void Population::insertChromosome(Chromosome& newElement){
-    this->_pop.append(newElement);
+void Population::appendChromosome(Chromosome newChromosome){
+    this->_pop.append(newChromosome);
+}
+
+void Population::insertChromosome(Chromosome& newChromosome, int& position){
+    this->_pop.insert(position, newChromosome);
 }
 
 //TODO: Population->Evaluate
 void Population::evaluate(){
-
+    for(int i=0; i<this->_size; i++){
+        this->getChromosome(i)->evaluate();
+    }
 }
 
-
-//TODO: Population->Selection
-/*
- * Select half of the population
+/**
+ * @brief Select half of the population
+ * @param QList of populations to choose from
  */
 QList<Chromosome> Population::selection(QList<Population> populations){
     int size = populations.size();
@@ -56,10 +60,9 @@ QList<Chromosome> Population::selection(QList<Population> populations){
     for(int i=0; i<size; i++){
         for(int j=0; j<populations[i]._size; j++){
             // Multiplies for (-1) to be ordered in decrescent order.
-            map.insert((-1)*populations[i].getChromosome(j).getFitness(), populations[i].getChromosome(j));
+            map.insert((-1)*populations[i].getChromosome(j)->getFitness(), *populations[i].getChromosome(j));
         }
     }
-
 
     QMapIterator<double, Chromosome> i(map);
     int count = 0;
@@ -70,21 +73,55 @@ QList<Chromosome> Population::selection(QList<Population> populations){
         count++;
     }
 
+    // TODO: Should this be here?
+    // Selecting best chromosome
+    if(this->_better.getFitness() < selection[0].getFitness()){
+        this->_better = selection[0];
+    }
+
     //TODO: Decide if prints or not the selected chromosomes
-    cout << "\n##SELECTED CHORMOSOMES##" << endl;
+    cout << "##SELECTED CHORMOSOMES##" << endl;
     for(int i=0; i<selection.size(); i++){
         Chromosome temp = selection[i];
         cout << "Chromosome (" << i <<")\t-\t";
         cout << "FITNESS[" << fixed  << setprecision(5) << temp.getFitness() << "]\t";
         cout << "GEN";
         for(int j=0; j<GEN_SIZE; j++){
-            cout << "[" << fixed  << setprecision(5) << temp.getGen(j).getValue() << "]";
+            cout << "[" << fixed  << setprecision(5) << temp.getGen(j)->getValue() << "]";
         }
-        cout << "\n";
-
+        cout << endl;
     }
+    cout << endl;
 
     return selection;
+}
+
+/**
+ * @brief CrossOver with two parents getting half of the Genes from each of them.In casa of a odd number of genes,
+ * the second parent gives one more Gene.
+ * @return Population with crossover with size half of original.
+ */
+Population Population::crossOver(){
+    Population crossOverPop = Population((this->_size)/2);
+    int parent1GenesNum = this->getChromosome(0)->getGenQty()/2;
+    crossOverPop.generate();
+
+    for(int i=0; i<crossOverPop._size; i++){
+        for(int j = 0; j<this->getChromosome(0)->getGenQty()-1; j++){ // -1 because it doesn't need the fitness gene
+            if(j < parent1GenesNum){
+                Genotype genAux = *this->getChromosome(2*i)->getGen(j);
+                crossOverPop.getChromosome(i)->getGen(j)->setValue(genAux.getValue());
+            }else{
+                Genotype genAux = *this->getChromosome((2*i)+1)->getGen(j);
+                crossOverPop.getChromosome(i)->getGen(j)->setValue(genAux.getValue());
+            }
+        }
+    }
+
+    cout << ">>> Fitness is 1.0 because of evaluate function" << endl;
+    crossOverPop.evaluate();
+    crossOverPop.print();
+    return crossOverPop;
 }
 
 Population *Population::mutation(float tax){
@@ -104,23 +141,21 @@ Population *Population::mutation(float tax){
     Genotype genAux;
 
     // Seek the ID vector to make the mutaion
-    for(i=0; i<this->_size; i++)
-    {
+    for(i=0; i<this->_size; i++){
         // Copy the Element of List
         elemAux = _pop.takeAt(mutedId.at(i));
 
         // Removes from the list
         _pop.removeAt(mutedId.at(i));
 
-        for(int j=0; j<elemAux.getGenQty(); j++)
-        {
+        for(int j=0; j<elemAux.getGenQty(); j++){
             // Gets the gen of the element to mutate
-            genAux = elemAux.getGen(j);
+            genAux = *elemAux.getGen(j);
 
-            // Uses the operator defined to multiply by the mutation factor
+//            // Uses the operator defined to multiply by the mutation factor
             double value = genAux.getValue()*Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT);
 
-            // Modify the gen inside the Element
+//            // Modify the gen inside the Element
             genAux.setValue(value);
         }
 
@@ -130,10 +165,9 @@ Population *Population::mutation(float tax){
 
     // Insert last elements that doesn't receive mutation
     int length = this->_pop.size();
-    for(i=0; i<length; i++)
-    {
-        elemAux = this->getChromosome(i);
-        newPop->insertChromosome(elemAux);
+    for(i=0; i<length; i++){
+        elemAux = *this->getChromosome(i);
+        newPop->appendChromosome(elemAux);
     }
 
     return newPop;
@@ -142,44 +176,42 @@ Population *Population::mutation(float tax){
 void Population::print(){
     int i, j;
 
-    cout << "\n##POPULATION##" << endl;
+    cout << "##POPULATION##" << endl;
     for(i=0; i<this->_size; i++){
-        Chromosome auxChrom = this->getChromosome(i);
+        Chromosome auxChrom = *this->getChromosome(i);
         cout << "Chromosome (" << i <<")\t-\t";
         cout << "FITNESS[" << fixed  << setprecision(5) << auxChrom.getFitness() << "]\t";
         cout << "GEN";
         for(j=0; j<GEN_SIZE; j++){
-            cout << "[" << fixed  << setprecision(5) << auxChrom.getGen(j).getValue() << "]";
+            cout << "[" << fixed  << setprecision(5) << auxChrom.getGen(j)->getValue() << "]";
         }
         cout << "\n";
     }
+    cout << endl;
 }
 
 /*
-double Population::randf(double max, double min)
-{
+double Population::randf(double max, double min){
     int i;
     double acc;
     int signal = rand()%2;
 
     // Negative
-    if(!signal)
-    {
+    if(!signal){
         acc = (double) (rand()%((int)min));
         acc*=-1;
     }
 
     // Positive
-    if(signal)
-    {
+    if(signal){
         acc = (double) (rand()%((int)max));
     }
 
     // Precision
-    for(i=0; i<FRAND_PRECISION; i++)
-    {
+    for(i=0; i<FRAND_PRECISION; i++){
         acc += (double)(rand()%(10))/(pow(10, i+1));;
     }
+
     if(!signal && acc<min){acc = min;}
     else if(signal && acc>max){acc = max;}
 

@@ -1,11 +1,11 @@
 #include "chromosome.h"
-
+#include <iostream>
+using namespace std;
 Chromosome::Chromosome(int genQty){
     this->_genQty = genQty;
 
-    for(int i=0; i<genQty; i++)
-    {
-        Genotype temp;
+    for(int i=0; i<genQty; i++){
+        Genotype temp = Genotype();
         _gen.append(temp);
     }
 }
@@ -21,17 +21,17 @@ void Chromosome::insertGen(Genotype& gen){
 
 
 double Chromosome::getFitness(){
-    return _gen.last().getValue();
+    return this->_gen.last().getValue();
 }
 
-Genotype Chromosome::getGen(int i){
-    return _gen.takeAt(i);
+Genotype* Chromosome::getGen(int i){
+    return &this->_gen[i];
 }
 
 /*
  * Avalia a população baseado em alguma função a ser implementada.
  * TODO: Criar função baseado nos pesos do tempo, batida e distância.
  */
-double Chromosome::evaluate(){
-    return 1.0;
+void Chromosome::evaluate(){
+    return _gen.last().setValue(1.0);
 }

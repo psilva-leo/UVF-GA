@@ -21,7 +21,8 @@ int main(int argc, char *argv[]){
     pop.append(P);
     P.selection(pop);
 
-    //P->print();
+    P.crossOver();
+//    P.mutation(0.5);
 
 //    seleciona(inicial) => selecionados (x elementos)
 

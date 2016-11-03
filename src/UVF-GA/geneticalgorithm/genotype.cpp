@@ -1,6 +1,8 @@
 #include "genotype.h"
 
-Genotype::Genotype(){}
+Genotype::Genotype(){
+    this->value = 0.0;
+}
 
 Genotype::~Genotype(){
     this->min = 0.0;
@@ -17,7 +19,7 @@ Genotype::Genotype(double min, double max)
     this->value = (double)rand()/RAND_MAX;
 }
 
-double Genotype::getValue(){
+double Genotype::getValue() const{
     return this->value;
 }
 

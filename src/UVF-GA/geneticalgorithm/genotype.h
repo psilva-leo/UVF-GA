@@ -7,8 +7,8 @@
 #define GEN_MAX_VALUE 10.0
 #define GEN_MIN_VALUE -10.0
 
-class Genotype
-{
+class Genotype{
+
 public:
     Genotype();
     Genotype(double min, double max);
@@ -17,7 +17,7 @@ public:
     void setMin(double min);
     void setMax(double max);
     void setValue(double x);
-    double getValue();
+    double getValue() const;
 
     Genotype operator*(double nun);
     Genotype operator=(double nun);

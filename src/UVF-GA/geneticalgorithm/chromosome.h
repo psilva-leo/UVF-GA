@@ -9,9 +9,9 @@ public:
     Chromosome(int genQty);
 
     double getFitness();
-    Genotype getGen(int i);
+    Genotype* getGen(int i);
     void insertGen(Genotype& gen);
-    double evaluate();
+    void evaluate();
     int getGenQty();
 
 private:

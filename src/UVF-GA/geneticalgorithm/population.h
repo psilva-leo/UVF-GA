@@ -27,13 +27,14 @@ public:
     //Genetic Functions
     void generate();
     void evaluate();
-    QList<Chromosome> crossOver();
+    Population crossOver();
     Population *mutation(float tax);
     QList<Chromosome> selection(QList<Population> populations);
 
     // Other Functins
-    void insertChromosome(Chromosome& newElement);
-    Chromosome getChromosome(int index);
+    void appendChromosome(Chromosome newElement);
+    void insertChromosome(Chromosome& newChromosome, int& position);
+    Chromosome* getChromosome(int index);
     void print();
 
 private:
