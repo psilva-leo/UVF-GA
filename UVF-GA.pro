@@ -38,12 +38,13 @@ CONFIG -= app_bundle
 QT += core
 QT -= gui
 
-# Optimization flags
+# Flags
+QMAKE_LFLAGS += -Wall
 QMAKE_CXXFLAGS  -= -O -O1
-QMAKE_CXXFLAGS  += -O2 -ansi
+QMAKE_CXXFLAGS  += -O2 -ansi -Wall
 
-# GEARSystem info
-LIBS +=
+# Libs
+LIBS += -lode
 
 # Temporary dirs
 OBJECTS_DIR = tmp/obj
@@ -59,14 +60,36 @@ SOURCES += \
     src/UVF-GA/geneticalgorithm/genotype.cpp \
     src/UVF-GA/geneticalgorithm/population.cpp \
     src/UVF-GA/utils/utils.cpp \
-    src/main.cpp
+    src/main.cpp \
+    src/3rdparty/sslworld/physics/pball.cpp \
+    src/3rdparty/sslworld/physics/pbox.cpp \
+    src/3rdparty/sslworld/physics/pcylinder.cpp \
+    src/3rdparty/sslworld/physics/pfixedbox.cpp \
+    src/3rdparty/sslworld/physics/pground.cpp \
+    src/3rdparty/sslworld/physics/pobject.cpp \
+    src/3rdparty/sslworld/physics/pray.cpp \
+    src/3rdparty/sslworld/physics/pworld.cpp \
+    src/3rdparty/sslworld/robot.cpp \
+    src/3rdparty/sslworld/sslworld.cpp \
+    src/3rdparty/sslworld/fieldconfig.cpp
 
 # Header files
 HEADERS += \
     src/UVF-GA/geneticalgorithm/chromosome.h \
     src/UVF-GA/geneticalgorithm/genotype.h \
     src/UVF-GA/geneticalgorithm/population.h \
-    src/UVF-GA/utils/utils.h
+    src/UVF-GA/utils/utils.h \
+    src/3rdparty/sslworld/physics/pball.h \
+    src/3rdparty/sslworld/physics/pbox.h \
+    src/3rdparty/sslworld/physics/pcylinder.h \
+    src/3rdparty/sslworld/physics/pfixedbox.h \
+    src/3rdparty/sslworld/physics/pground.h \
+    src/3rdparty/sslworld/physics/pobject.h \
+    src/3rdparty/sslworld/physics/pray.h \
+    src/3rdparty/sslworld/physics/pworld.h \
+    src/3rdparty/sslworld/robot.h \
+    src/3rdparty/sslworld/sslworld.h \
+    src/3rdparty/sslworld/fieldconfig.h
 
 # Other files
-DISTFILES +=
+DISTFILES += LICENSE
