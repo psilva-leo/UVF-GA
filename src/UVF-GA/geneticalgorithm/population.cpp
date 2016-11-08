@@ -7,28 +7,19 @@
  * @param size - Qty of elements inside the populaiton
  */
 Population::Population(int size) : _better(size){
-    this->_size = size;
+    this->_size = 0;
 
-    for(int i=0; i>size; i++){
+    for(int i=0; i<size; i++){
         Chromosome temp = Chromosome(GEN_SIZE);
-        _pop.append(temp);
-    }
-}
-
-Population::~Population(){}
-
-void Population::generate(){
-    int j;
-    Genotype genAux = Genotype();
-
-    for(int i=0; i<this->_size; i++){
-        Chromosome temp = Chromosome(GEN_SIZE);
-        for(j = 0; j<GEN_SIZE; j++){
+        for(int j = 0; j<GEN_SIZE; j++){
             temp.getGen(j)->setValue(Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT));
         }
         this->appendChromosome(temp);
     }
+
 }
+
+Population::~Population(){}
 
 Chromosome* Population::getChromosome(int index){
     return &_pop[index];
@@ -36,6 +27,7 @@ Chromosome* Population::getChromosome(int index){
 
 void Population::appendChromosome(Chromosome newChromosome){
     this->_pop.append(newChromosome);
+    this->_size++;
 }
 
 void Population::insertChromosome(Chromosome& newChromosome, int& position){
@@ -53,10 +45,11 @@ void Population::evaluate(){
  * @brief Select half of the population
  * @param QList of populations to choose from
  */
-QList<Chromosome> Population::selection(QList<Population> populations){
+Population* Population::selection(QList<Population> populations){
     int size = populations.size();
-    QList<Chromosome> selection;
-    QMap<double, Chromosome> map;   // Fitness, Chromosome
+    Population *selection = new Population(0);
+    QMultiMap<double, Chromosome> map;   // Fitness, Chromosome
+
     for(int i=0; i<size; i++){
         for(int j=0; j<populations[i]._size; j++){
             // Multiplies for (-1) to be ordered in decrescent order.
@@ -66,23 +59,23 @@ QList<Chromosome> Population::selection(QList<Population> populations){
 
     QMapIterator<double, Chromosome> i(map);
     int count = 0;
-    int selectNum = populations[0]._size/2; // Number of Chromosomes to be selected
+    int selectNum = this->_size/2; // Number of Chromosomes to be selected
     while(i.hasNext() && count < selectNum){
         i.next();
-        selection.append(i.value());
+        selection->appendChromosome(i.value());
         count++;
     }
 
     // TODO: Should this be here?
     // Selecting best chromosome
-    if(this->_better.getFitness() < selection[0].getFitness()){
-        this->_better = selection[0];
+    if(this->_better.getFitness() < selection->getChromosome(0)->getFitness()){
+        this->_better = *selection->getChromosome(0);
     }
 
     //TODO: Decide if prints or not the selected chromosomes
-    cout << "##SELECTED CHORMOSOMES##" << endl;
-    for(int i=0; i<selection.size(); i++){
-        Chromosome temp = selection[i];
+    cout << "##SELECTED CHORMOSOMES## coutn: " << count << " selecNum: " << selectNum << " size: " << selection->_size << endl;
+    for(int i=0; i<selectNum; i++){
+        Chromosome temp = *selection->getChromosome(i);
         cout << "Chromosome (" << i <<")\t-\t";
         cout << "FITNESS[" << fixed  << setprecision(5) << temp.getFitness() << "]\t";
         cout << "GEN";
@@ -104,10 +97,9 @@ QList<Chromosome> Population::selection(QList<Population> populations){
 Population Population::crossOver(){
     Population crossOverPop = Population((this->_size)/2);
     int parent1GenesNum = this->getChromosome(0)->getGenQty()/2;
-    crossOverPop.generate();
 
     for(int i=0; i<crossOverPop._size; i++){
-        for(int j = 0; j<this->getChromosome(0)->getGenQty()-1; j++){ // -1 because it doesn't need the fitness gene
+        for(int j = 0; j<this->getChromosome(0)->getGenQty(); j++){
             if(j < parent1GenesNum){
                 Genotype genAux = *this->getChromosome(2*i)->getGen(j);
                 crossOverPop.getChromosome(i)->getGen(j)->setValue(genAux.getValue());
@@ -124,54 +116,92 @@ Population Population::crossOver(){
     return crossOverPop;
 }
 
-Population *Population::mutation(float tax){
+Population Population::mutation(float tax){
     int i;
-    int qtyMuted = (int) floor(this->_size*tax);
-    Population *newPop = new Population(0);
+    int qtyMuted = (int) floor((this->_pop[0].getGenQty())*tax);
+    Population newPop = Population(this->_size);
 
-    // Gerate the index's list of the pupulation whose will receive the mutation
+    // Generate the index's list of the gene that will receive the mutation
     QList<int> mutedId;
-    for(int aux, i=0; i<qtyMuted; i++){
-        //Decrease the length of rand number to match with ID's
-        aux = rand()%(this->_size-i);
-        mutedId.append(aux);
-    }
-
-    Chromosome elemAux = Chromosome(_pop[0].getGenQty());
-    Genotype genAux;
-
-    // Seek the ID vector to make the mutaion
-    for(i=0; i<this->_size; i++){
-        // Copy the Element of List
-        elemAux = _pop.takeAt(mutedId.at(i));
-
-        // Removes from the list
-        _pop.removeAt(mutedId.at(i));
-
-        for(int j=0; j<elemAux.getGenQty(); j++){
-            // Gets the gen of the element to mutate
-            genAux = *elemAux.getGen(j);
-
-//            // Uses the operator defined to multiply by the mutation factor
-            double value = genAux.getValue()*Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT);
-
-//            // Modify the gen inside the Element
-            genAux.setValue(value);
+    for(int i=0; i<qtyMuted; i++){
+        int aux = rand()%(this->_pop[0].getGenQty());
+        if (mutedId.contains(aux) || aux == this->_pop[0].getGenQty()){
+            i--;
+        }else{
+            mutedId.append(aux);
         }
 
-        // Insert the Mutated Element inside the new population
-        newPop->_pop.append(elemAux);
     }
 
-    // Insert last elements that doesn't receive mutation
-    int length = this->_pop.size();
-    for(i=0; i<length; i++){
-        elemAux = *this->getChromosome(i);
-        newPop->appendChromosome(elemAux);
+
+    // Go over the population chromosome by chromosome
+    for(i=0; i<this->_size; i++){
+        // Mutate gene
+        for(int j=0; j<_pop[0].getGenQty(); j++){
+            if(mutedId.contains(j)){
+                double value = this->_pop[i].getGen(j)->getValue()*Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT);
+                newPop.getChromosome(i)->getGen(j)->setValue(value);
+            }else{
+                double value = this->_pop[i].getGen(j)->getValue();
+                newPop.getChromosome(i)->getGen(j)->setValue(value);
+            }
+        }
     }
+
+    this->print();
+    newPop.print();
 
     return newPop;
 }
+
+//Population *Population::mutation(float tax){
+//    int i;
+//    int qtyMuted = (int) floor(this->_size*tax);
+//    Population *newPop = new Population(0);
+
+//    // Gerate the index's list of the pupulation whose will receive the mutation
+//    QList<int> mutedId;
+//    for(int aux, i=0; i<qtyMuted; i++){
+//        //Decrease the length of rand number to match with ID's
+//        aux = rand()%(this->_size-i);
+//        mutedId.append(aux);
+//    }
+
+//    Chromosome elemAux = Chromosome(_pop[0].getGenQty());
+//    Genotype genAux;
+
+//    // Seek the ID vector to make the mutaion
+//    for(i=0; i<this->_size; i++){
+//        // Copy the Element of List
+//        elemAux = _pop.takeAt(mutedId.at(i));
+
+//        // Removes from the list
+//        _pop.removeAt(mutedId.at(i));
+
+//        for(int j=0; j<elemAux.getGenQty(); j++){
+//            // Gets the gen of the element to mutate
+//            genAux = *elemAux.getGen(j);
+
+////            // Uses the operator defined to multiply by the mutation factor
+//            double value = genAux.getValue()*Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT);
+
+////            // Modify the gen inside the Element
+//            genAux.setValue(value);
+//        }
+
+//        // Insert the Mutated Element inside the new population
+//        newPop->_pop.append(elemAux);
+//    }
+
+//    // Insert last elements that doesn't receive mutation
+//    int length = this->_pop.size();
+//    for(i=0; i<length; i++){
+//        elemAux = *this->getChromosome(i);
+//        newPop->appendChromosome(elemAux);
+//    }
+
+//    return newPop;
+//}
 
 void Population::print(){
     int i, j;

@@ -25,11 +25,10 @@ public:
     ~Population();
 
     //Genetic Functions
-    void generate();
     void evaluate();
     Population crossOver();
-    Population *mutation(float tax);
-    QList<Chromosome> selection(QList<Population> populations);
+    Population mutation(float tax);
+    Population* selection(QList<Population> populations);
 
     // Other Functins
     void appendChromosome(Chromosome newElement);

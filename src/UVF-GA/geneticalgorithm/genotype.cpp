@@ -32,6 +32,9 @@ void Genotype::setMin(double min){
 }
 
 void Genotype::setValue(double x){
+    if(x > max) x = max;
+    if(x < min) x = min;
+
     this->value = x;
 }
 

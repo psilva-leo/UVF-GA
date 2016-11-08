@@ -8,16 +8,17 @@ class Chromosome{
 public:
     Chromosome(int genQty);
 
-    double getFitness();
     Genotype* getGen(int i);
     void insertGen(Genotype& gen);
     void evaluate();
     int getGenQty();
+    double getFitness();
+    void setFitness(double x);
 
 private:
     int _genQty;
-    QList<Genotype> _gen;
     double _fitness;
+    QList<Genotype> _gen;
 };
 
 #endif // ELEMENT_H

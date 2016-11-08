@@ -3,9 +3,10 @@
 using namespace std;
 Chromosome::Chromosome(int genQty){
     this->_genQty = genQty;
+    this->_fitness = 1.0;
 
     for(int i=0; i<genQty; i++){
-        Genotype temp = Genotype();
+        Genotype temp = Genotype(0.0, 2.0);
         _gen.append(temp);
     }
 }
@@ -21,7 +22,8 @@ void Chromosome::insertGen(Genotype& gen){
 
 
 double Chromosome::getFitness(){
-    return this->_gen.last().getValue();
+    return this->_fitness;
+//    return this->_gen.last().getValue();
 }
 
 Genotype* Chromosome::getGen(int i){
@@ -33,5 +35,6 @@ Genotype* Chromosome::getGen(int i){
  * TODO: Criar função baseado nos pesos do tempo, batida e distância.
  */
 void Chromosome::evaluate(){
-    return _gen.last().setValue(1.0);
+    this->_fitness = 1.0;
+    this->_gen.last().setValue(1.0);
 }
