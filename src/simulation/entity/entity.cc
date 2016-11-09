@@ -21,7 +21,7 @@
 
 #include "entity.hh"
 #include <iostream>
-#include <WRCoach/utils/wrtimer/wrtimer.hh>
+#include <src/simulation/simulationUtils/simulationutils.h>
 
 int Entity::_idcont = 0;
 
@@ -37,7 +37,7 @@ Entity::Entity(EntityType type) {
 void Entity::run() {
     initialization();
 
-    WRTimer t;
+    Timer t;
     while(isRunning())	{
         t.start();
         if(isEnabled())

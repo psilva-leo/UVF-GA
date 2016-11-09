@@ -34,10 +34,10 @@ void ControlAlgorithm::reset() {
     _dt.start();
 }
 
-float ControlAlgorithm::iterate(float distance, Velocity velocity) {
+float ControlAlgorithm::iterate(float distance) {
     _dt.stop();
     float dt = _dt.timesec();
     _dt.start();
 
-    return _iterate(distance, velocity, dt);
+    return _iterate(distance, dt);
 }

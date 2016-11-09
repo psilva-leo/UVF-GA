@@ -45,27 +45,27 @@ int main(int argc, char *argv[]){
 
 
     // SSL World testing
-//    RobotsFomation *form = new RobotsFomation(2);
-//    FieldConfig *cfg = new FieldConfig();
-//    SSLWorld *ssl = new SSLWorld(cfg, form, form);
+    RobotsFomation *form = new RobotsFomation(2);
+    FieldConfig *cfg = new FieldConfig();
+    SSLWorld *ssl = new SSLWorld(cfg, form, form);
 
-//    ssl->robots[0]->setXY(0, 0);
-//    ssl->robots[0]->setDir(3.14/2);
+    ssl->robots[0]->setXY(0, 0);
+    ssl->robots[0]->setDir(3.14/2);
 
-//    forever {
-//        ssl->robots[0]->setSpeed(0.0, 1.0, 0.0);
+    forever {
+        ssl->robots[0]->setSpeed(0.0, 1.0, 0.0);
 
-//        dReal x, y;
-//        ssl->robots[0]->getXY(x, y);
-//        std::cout << "robot 0, x=" << x << ", y=" << y << "\n";
+        dReal x, y;
+        ssl->robots[0]->getXY(x, y);
+        std::cout << "robot 0, x=" << x << ", y=" << y << "\n";
 
-//        ssl->step(0.02);
-//        QThread::msleep(20);
-//    }
+        ssl->step(0.02);
+        QThread::msleep(20);
+    }
 
-//    delete ssl;
-//    delete cfg;
-//    delete form;
+    delete ssl;
+    delete cfg;
+    delete form;
 
 
     return 0;

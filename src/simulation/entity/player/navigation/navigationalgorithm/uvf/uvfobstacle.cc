@@ -1,31 +1,10 @@
-/***
- * Warthog Robotics
- * University of Sao Paulo (USP) at Sao Carlos
- * http://www.warthog.sc.usp.br/
- *
- * This file is part of WRCoach project.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ***/
-
 #include "uvfobstacle.hh"
-#include <WRCoach/const/uvfconstants.hh>
-#include <WRCoach/utils/utils.hh>
 
 UVFObstacle::UVFObstacle(const Position &pos, const Velocity &vel) {
     _pos = pos;
     _vel = vel;
+
+     _k0 = 1; // Fator multiplicativo da velocidade relativa
 }
 
 Position UVFObstacle::position() const {
@@ -37,13 +16,13 @@ Velocity UVFObstacle::velocity() const {
 }
 
 Position UVFObstacle::virtualPosition(const Position &posRobot, const Velocity &velRobot) const {
-    double k0 = UVFConstants::k0();
+    double k0 = _k0;
 
     // Calculate s vector
-    Velocity s(true, k0*(_vel.x()-velRobot.x()), k0*(_vel.y()-velRobot.y()));
+    Velocity s(k0*(_vel.x()-velRobot.x()), k0*(_vel.y()-velRobot.y()));
 
     // Calculate virtual obstacle position
-    float dist = WR::Utils::distance(posRobot, _pos);
+    float dist = sqrt(pow(posRobot.x()-_pos.x(), 2)+pow(posRobot.y()-_pos.y(), 2));
     float pox, poy;
     if(dist < s.abs()) {
         pox = _pos.x() + ((dist/s.abs())*s.x());
@@ -54,6 +33,6 @@ Position UVFObstacle::virtualPosition(const Position &posRobot, const Velocity &
     }
 
     // Returns virtual obstacle position
-    return Position(true, pox, poy, 0.0);
+    return Position(pox, poy);
 }
 

@@ -5,6 +5,15 @@ Position::Position(float x, float y) {
     _y = y;
 }
 
+Position::Position() {
+    _x = _y = 0.0;
+}
+
+void Position::setPosition(float x, float y) {
+    _x = x;
+    _y = y;
+}
+
 float Position::x() const {
     return _x;
 }

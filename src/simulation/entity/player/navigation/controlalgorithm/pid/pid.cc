@@ -1,26 +1,5 @@
-/***
- * Warthog Robotics
- * University of Sao Paulo (USP) at Sao Carlos
- * http://www.warthog.sc.usp.br/
- *
- * This file is part of WRCoach project.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ***/
-
 #include "pid.hh"
-#include <WRCoach/utils/utils.hh>
+#include <iostream>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
@@ -49,14 +28,15 @@ void PID::reset() {
     ControlAlgorithm::reset();
 }
 
-float PID::_iterate(float error, Velocity velocity, float dt) {
+float PID::_iterate(float error, float dt) {
     // dt check
     if(dt > 0.250)
         std::cout << "[WARNING] " << name().toStdString() << ": Very high dt! Check cause.\n";
 
     // Integration, with windup guarding
     _iError += error * dt;
-    WR::Utils::limitValue(&_iError, -_iLimit, _iLimit);
+    if(_iError < -_iLimit) _iError = -_iLimit;
+    if(_iError >  _iLimit) _iError =  _iLimit;
 
     // Differentiation
     float diff = _hasLastError? (error-_lastError)/dt : 0.0;

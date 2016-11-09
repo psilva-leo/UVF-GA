@@ -1,29 +1,14 @@
-/***
- * Warthog Robotics
- * University of Sao Paulo (USP) at Sao Carlos
- * http://www.warthog.sc.usp.br/
- *
- * This file is part of WRCoach project.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ***/
-
 #include "uvf.hh"
-#include <WRCoach/entity/locations.hh>
-#include <WRCoach/const/uvfconstants.hh>
 
 UVF::UVF() {
+    _de = 0.07;      // Raio do círculo da espiral
+    _kr = 0.05;      // Suavidade da espiral, quanto maior mais suave
+
+    _dmin  = 0.005;  // AUF total se d <= dmin (praticamente o raio do obstáculo)
+    _delta = 0.12;   // Maior o delta, maior da gaussiana então desvia-se antes
+
+    _k0 = 1;         // Fator multiplicativo da velocidade relativa
+
     reset();
 }
 
@@ -32,7 +17,7 @@ UVF::~UVF() {
 }
 
 void UVF::reset() {
-    _resultantDirection.setUnknown();
+    _resultantDirection = 0.0;
     _obstacles.clear();
 }
 
@@ -45,35 +30,31 @@ void UVF::addGoalArea(const Position &pos) {
     // TODO
 }
 
-void UVF::addOwnRobot(const Position &pos, const Velocity &vel) {
+void UVF::addRobot(const Position &pos, const Velocity &vel) {
     addObstacle(pos, vel);
 }
 
-void UVF::addEnemyRobot(const Position &pos, const Velocity &vel) {
-    addObstacle(pos, vel);
-}
+//void UVF::addEnemyRobot(const Position &pos, const Velocity &vel) {
+//    addObstacle(pos, vel);
+//}
 
-Angle UVF::getDirection() const {
+float UVF::getDirection() const {
     return _resultantDirection;
 }
 
-UVF* UVF::clone() const {
-    return new UVF(*this);
-}
-
 Position UVF::rotate(const Position &pos, float rot){
-    return Position(true, pos.x()*cos(rot) - pos.y()*sin(rot), pos.x()*sin(rot) + pos.y()*cos(rot), pos.z());
+    return Position(pos.x()*cos(rot) - pos.y()*sin(rot), pos.x()*sin(rot) + pos.y()*cos(rot));
 }
 
 Velocity UVF::rotate(const Velocity &vel, float rot) {
-    return Velocity(true, vel.x()*cos(rot) - vel.y()*sin(rot), vel.x()*sin(rot) + vel.y()*cos(rot));
+    return Velocity(vel.x()*cos(rot) - vel.y()*sin(rot), vel.x()*sin(rot) + vel.y()*cos(rot));
 }
 
 float UVF::getPhiTUF(float x, float y, float de){
     float yL = y + de;
     float yR = y - de;
-    Position pL(true, x, yL, 0.0);
-    Position pR(true, x, yR, 0.0);
+    Position pL(x, yL);
+    Position pR(x, yR);
 
     if(y < -de) {
         return getPhi(pL, true, de);
@@ -85,8 +66,8 @@ float UVF::getPhiTUF(float x, float y, float de){
         float phiHCCW = getPhi(pR, false, de);
         float phiHCW = getPhi(pL, true, de);
 
-        Position NhCW(true, cos(phiHCW), sin(phiHCW), 0.0);
-        Position NhCCW(true, cos(phiHCCW), sin(phiHCCW), 0.0);
+        Position NhCW (cos(phiHCW) , sin(phiHCW) );
+        Position NhCCW(cos(phiHCCW), sin(phiHCCW));
 
         float phiX = ((fabs(yL)*NhCCW.x()) + (fabs(yR)*NhCW.x()))/(2*de);
         float phiY = ((fabs(yL)*NhCCW.y()) + (fabs(yR)*NhCW.y()))/(2*de);
@@ -98,7 +79,7 @@ float UVF::getPhiTUF(float x, float y, float de){
 float UVF::mergeVF(const Position &auf, float phiAUF, float phiTUF, Position tmpObst, Position tmpGoalPos){
     float phi;
 
-    float dmin = UVFConstants::dmin();
+    float dmin = _dmin;
     float r = sqrt(pow(auf.x(), 2) + pow(auf.y(), 2));
     if(r <= dmin) {
         phi = phiAUF;
@@ -107,8 +88,8 @@ float UVF::mergeVF(const Position &auf, float phiAUF, float phiTUF, Position tmp
         // Merge
         float g = gauss(r-dmin);
         float diff = fabs(phiAUF - phiTUF);
-        if(diff > GEARSystem::Angle::pi)
-            diff = fabs(GEARSystem::Angle::twoPi - diff);
+        if(diff > PI)
+            diff = fabs(2*PI - diff);
 
         // Calc phi
         float cross = cos(phiAUF)*sin(phiTUF) - sin(phiAUF)*cos(phiTUF);
@@ -121,7 +102,7 @@ float UVF::mergeVF(const Position &auf, float phiAUF, float phiTUF, Position tmp
         phi = phiTUF + s*diff*g;
 
         // Fix phi
-        Position vecObst(true, tmpObst.x() - tmpGoalPos.x(), tmpObst.y() - tmpGoalPos.y(), 0.0);
+        Position vecObst(tmpObst.x() - tmpGoalPos.x(), tmpObst.y() - tmpGoalPos.y());
         if(auf.x() < 0) {
             if(!(vecObst.y() > 0 && vecObst.x() > 0 && auf.y() < 0 && auf.x() < 0)) {
                 if(!(vecObst.y() < 0 && vecObst.x() > 0 && auf.y()>0 && auf.x()<0)) {
@@ -139,16 +120,16 @@ float UVF::mergeVF(const Position &auf, float phiAUF, float phiTUF, Position tmp
 }
 
 void UVF::run() {
-    if(originPos().isUnknown() || goalPos().isUnknown() || goalOri().isUnknown()) {
-        std::cout << "[WARNING] UVF: originPos, goalPos or goalOri is unknown!\n";
-        return;
-    }
+//    if(originPos().isUnknown() || goalPos().isUnknown() || goalOri().isUnknown()) {
+//        std::cout << "[WARNING] UVF: originPos, goalPos or goalOri is unknown!\n";
+//        return;
+//    }
 
-    float targetOri = goalOri().value() + GEARSystem::Angle::pi;;
+    float targetOri = goalOri() + PI;;
 
     // Get rotation
     float rot = wrapToPi(targetOri);
-    rot = GEARSystem::Angle::pi - rot;
+    rot = PI - rot;
 
     Position tmpOriginPos = rotate(originPos(), rot);
     Position tmpGoalPos = rotate(goalPos(), rot);
@@ -160,12 +141,11 @@ void UVF::run() {
     // Iterate through obstacles
     float phi = 0.0;
 
-    float constant = 1.8;
+//    float constant = 1.8;
     float de = 0.7;//= UVFConstants::de()/**originVel().abs()*constant*/;
 
-    WR::Utils::limitValue(&de, 0.07, 0.10);
-
-//    std::cout << "\nde = " << de;
+    if(de < 0.07) de = 0.07;
+    if(de > 0.10) de = 0.10;
 
     // Calculate phiTUF
     float phiTUF = getPhiTUF(x, y, de);
@@ -175,15 +155,17 @@ void UVF::run() {
 
         // Fetch obstacle and rotate
         Velocity tmpObstVel = rotate(obst.velocity(), rot);
-//        Position tmpObstPos = rotate(obst.position(), rot);
         Position tmpObstPos = rotate(obst.virtualPosition(tmpObstPos, tmpObstVel), rot);
 
+        // Calculate distance
+        float tmpDistance = sqrt(pow(tmpObstPos.x()-tmpGoalPos.x(), 2) + pow(tmpObstPos.y()-tmpGoalPos.y(), 2));
+
         // Obstacle close to goal position exception
-        if(WR::Utils::distance(tmpObstPos, tmpGoalPos) < 0.10)
+        if(tmpDistance < 0.10)
             continue;
 
         // Calculate phiAUF
-        Position auf(true, tmpOriginPos.x() - tmpObstPos.x(), tmpOriginPos.y() - tmpObstPos.y(), 0.0);
+        Position auf(tmpOriginPos.x() - tmpObstPos.x(), tmpOriginPos.y() - tmpObstPos.y());
         float phiAUF = atan2(auf.y(), auf.x());
 
         // Wrap
@@ -199,7 +181,7 @@ void UVF::run() {
     phi = phiTUF;
 
     // Store result
-    _resultantDirection.setValue(phi-rot);
+    _resultantDirection = (phi-rot);
 }
 
 void UVF::addObstacle(const Position &pos, const Velocity &vel) {
@@ -207,26 +189,26 @@ void UVF::addObstacle(const Position &pos, const Velocity &vel) {
 }
 
 float UVF::getPhi(const Position &p, bool ccw, float de) const {
-    float kr = UVFConstants::kr();
+    float kr = _kr;
 
     float signal = (ccw? -1.0 : 1.0);
     float theta = atan2(p.y(), p.x());
     float ro = sqrt(pow(p.x(), 2) + pow(p.y(), 2));
     if(ro > de)
-        return theta + signal*(GEARSystem::Angle::pi/2.0)*(2.0-(de+kr)/(ro+kr));
+        return theta + signal*(PI/2.0)*(2.0-(de+kr)/(ro+kr));
     else
-        return theta + signal*(GEARSystem::Angle::pi/2.0)*sqrt(ro/de);
+        return theta + signal*(PI/2.0)*sqrt(ro/de);
 }
 
 float UVF::gauss(float r) const {
-    float delta = UVFConstants::delta();
+    float delta = _delta;
     return exp(-(pow(r,2))/(2*pow(delta,2)));
 }
 
 float UVF::wrapToPi(float angle) {
-    while(angle < -GEARSystem::Angle::pi)
-        angle += GEARSystem::Angle::twoPi;
-    while(angle > GEARSystem::Angle::pi)
-        angle -= GEARSystem::Angle::twoPi;
+    while(angle < -PI)
+        angle += 2*PI;
+    while(angle > PI)
+        angle -= 2*PI;
     return angle;
 }

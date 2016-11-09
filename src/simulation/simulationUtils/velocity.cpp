@@ -7,6 +7,11 @@ Velocity::Velocity(float x, float y) {
     _abs = sqrt(pow(x,2)+pow(y,2));
 }
 
+Velocity::Velocity() {
+    _x = 0.0;
+    _y = 0.0;
+}
+
 float Velocity::x()   const {
     return _x;
 }

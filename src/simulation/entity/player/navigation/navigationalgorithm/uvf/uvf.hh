@@ -1,29 +1,10 @@
-/***
- * Warthog Robotics
- * University of Sao Paulo (USP) at Sao Carlos
- * http://www.warthog.sc.usp.br/
- *
- * This file is part of WRCoach project.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ***/
-
 #ifndef UVF_HH
 #define UVF_HH
 
-#include <WRCoach/entity/player/navigation/navigationalgorithm/navigationalgorithm.hh>
-#include "uvfobstacle.hh"
+#include <simulation/entity/player/navigation/navigationalgorithm/uvf/uvfobstacle.hh>
+#include <simulation/entity/player/navigation/navigationalgorithm/navigationalgorithm.hh>
+#include <cmath>
+#include <QList>
 
 class UVF : public NavigationAlgorithm {
 public:
@@ -35,21 +16,18 @@ public:
     // Add obstacles
     void addBall(const Position &pos, const Velocity &vel);
     void addGoalArea(const Position &pos);
-    void addOwnRobot(const Position &pos, const Velocity &vel);
-    void addEnemyRobot(const Position &pos, const Velocity &vel);
+    void addRobot(const Position &pos, const Velocity &vel);
+    //void addEnemyRobot(const Position &pos, const Velocity &vel);
 
     // Return results
-    Angle getDirection() const;
+    float getDirection() const;
 private:
-    // Inheritance methods
-    UVF* clone() const;
-
     // Run
     void run();
 
     // Obstacle avoidance
     void addObstacle(const Position &pos, const Velocity &vel);
-    QList<UVFObstacle> _obstacles;
+    QList <UVFObstacle> _obstacles;
 
     // Auxiliar functions
     Position rotate(const Position &pos, float rot);
@@ -62,7 +40,20 @@ private:
     float wrapToPi(float angle);
 
     // Results
-    Angle _resultantDirection;
+    float _resultantDirection;
+
+    // UVF CONSTANTS
+    // Hyperbolic spiral univector field
+    double _de; // Raio do círculo da espiral
+    double _kr; // Suavidade da espiral, quanto maior mais suave
+
+    // Composition of move-to-goal univector field and avoid-obstacle univector field
+    double _dmin; // AUF total se d <= dmin (praticamente o raio do obstáculo)
+    double _delta; // Maior o delta, maior da gaussiana então desvia-se antes
+
+    // Virtual obstacles calc
+    double _k0; // Fator multiplicativo da velocidade relativa
+
 };
 
 

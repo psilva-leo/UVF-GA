@@ -1,11 +1,11 @@
 #ifndef POSITION_H
 #define POSITION_H
 
-
 class Position {
 public:
     Position(float x, float y);
-    ~Position();
+    Position();
+    //~Position();
 
     void setPosition(float x, float y);
     float x() const;
