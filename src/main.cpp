@@ -30,6 +30,7 @@ int main(int argc, char *argv[]){
         popList.clear();
         popList.append(crossPop);
         popList.append(mutPop);
+        popList.append(*P);
         P = P->selection(popList);
         iteration++;
         cout << "\n\n\n\n";
