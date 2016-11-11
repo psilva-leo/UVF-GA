@@ -122,7 +122,7 @@ void UVF::run() {
 //        return;
 //    }
 
-    float targetOri = goalOri() + PI;;
+    float targetOri = goalOri() + PI;
 
     // Get rotation
     float rot = wrapToPi(targetOri);
@@ -138,14 +138,8 @@ void UVF::run() {
     // Iterate through obstacles
     float phi = 0.0;
 
-//    float constant = 1.8;
-    float de = 0.7;//= UVFConstants::de()/**originVel().abs()*constant*/;
-
-    if(de < 0.07) de = 0.07;
-    if(de > 0.10) de = 0.10;
-
     // Calculate phiTUF
-    float phiTUF = getPhiTUF(x, y, de);
+    float phiTUF = getPhiTUF(x, y, _de);
 
     for(int i=0; i<_obstacles.size(); i++) { // Traverse through QList
         UVFObstacle obst = _obstacles.at(i);

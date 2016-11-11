@@ -3,6 +3,8 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
+#define LINEAR_ERROR 0.04f
+
 Player::Player(int id, SSLWorld *world){
     _id = id;
     _world = world;   
@@ -29,35 +31,31 @@ void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots
     if(avoidBall  ) _nav->avoidBall();
 
     // Set goal on navigation
-    _nav->setGoal(desiredPos, angleToLook, false, false);
+    _nav->setGoal(desiredPos, angleToLook, avoidRobots, false);
 
-    // Linear speeds calc
+    // Path-planning algorithm
     float direction = _nav->getDirection();
-    direction += direction - orientation() + PI;
+    direction = direction - orientation() + PI/2;
 
-    float distance  = _nav->getDistance();
+    // Linear speed
+    float lError  = _nav->getDistance();
+    float linearSpeed = _nav->getLinearSpeed(lError);
+    float x = linearSpeed*cos(direction);
+    float y = linearSpeed*sin(direction);
 
-    float speed = _nav->getLinearSpeed(distance);
-    float xSpeed = speed*cos(direction);
-    float ySpeed = speed*sin(direction);
-
-    // Angular speed calc
+    // Angular speed
     float aError = angleToLook - orientation();
+    float w = _nav->getAngularSpeed(aError);
 
-    // Fix angular error
-    if(aError >  PI) aError -= 2*PI;
-    if(aError < -PI) aError += 2*PI;
+    // Set command
+//    if(Utils::distance(position(), desiredPos) <= LINEAR_ERROR)
+//        idle();
+//    else
+        setSpeed(x, y, w);
+}
 
-    // Convert radians to degrees
-    float wSpeed = _nav->getAngularSpeed(aError) * (180/PI);
-
-//    std::cout << "X Speed: " << xSpeed << std::endl;
-//    std::cout << "y Speed: " << ySpeed << std::endl;
-//    std::cout << "W Speed: " << wSpeed << std::endl;
-//    std::cout << "Distance: " << distance << std::endl;
-
-    // Set speed
-    _world->robots[_id]->setSpeed(xSpeed, ySpeed, wSpeed);
+void Player::idle() {
+    _world->robots[_id]->setSpeed(0.0, 0.0, 0.0);
 }
 
 Position Player::position() const {
@@ -88,3 +86,6 @@ void Player::setMaxSpeedAndAccel(float maxASpeed, float maxLSpeed, float maxLAcc
     _nav->setMaxLAcceleration(maxLAccel);
 }
 
+void Player::setSpeed(float x, float y, float w) {
+    _world->robots[_id]->setSpeed(x, y, w);
+}

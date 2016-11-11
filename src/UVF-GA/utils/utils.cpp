@@ -25,3 +25,7 @@ double Utils::randf(int max, int min) {
 
     return acc;
 }
+
+float Utils::distance(const Position &p1, const Position &p2) {
+    return sqrt(pow(p2.x()-p1.x(),2)+pow(p2.y()-p1.y(),2));
+}
