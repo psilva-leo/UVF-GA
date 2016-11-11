@@ -22,7 +22,7 @@
 #ifndef CONTROLALGORITHMPARAMETERS_H
 #define CONTROLALGORITHMPARAMETERS_H
 
-#include <simulation/entity/player/navigation/controlalgorithm/controlalgorithm.hh>
+#include <UVF-GA/simulation/entity/player/navigation/controlalgorithm/controlalgorithm.hh>
 
 class PID;
 class ControlAlgorithm;

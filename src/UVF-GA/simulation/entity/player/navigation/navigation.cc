@@ -1,7 +1,7 @@
 #include "navigation.hh"
 
-#include <simulation/entity/player/navigation/controlalgorithm/pid/pid.hh>
-#include <simulation/entity/player/navigation/navigationalgorithm/uvf/uvf.hh>
+#include <UVF-GA/simulation/entity/player/navigation/controlalgorithm/pid/pid.hh>
+#include <UVF-GA/simulation/entity/player/navigation/navigationalgorithm/uvf/uvf.hh>
 #include <iostream>
 
 Navigation::Navigation(Player *player, SSLWorld *world) {

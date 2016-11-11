@@ -6,7 +6,7 @@
 #include <QList>
 #include <QThread>
 
-#include <simulation/entity/player/player.h>
+#include <UVF-GA/simulation/entity/player/player.h>
 
 #include <3rdparty/sslworld/sslworld.h>
 

@@ -21,7 +21,7 @@
 
 #include "entity.hh"
 #include <iostream>
-#include <src/simulation/simulationUtils/simulationutils.h>
+#include <UVF-GA/utils/utils.h>
 
 int Entity::_idcont = 0;
 

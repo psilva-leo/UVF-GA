@@ -1,16 +1,19 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include<cstdio>
-#include<cstdlib>
-#include<cmath>
+#include <cstdlib>
+#include <cmath>
+
+// Utils include
+#include "position.h"
+#include "velocity.h"
+#include "timer.hh"
 
 #define FRAND_PRECISION 5
+#define PI 3.141592654
 
-class Utils
-{
+class Utils {
 public:
-    Utils();
     static double randf(int max, int min);
 };
 

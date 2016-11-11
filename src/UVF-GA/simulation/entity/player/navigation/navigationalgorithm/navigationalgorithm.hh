@@ -1,7 +1,7 @@
 #ifndef NAVIGATIONALGORITHM_HH
 #define NAVIGATIONALGORITHM_HH
 
-#include <simulation/simulationUtils/simulationutils.h>
+#include <UVF-GA/utils/utils.h>
 #include <QMutexLocker>
 
 class NavigationAlgorithm {

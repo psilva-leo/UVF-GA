@@ -72,18 +72,18 @@ SOURCES += \
     src/3rdparty/sslworld/robot.cpp \
     src/3rdparty/sslworld/sslworld.cpp \
     src/3rdparty/sslworld/fieldconfig.cpp \
-    src/simulation/entity/player/navigation/controlalgorithm/pid/pid.cc \
-    src/simulation/entity/player/navigation/controlalgorithm/controlalgorithm.cc \
-    src/simulation/entity/player/navigation/controlalgorithm/controlalgorithmparameters.cc \
-    src/simulation/entity/player/navigation/navigationalgorithm/uvf/uvf.cc \
-    src/simulation/entity/player/navigation/navigationalgorithm/uvf/uvfobstacle.cc \
-    src/simulation/entity/player/navigation/navigationalgorithm/navigationalgorithm.cc \
-    src/simulation/entity/player/navigation/navigation.cc \
-    src/simulation/entity/player/player.cpp \
-    src/simulation/entity/entity.cc \
-    src/simulation/simulationUtils/position.cpp \
-    src/simulation/simulationUtils/timer.cc \
-    src/simulation/simulationUtils/velocity.cpp
+    src/UVF-GA/simulation/entity/player/navigation/controlalgorithm/pid/pid.cc \
+    src/UVF-GA/simulation/entity/player/navigation/controlalgorithm/controlalgorithm.cc \
+    src/UVF-GA/simulation/entity/player/navigation/controlalgorithm/controlalgorithmparameters.cc \
+    src/UVF-GA/simulation/entity/player/navigation/navigationalgorithm/uvf/uvf.cc \
+    src/UVF-GA/simulation/entity/player/navigation/navigationalgorithm/uvf/uvfobstacle.cc \
+    src/UVF-GA/simulation/entity/player/navigation/navigationalgorithm/navigationalgorithm.cc \
+    src/UVF-GA/simulation/entity/player/navigation/navigation.cc \
+    src/UVF-GA/simulation/entity/player/player.cpp \
+    src/UVF-GA/simulation/entity/entity.cc \
+    src/UVF-GA/utils/position.cpp \
+    src/UVF-GA/utils/timer.cc \
+    src/UVF-GA/utils/velocity.cpp
 
 # Header files
 HEADERS += \
@@ -102,20 +102,19 @@ HEADERS += \
     src/3rdparty/sslworld/robot.h \
     src/3rdparty/sslworld/sslworld.h \
     src/3rdparty/sslworld/fieldconfig.h \
-    src/simulation/entity/player/navigation/controlalgorithm/pid/pid.hh \
-    src/simulation/entity/player/navigation/controlalgorithm/controlalgorithm.hh \
-    src/simulation/entity/player/navigation/controlalgorithm/controlalgorithmparameters.hh \
-    src/simulation/entity/player/navigation/controlalgorithm/wrcontrolalgorithmbase.hh \
-    src/simulation/entity/player/navigation/navigationalgorithm/uvf/uvf.hh \
-    src/simulation/entity/player/navigation/navigationalgorithm/uvf/uvfobstacle.hh \
-    src/simulation/entity/player/navigation/navigationalgorithm/navigationalgorithm.hh \
-    src/simulation/entity/player/navigation/navigation.hh \
-    src/simulation/entity/player/player.h \
-    src/simulation/entity/entity.hh \
-    src/simulation/simulationUtils/position.h \
-    src/simulation/simulationUtils/simulationutils.h \
-    src/simulation/simulationUtils/timer.hh \
-    src/simulation/simulationUtils/velocity.h
+    src/UVF-GA/simulation/entity/player/navigation/controlalgorithm/pid/pid.hh \
+    src/UVF-GA/simulation/entity/player/navigation/controlalgorithm/controlalgorithm.hh \
+    src/UVF-GA/simulation/entity/player/navigation/controlalgorithm/controlalgorithmparameters.hh \
+    src/UVF-GA/simulation/entity/player/navigation/controlalgorithm/wrcontrolalgorithmbase.hh \
+    src/UVF-GA/simulation/entity/player/navigation/navigationalgorithm/uvf/uvf.hh \
+    src/UVF-GA/simulation/entity/player/navigation/navigationalgorithm/uvf/uvfobstacle.hh \
+    src/UVF-GA/simulation/entity/player/navigation/navigationalgorithm/navigationalgorithm.hh \
+    src/UVF-GA/simulation/entity/player/navigation/navigation.hh \
+    src/UVF-GA/simulation/entity/player/player.h \
+    src/UVF-GA/simulation/entity/entity.hh \
+    src/UVF-GA/utils/position.h \
+    src/UVF-GA/utils/timer.hh \
+    src/UVF-GA/utils/velocity.h
 
 # Other files
 DISTFILES += LICENSE
