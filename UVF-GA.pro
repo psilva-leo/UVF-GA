@@ -30,13 +30,12 @@ TEMPLATE = app
 DESTDIR = bin
 TARGET = UVF-GA
 VERSION = 1.0
-CONFIG += c++11
+CONFIG -= c++11
 
 # Qt config
 CONFIG += console
 CONFIG -= app_bundle
-QT += core
-QT -= gui
+QT += core gui widgets opengl
 
 # Flags
 QMAKE_LFLAGS += -Wall
@@ -44,7 +43,7 @@ QMAKE_CXXFLAGS  -= -O -O1
 QMAKE_CXXFLAGS  += -O2 -ansi -Wall
 
 # Libs
-LIBS += -lode
+LIBS += -lode -lGLU
 
 # Temporary dirs
 OBJECTS_DIR = tmp/obj
@@ -83,7 +82,10 @@ SOURCES += \
     src/UVF-GA/simulation/entity/entity.cc \
     src/UVF-GA/utils/position.cpp \
     src/UVF-GA/utils/timer.cc \
-    src/UVF-GA/utils/velocity.cpp
+    src/UVF-GA/utils/velocity.cpp \
+    src/3rdparty/soccerview/util/field.cc \
+    src/3rdparty/soccerview/gltext.cc \
+    src/3rdparty/soccerview/soccerview.cc
 
 # Header files
 HEADERS += \
@@ -114,7 +116,15 @@ HEADERS += \
     src/UVF-GA/simulation/entity/entity.hh \
     src/UVF-GA/utils/position.h \
     src/UVF-GA/utils/timer.hh \
-    src/UVF-GA/utils/velocity.h
+    src/UVF-GA/utils/velocity.h \
+    src/3rdparty/soccerview/util/field.hh \
+    src/3rdparty/soccerview/util/field_default_constants.hh \
+    src/3rdparty/soccerview/util/geometry.hh \
+    src/3rdparty/soccerview/util/gvector.hh \
+    src/3rdparty/soccerview/util/timer.hh \
+    src/3rdparty/soccerview/util/util.h \
+    src/3rdparty/soccerview/gltext.hh \
+    src/3rdparty/soccerview/soccerview.hh
 
 # Other files
 DISTFILES += LICENSE
