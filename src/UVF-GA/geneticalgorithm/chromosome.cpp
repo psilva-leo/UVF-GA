@@ -2,10 +2,16 @@
 
 Chromosome::Chromosome(int genQty){
     this->_genQty = genQty;
-    this->_fitness = 1.0;
+    this->_fitness = 2.0;
+
+    // TODO: Adjust mins e maxs
+    for(int i=0; i<genQty; i++){
+        genMaxs.append(1.0);
+        genMins.append(0.0);
+    }
 
     for(int i=0; i<genQty; i++){
-        Genotype temp = Genotype(0.0, 2.0);
+        Genotype temp = Genotype(genMins[i], genMaxs[i]);
         _gen.append(temp);
     }
 }

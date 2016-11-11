@@ -19,6 +19,8 @@ private:
     int _genQty;
     double _fitness;
     QList<Genotype> _gen;
+    QList<double> genMaxs;
+    QList<double> genMins;
 };
 
 #endif // ELEMENT_H
