@@ -1,9 +1,15 @@
 /***
- * Warthog Robotics
+ * SSC0713 - Sistemas Evolutivos Aplicados à Robótica
  * University of Sao Paulo (USP) at Sao Carlos
- * http://www.warthog.sc.usp.br/
  *
- * This file is part of WRCoach project.
+ * Autores:
+ * Guilherme Caixeta de Oliveira
+ * Anderson Hiroshi de Siqueira
+ * Leonardo Claudio de Paula e Silva
+ * Lucas dos Santos Luchiari
+ * Franco Saraiva
+ *
+ * This file is part of UVF-GA project.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +23,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ***/
+ */
 
 #ifndef ENTITY_HH
 #define ENTITY_HH

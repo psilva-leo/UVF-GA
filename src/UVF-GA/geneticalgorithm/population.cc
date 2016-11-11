@@ -33,7 +33,7 @@
  * @brief Creates a population with a number of individuals
  * @param size - Qty of elements inside the populaiton
  */
-Population::Population(int size) : _better(size){
+Population::Population(int size) : _better(size) {
     this->_size = 0;
 
     for(int i=0; i<size; i++){
@@ -46,23 +46,21 @@ Population::Population(int size) : _better(size){
 
 }
 
-Population::~Population(){}
-
-Chromosome* Population::getChromosome(int index){
+Chromosome* Population::getChromosome(int index) {
     return &_pop[index];
 }
 
-void Population::appendChromosome(Chromosome newChromosome){
+void Population::appendChromosome(Chromosome newChromosome) {
     this->_pop.append(newChromosome);
     this->_size++;
 }
 
-void Population::insertChromosome(Chromosome& newChromosome, int& position){
+void Population::insertChromosome(Chromosome& newChromosome, int& position) {
     this->_pop.insert(position, newChromosome);
 }
 
 //TODO: Population->Evaluate
-void Population::evaluate(){
+void Population::evaluate() {
     for(int i=0; i<this->_size; i++){
         this->getChromosome(i)->evaluate();
     }
@@ -72,7 +70,7 @@ void Population::evaluate(){
  * @brief Select half of the population
  * @param QList of populations to choose from
  */
-Population* Population::selection(QList<Population> populations){
+Population* Population::selection(QList<Population> populations) {
     int size = populations.size();
     int selectNum = this->_size; // Number of Chromosomes to be selected
     Population *selection = new Population(0);
@@ -121,7 +119,7 @@ Population* Population::selection(QList<Population> populations){
  * the second parent gives one more Gene.
  * @return Population with crossover with size half of original.
  */
-Population Population::crossOver(){
+Population Population::crossOver() {
     Population crossOverPop = Population((this->_size)/2);
     int parent1GenesNum = this->getChromosome(0)->getGenQty()/2;
 
@@ -143,7 +141,7 @@ Population Population::crossOver(){
     return crossOverPop;
 }
 
-Population Population::mutation(float tax){
+Population Population::mutation(float tax) {
     int qtyMuted = (int) floor((this->_pop[0].getGenQty())*tax);
     Population newPop = Population(this->_size);
 
@@ -180,7 +178,7 @@ Population Population::mutation(float tax){
     return newPop;
 }
 
-void Population::print(){
+void Population::print() {
     int i, j;
 
     for(i=0; i<this->_size; i++){

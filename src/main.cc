@@ -50,26 +50,26 @@
 #define ENABLE_GRAPHICS true
 
 int main(int argc, char *argv[]){
-//    int iteration = 0;
+    int iteration = 1;
 
-//    Population *P = new Population(POPSIZE);
-//    QList<Population> popList;
-//    srand(time(NULL));
+    Population *P = new Population(POPSIZE);
+    QList<Population> popList;
+    srand(time(NULL));
 
-//    while(iteration < 2){
-//        cout << ">>> ITERATION " << iteration << " <<<" << endl;
-//        cout << "Inital population of Iteration" << endl;
-//        P->print();
-//        Population crossPop = P->crossOver();
-//        Population mutPop = P->mutation(0.5);
-//        popList.clear();
-//        popList.append(crossPop);
-//        popList.append(mutPop);
-//        popList.append(*P);
-//        P = P->selection(popList);
-//        iteration++;
-//        cout << "\n\n\n\n";
-//    }
+    while(iteration < 2){
+        cout << ">>> ITERATION " << iteration << " <<<" << endl;
+        cout << "Inital population of Iteration" << endl;
+        P->print();
+        Population crossPop = P->crossOver();
+        Population mutPop = P->mutation(0.5);
+        popList.clear();
+        popList.append(crossPop);
+        popList.append(mutPop);
+        popList.append(*P);
+        P = P->selection(popList);
+        iteration++;
+        cout << "\n\n\n\n";
+    }
 
 //    seleciona(inicial) => selecionados (x elementos)
 
@@ -82,67 +82,67 @@ int main(int argc, char *argv[]){
 //    seleciona(selecionados, pop_atual2) (x elementos)
 
 
-    QApplication app(argc, argv);
+//    QApplication app(argc, argv);
 
-    // SoccerView
-    GLSoccerView view;
-    if(ENABLE_GRAPHICS) view.show();
+//    // SoccerView
+//    GLSoccerView view;
+//    if(ENABLE_GRAPHICS) view.show();
 
-    // Create SSLWorld
-    RobotsFomation *form = new RobotsFomation(2);
-    FieldConfig *cfg = new FieldConfig();
-    SSLWorld *world = new SSLWorld(cfg, form, form);
+//    // Create SSLWorld
+//    RobotsFomation *form = new RobotsFomation(2);
+//    FieldConfig *cfg = new FieldConfig();
+//    SSLWorld *world = new SSLWorld(cfg, form, form);
 
-    // Create player
-    Player *player = new Player(0, world);
+//    // Create player
+//    Player *player = new Player(0, world);
 
-    // Set test robot initial position
-    world->robots[0]->setXY(-2.0, 0);
-    world->robots[0]->setDir(90.0);
+//    // Set test robot initial position
+//    world->robots[0]->setXY(-2.0, 0);
+//    world->robots[0]->setDir(90.0);
 
-    // Remove all other robots from field
-    for(int i=1; i<2*ROBOT_COUNT; i++)
-        world->robots[i]->setXY(0.3*i, -3.25);
+//    // Remove all other robots from field
+//    for(int i=1; i<2*ROBOT_COUNT; i++)
+//        world->robots[i]->setXY(0.3*i, -3.25);
 
-    // Set ball
-    world->ball->setBodyPosition(1.0, 0.0, 0.0);
+//    // Set ball
+//    world->ball->setBodyPosition(1.0, 0.0, 0.0);
 
-    Timer timer;
-    forever {
-        timer.start();
+//    Timer timer;
+//    forever {
+//        timer.start();
 
-        // Process app events
-        if(ENABLE_GRAPHICS) app.processEvents();
+//        // Process app events
+//        if(ENABLE_GRAPHICS) app.processEvents();
 
-        // Set player destination
-        Position desiredPos(-2.5, -1.0);
-        player->goToLookTo(desiredPos, -PI/2, false, false);
+//        // Set player destination
+//        Position desiredPos(-2.5, -1.0);
+//        player->goToLookTo(desiredPos, -PI/2, false, false);
 
-        // Step world
-        world->step(SIMULATION_PERIOD);
+//        // Step world
+//        world->step(SIMULATION_PERIOD);
 
-        // Update view
-        if(ENABLE_GRAPHICS) view.updateDetection(world);
+//        // Update view
+//        if(ENABLE_GRAPHICS) view.updateDetection(world);
 
-        timer.stop();
+//        timer.stop();
 
-        // Sleep run period
-        if(RUN_PERIOD!=0.0f) {
-            float rest = RUN_PERIOD*1E3 - timer.timemsec();
-            if(rest > 0)
-                QThread::msleep(rest);
-            else
-                std::cout << "[TIMER OVEREXTENDED] Time: " << -rest << " ms\n";
-        }
-    }
+//        // Sleep run period
+//        if(RUN_PERIOD!=0.0f) {
+//            float rest = RUN_PERIOD*1E3 - timer.timemsec();
+//            if(rest > 0)
+//                QThread::msleep(rest);
+//            else
+//                std::cout << "[TIMER OVEREXTENDED] Time: " << -rest << " ms\n";
+//        }
+//    }
 
-    // Close interface
-    if(ENABLE_GRAPHICS) view.close();
+//    // Close interface
+//    if(ENABLE_GRAPHICS) view.close();
 
-    // Deletes
-    delete world;
-    delete cfg;
-    delete form;
+//    // Deletes
+//    delete world;
+//    delete cfg;
+//    delete form;
 
     return 0;
 }
