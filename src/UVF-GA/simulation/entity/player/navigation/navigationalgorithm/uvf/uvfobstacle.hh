@@ -16,6 +16,8 @@ public:
     Position position() const;
     Velocity velocity() const;
     Position virtualPosition(const Position &posRobot, const Velocity &velRobot) const;
+
+    void setK0(float k0) { _k0 = k0; }
 };
 
 #endif // UVFOBSTACLE_H

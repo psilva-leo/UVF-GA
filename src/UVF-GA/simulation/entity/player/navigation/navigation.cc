@@ -7,8 +7,8 @@
 Navigation::Navigation(Player *player, SSLWorld *world) {
     _player    = player;
     _navAlg    = new UVF();
-    _linCtrAlg = new PID(2.5, 0.0 , 0.25, 0.0);
-    _angCtrAlg = new PID(2.5, 0.05, 0.1, 20.0);
+    _linCtrAlg = new PID(1.5, 0.0, 0.0, 0.0);
+    _angCtrAlg = new PID(2.0, 0.0, 0.0, 20.0);
     _world = world;
 }
 
@@ -113,4 +113,25 @@ double Navigation::getAngularSpeed(float angularError) {
     if(angularSpeed >  _maxASpeed) angularSpeed =  _maxASpeed;
 
     return angularSpeed;
+}
+
+void Navigation::avoidRobots() {
+    for(int i=0; i < ROBOT_COUNT*2; i++) {
+        if(_player->playerId() != i) {
+            dReal x,y;
+            _world->robots[i]->getXY(x,y);
+            _navAlg->addRobot(Position(x, y), Velocity(0.0, 0.0));
+        }
+    }
+}
+
+void Navigation::avoidBall() {
+    // Ball position
+    dReal x, y, z;
+    _world->ball->getBodyPosition(x,y,z,false);
+
+    // Ball velocity
+    /// TODO: onde achar velocidade?
+
+    _navAlg->addBall(Position(x, y), Velocity(0.0, 0.0));
 }

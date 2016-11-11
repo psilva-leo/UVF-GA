@@ -117,19 +117,17 @@ Population Population::crossOver(){
 }
 
 Population Population::mutation(float tax){
-    int i;
     int qtyMuted = (int) floor((this->_pop[0].getGenQty())*tax);
     Population newPop = Population(this->_size);
 
-
     // Go over the population chromosome by chromosome
-    for(i=0; i<this->_size; i++){
+    for(int i=0; i<this->_size; i++){
         // Generate the index's list of the gene that will receive the mutation
         QList<int> mutedId;
-        for(int i=0; i<qtyMuted; i++){
+        for(int j=0; j<qtyMuted; j++){
             int aux = rand()%(this->_pop[0].getGenQty());
             if (mutedId.contains(aux) || aux == this->_pop[0].getGenQty()){
-                i--;
+                j--;
             }else{
                 mutedId.append(aux);
             }

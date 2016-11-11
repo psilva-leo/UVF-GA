@@ -273,31 +273,9 @@ void SSLWorld::step(dReal dt) {
     }
 
 
-    int best_k=-1;
-    dReal best_dist = 1e8;
-    dReal xyz[3] = {0,0,0};
-
-    for (int k=0;k<ROBOT_COUNT * 2;k++)
-    {
-        if (robots[k]->selected)
-        {
-            dReal dist= (robots[k]->select_x-xyz[0])*(robots[k]->select_x-xyz[0])
-                    +(robots[k]->select_y-xyz[1])*(robots[k]->select_y-xyz[1])
-                    +(robots[k]->select_z-xyz[2])*(robots[k]->select_z-xyz[2]);
-            if (dist<best_dist) {
-                best_dist = dist;
-                best_k = k;
-            }
-        }
-        robots[k]->chassis->setColor(ROBOT_GRAY,ROBOT_GRAY,ROBOT_GRAY);
-    }
-    if (best_k>=0) robots[best_k]->chassis->setColor(ROBOT_GRAY*2,ROBOT_GRAY*1.5,ROBOT_GRAY*1.5);
-
     ball->tag = -1;
-    for (int k=0;k<ROBOT_COUNT * 2;k++)
-    {
+    for (int k=0;k<ROBOT_COUNT * 2;k++) {
         robots[k]->step();
-        robots[k]->selected = false;
     }
 }
 

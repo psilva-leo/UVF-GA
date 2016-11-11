@@ -3,6 +3,8 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
+#define LINEAR_ERROR 0.04f
+
 Player::Player(int id, SSLWorld *world){
     _id = id;
     _world = world;   
@@ -23,39 +25,37 @@ QString Player::name() {
     return "Player";
 }
 
-void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots) {
+void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots, bool avoidBall) {
+    // Avoids
+    if(avoidRobots) _nav->avoidRobots();
+    if(avoidBall  ) _nav->avoidBall();
+
     // Set goal on navigation
-    _nav->setGoal(desiredPos, angleToLook, false, false);
+    _nav->setGoal(desiredPos, angleToLook, avoidRobots, false);
 
-    // Linear speeds calc
+    // Path-planning algorithm
     float direction = _nav->getDirection();
-    direction += direction - orientation() + PI;
+    direction = direction - orientation() + PI/2;
 
-    float distance  = _nav->getDistance();
+    // Linear speed
+    float lError  = _nav->getDistance();
+    float linearSpeed = _nav->getLinearSpeed(lError);
+    float x = linearSpeed*cos(direction);
+    float y = linearSpeed*sin(direction);
 
-    float speed = _nav->getLinearSpeed(distance);
-    float xSpeed = speed*cos(direction);
-    float ySpeed = speed*sin(direction);
-
-
-
-    // Angular speed calc
+    // Angular speed
     float aError = angleToLook - orientation();
+    float w = _nav->getAngularSpeed(aError);
 
-    // Fix angular error
-    if(aError >  PI) aError -= 2*PI;
-    if(aError < -PI) aError += 2*PI;
+    // Set command
+    if(Utils::distance(position(), desiredPos) <= LINEAR_ERROR)
+        idle();
+    else
+        setSpeed(x, y, w);
+}
 
-    // Convert radians to degrees
-    float wSpeed = _nav->getAngularSpeed(aError) * (180/PI);
-
-//    std::cout << "X Speed: " << xSpeed << std::endl;
-//    std::cout << "y Speed: " << ySpeed << std::endl;
-//    std::cout << "W Speed: " << wSpeed << std::endl;
-//    std::cout << "Distance: " << distance << std::endl;
-
-    // Set speed
-    _world->robots[_id]->setSpeed(xSpeed, ySpeed, wSpeed);
+void Player::idle() {
+    _world->robots[_id]->setSpeed(0.0, 0.0, 0.0);
 }
 
 Position Player::position() const {
@@ -66,4 +66,26 @@ Position Player::position() const {
 
 float Player::orientation() const {
     return _world->robots[_id]->getDir()*(PI/180);
+}
+
+void Player::setLinearCtrlParameters(float kp, float ki, float kd, float limit) {
+    _nav->setLinearPIDParameters(kp, ki, kd, limit);
+}
+
+void Player::setAngularCtrlParameters(float kp, float ki, float kd, float limit) {
+    _nav->setAngularPIDParameters(kp, ki, kd, limit);
+}
+
+void Player::setUVFParameters(double de, double kr, double dmin, double delta, double k0) {
+    _nav->setUVFParameters(de, kr, dmin, delta, k0);
+}
+
+void Player::setMaxSpeedAndAccel(float maxASpeed, float maxLSpeed, float maxLAccel) {
+    _nav->setMaxASpeed(maxASpeed);
+    _nav->setMaxLSpeed(maxLSpeed);
+    _nav->setMaxLAcceleration(maxLAccel);
+}
+
+void Player::setSpeed(float x, float y, float w) {
+    _world->robots[_id]->setSpeed(y, -x, w);
 }

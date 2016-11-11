@@ -26,7 +26,7 @@ void TestCase::initialization() {
 }
 
 void TestCase::loop() {
-    _player->goToLookTo(Position(-1.0, 0.0), 0, false);
+    _player->goToLookTo(Position(-1.0, 0.0), 0, false, false);
 
     float ori = _player->orientation();
 

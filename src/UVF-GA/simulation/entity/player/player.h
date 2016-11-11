@@ -11,15 +11,24 @@ class Player {
 public:
     Player(int id, SSLWorld *world);
     ~Player();
-    void goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots);
+
+    // Commands
+    void goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots, bool avoidBall);
+    void idle();
 
     // Entity name (class name)
     QString name();
 
-    // Getters
+    // Player info
+    int playerId() const { return _id; }
     Position position() const;
     float orientation() const;
-    int playerId() const { return _id; }
+
+    // Setters
+    void setLinearCtrlParameters(float kp, float ki, float kd, float limit);
+    void setAngularCtrlParameters(float kp, float ki, float kd, float limit);
+    void setUVFParameters(double de, double kr, double dmin, double delta, double k0);
+    void setMaxSpeedAndAccel(float maxASpeed, float maxLSpeed, float maxLAccel);
 
 private:
     // Player info
@@ -30,6 +39,9 @@ private:
 
     // Navigation
     Navigation *_nav;
+
+    // Private commands
+    void setSpeed(float x, float y, float w);
 };
 
 #endif // PLAYER_H
