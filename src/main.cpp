@@ -3,16 +3,22 @@
 #include <iostream>
 #include <UVF-GA/geneticalgorithm/population.h>
 #include <time.h>
+
+#include <QApplication>
 #include <QList>
 #include <QThread>
 
 #include <UVF-GA/simulation/entity/player/player.h>
 
 #include <3rdparty/sslworld/sslworld.h>
+#include <3rdparty/soccerview/soccerview.hh>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 #define POPSIZE 10
+
+#define SIMULATION_PERIOD 0.020 // seconds
+#define RUN_PERIOD 0.020 // seconds
 
 int main(int argc, char *argv[]){
 //    //if(argc < 2){return -1;}
@@ -43,40 +49,64 @@ int main(int argc, char *argv[]){
 //    seleciona(selecionados, pop_atual2) (x elementos)
 
 
+    QApplication app(argc, argv);
 
+    // SoccerView
+    GLSoccerView view;
+    view.show();
 
-
-    // SSL World testing
+    // Create SSLWorld
     RobotsFomation *form = new RobotsFomation(2);
     FieldConfig *cfg = new FieldConfig();
-    SSLWorld *ssl = new SSLWorld(cfg, form, form);
+    SSLWorld *world = new SSLWorld(cfg, form, form);
 
-    Player *player = new Player(0, ssl);
+    // Create player
+    Player *player = new Player(0, world);
 
-    ssl->robots[0]->setXY(0, 0);
-    ssl->robots[0]->setDir(0.0);
+    // Set test robot initial position
+    world->robots[0]->setXY(-2.0, 0);
+    world->robots[0]->setDir(0.0);
 
     // Remove all other robots from field
     for(int i=1; i<2*ROBOT_COUNT; i++)
-        ssl->robots[i]->setXY(0.3*i, -10);
+        world->robots[i]->setXY(0.3*i, -3.25);
 
+    // Set ball
+    world->ball->setBodyPosition(1.0, 0.0, 0.0);
+
+    Timer timer;
     forever {
-        player->goToLookTo(Position(-1.0, 0.0), 0, false);
+        timer.start();
 
-        float ori = player->orientation();
+        // Process app events
+        app.processEvents();
 
-        dReal x, y;
-        ssl->robots[0]->getXY(x, y);
-        std::cout << "Robot #0: X=" << x << ", Y=" << y << ", Ori=" << ori << "\n";
+        // Set player destination
+        Position desiredPos(2.5, -1.0);
+        player->goToLookTo(desiredPos, -PI, false);
 
-        ssl->step(0.0050);
-        QThread::msleep(10);
+        // Print player info
+//        Position pos = player->position();
+//        float ori = player->orientation();
+//        std::cout << "Robot #0: X=" << pos.x() << ", Y=" << pos.y() << ", Ori=" << ori << "\n";
+
+        // Step world
+        world->step(SIMULATION_PERIOD);
+
+        // Sleep run period
+        timer.stop();
+        float rest = RUN_PERIOD*1000 - timer.timemsec();
+        if(rest > 0)
+            QThread::msleep(rest);
+
+        // Update view
+        view.updateDetection(world);
     }
 
-    delete ssl;
+    // Deletes
+    delete world;
     delete cfg;
     delete form;
-
 
     return 0;
 }

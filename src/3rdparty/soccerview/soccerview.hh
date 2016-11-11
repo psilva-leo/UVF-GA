@@ -38,6 +38,7 @@
 #include "util/util.h"
 #include "gltext.hh"
 
+#include <3rdparty/sslworld/sslworld.h>
 #include <UVF-GA/utils/utils.h>
 
 using namespace std;
@@ -158,8 +159,7 @@ protected:
 
 public:
     GLSoccerView(QWidget *parent = 0);
-//	void updateDetection(WRTeam *ourTeam, WRTeam *theirTeam);
-//    void updateFieldGeometry(Locations *loc, const Competitions::Competition &compType);
+    void updateDetection(SSLWorld *world);
 
 public slots:
 	void resetView();

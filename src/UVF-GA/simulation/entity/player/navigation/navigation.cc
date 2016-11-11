@@ -7,8 +7,8 @@
 Navigation::Navigation(Player *player, SSLWorld *world) {
     _player    = player;
     _navAlg    = new UVF();
-    _linCtrAlg = new PID(2.5, 0.0 , 0.25, 0.0);
-    _angCtrAlg = new PID(2.5, 0.05, 0.1, 20.0);
+    _linCtrAlg = new PID(1.0, 0.0, 0.0, 0.0);
+    _angCtrAlg = new PID(2.0, 0.0, 0.0, 20.0);
     _world = world;
 }
 

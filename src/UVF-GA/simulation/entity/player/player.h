@@ -11,15 +11,20 @@ class Player {
 public:
     Player(int id, SSLWorld *world);
     ~Player();
+
+    // Commands
     void goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots);
+    void idle();
+
+
 
     // Entity name (class name)
     QString name();
 
-    // Getters
+    // Player info
+    int playerId() const { return _id; }
     Position position() const;
     float orientation() const;
-    int playerId() const { return _id; }
 
 private:
     // Player info
@@ -30,6 +35,9 @@ private:
 
     // Navigation
     Navigation *_nav;
+
+    // Private commands
+    void setSpeed(float x, float y, float w);
 };
 
 #endif // PLAYER_H

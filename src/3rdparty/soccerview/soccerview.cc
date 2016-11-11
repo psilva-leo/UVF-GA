@@ -50,7 +50,7 @@ GLSoccerView::GLSoccerView(QWidget* parent) :
 
 	viewXOffset = viewYOffset = 0.0;
 	setAutoFillBackground(false); //Do not let painter auto fill the widget's background: we'll do it manually through openGl
-	connect(this, SIGNAL(postRedraw()), this, SLOT(redraw()));
+    connect(this, SIGNAL(postRedraw()), this, SLOT(redraw()), Qt::QueuedConnection);
 	blueRobotShape = GL_INVALID_VALUE;
 	yellowRobotShape = GL_INVALID_VALUE;
 	greyRobotShape = GL_INVALID_VALUE;
@@ -78,83 +78,6 @@ void GLSoccerView::updateDefaultFieldDimensions() {
     for(size_t i=0; i<FieldConstantsRoboCup2015::kNumFieldArcs; i++)
         fieldDim.arcs.push_back(new FieldCircularArc(FieldConstantsRoboCup2015::kFieldArcs[i]));
 }
-
-//void GLSoccerView::updateFieldGeometry(Locations *loc, const Competitions::Competition &compType) {
-//    graphicsMutex.lock();
-
-//    const double kFieldLength = fieldDim.field_length = loc->fieldLength()*METER2MM;
-//    const double kFieldWidth = fieldDim.field_width = loc->fieldWidth()*METER2MM;
-//    const double kGoalWidth = 2*fabs(loc->ourGoalLeftPost().y())*METER2MM;
-//    const double kGoalDepth = loc->fieldGoalDepth()*METER2MM;
-//    fieldDim.boundary_width = compType == Competitions::VSS? 300.0 : 250.0;
-//    const double kCenterRadius = loc->fieldCenterRadius()*METER2MM;
-//    const double kDefenseRadius = loc->fieldDefenseRadius()*METER2MM;
-//    const double kDefenseStretch = loc->fieldDefenseStretch()*METER2MM;
-//    const double kDefenseWidth = loc->fieldDefenseWidth()*METER2MM;
-//    const double kLineThickness = compType == Competitions::VSS? 10.0 : 20.0;
-
-//    const double kXMax = (kFieldLength-2*kLineThickness)/2;
-//    const double kXMin = -kXMax;
-//    const double kYMax = (kFieldWidth-kLineThickness)/2;
-//    const double kYMin = -kYMax;
-
-//    QList<FieldLine> fieldLines;
-//    QList<FieldCircularArc> fieldArcs;
-
-//    // Field Lines
-//    fieldLines.append(FieldLine("TopTouchLine", kXMin-kLineThickness/2, kYMax, kXMax+kLineThickness/2, kYMax, kLineThickness));
-//    fieldLines.append(FieldLine("BottomTouchLine", kXMin-kLineThickness/2, kYMin, kXMax+kLineThickness/2, kYMin, kLineThickness));
-//    fieldLines.append(FieldLine("LeftGoalLine", kXMin, kYMin, kXMin, kYMax, kLineThickness));
-//    fieldLines.append(FieldLine("RightGoalLine", kXMax, kYMin, kXMax, kYMax, kLineThickness));
-//    fieldLines.append(FieldLine("HalfwayLine", 0, kYMin, 0, kYMax, kLineThickness));
-//    fieldLines.append(FieldLine("CenterLine", kXMin, 0, kXMax, 0, kLineThickness));
-//    fieldLines.append(FieldLine("LeftPenaltyStretch", kXMin+kDefenseRadius-kLineThickness/2, -kDefenseStretch/2, kXMin+kDefenseRadius-kLineThickness/2, kDefenseStretch/2, kLineThickness));
-//    fieldLines.append(FieldLine("RightPenaltyStretch", kXMax-kDefenseRadius+kLineThickness/2, -kDefenseStretch/2, kXMax-kDefenseRadius+kLineThickness/2, kDefenseStretch/2, kLineThickness));
-
-//    // Center circle
-//    fieldArcs.append(FieldCircularArc("CenterCircle", 0, 0, kCenterRadius-kLineThickness/2, 0, 2*M_PI, kLineThickness));
-
-//    // Goal lines
-//    fieldLines.append(FieldLine("LeftGoalLeftLine", kXMin, kGoalWidth/2, kXMin-kGoalDepth-kLineThickness/2, kGoalWidth/2, kLineThickness));
-//    fieldLines.append(FieldLine("LeftGoalRightLine", kXMin, -kGoalWidth/2, kXMin-kGoalDepth-kLineThickness/2, -kGoalWidth/2, kLineThickness));
-//    fieldLines.append(FieldLine("RightGoalLeftLine", kXMax, kGoalWidth/2, kXMax+kGoalDepth+kLineThickness/2, kGoalWidth/2, kLineThickness));
-//    fieldLines.append(FieldLine("RightGoalRightLine", kXMax, -kGoalWidth/2, kXMax+kGoalDepth+kLineThickness/2, -kGoalWidth/2, kLineThickness));
-
-//    fieldLines.append(FieldLine("LeftGoalStretch", kXMin-kGoalDepth, -kGoalWidth/2, kXMin-kGoalDepth, kGoalWidth/2, kLineThickness));
-//    fieldLines.append(FieldLine("RightGoalStretch", kXMax+kGoalDepth, -kGoalWidth/2, kXMax+kGoalDepth, kGoalWidth/2, kLineThickness));
-
-//    // Goal area
-//    if(loc->fieldDefenseRoundedRadius() == 0.0) { // Squared goal area
-//        fieldLines.append(FieldLine("LeftFieldLeftDefenseLine", kXMin, kDefenseStretch/2, kXMin+kDefenseRadius+kLineThickness/2, kDefenseStretch/2, kLineThickness));
-//        fieldLines.append(FieldLine("LeftFieldRightDefenseLine", kXMin, -kDefenseStretch/2, kXMin+kDefenseRadius+kLineThickness/2, -kDefenseStretch/2, kLineThickness));
-//        fieldLines.append(FieldLine("RightFieldLeftDefenseLine", kXMax, kDefenseStretch/2, kXMax-kDefenseRadius-kLineThickness/2, kDefenseStretch/2, kLineThickness));
-//        fieldLines.append(FieldLine("RightFieldRightDefenseLine", kXMax, -kDefenseStretch/2, kXMax-kDefenseRadius-kLineThickness/2, -kDefenseStretch/2, kLineThickness));
-
-//        fieldArcs.append(FieldCircularArc("GoalRightArc", kXMax-kDefenseWidth/2, 0, VSS_GOAL_ARCRADIUS*METER2MM, M_PI-0.9272, M_PI+0.9272, kLineThickness));
-//        fieldArcs.append(FieldCircularArc("GoalLeftArc", kXMin+kDefenseWidth/2, 0, VSS_GOAL_ARCRADIUS*METER2MM, -0.9272, +0.9272, kLineThickness));
-//    } else { // Rounded goal area
-//        fieldArcs.append(FieldCircularArc("LeftFieldLeftPenaltyArc",   kXMin, kDefenseStretch/2,  kDefenseRadius-kLineThickness/2, 0,        M_PI/2,   kLineThickness));
-//        fieldArcs.append(FieldCircularArc("LeftFieldRightPenaltyArc",  kXMin, -kDefenseStretch/2, kDefenseRadius-kLineThickness/2, 1.5*M_PI, 2*M_PI,   kLineThickness));
-//        fieldArcs.append(FieldCircularArc("RightFieldLeftPenaltyArc",  kXMax, -kDefenseStretch/2, kDefenseRadius-kLineThickness/2, M_PI,     1.5*M_PI, kLineThickness));
-//        fieldArcs.append(FieldCircularArc("RightFieldRightPenaltyArc", kXMax, kDefenseStretch/2,  kDefenseRadius-kLineThickness/2, M_PI/2,   M_PI,     kLineThickness));
-//    }
-
-//    // Add new lines
-//    fieldDim.lines.clear();
-//    for(int i=0; i<fieldLines.size(); i++)
-//        fieldDim.lines.push_back(new FieldLine(fieldLines[i]));
-
-//    // Add new arcs
-//    fieldDim.arcs.clear();
-//    for(int i=0; i<fieldArcs.size(); i++)
-//        fieldDim.arcs.push_back(new FieldCircularArc(fieldArcs[i]));
-
-//    // Add new triangles
-//    fieldDim.triangles.clear();
-
-//    graphicsMutex.unlock();
-//    emit postRedraw();
-//}
 
 void GLSoccerView::redraw()
 {
@@ -725,66 +648,36 @@ void GLSoccerView::drawRobotsNextPositions() {
 	glPopAttrib();
 }
 
-//void GLSoccerView::updateDetection(WRTeam *ourTeam, WRTeam *theirTeam) {
-//	graphicsMutex.lock();
-//	QHash<quint8, Player*>::iterator it;
-//    QHash<quint8, Player*> ourAvPlayers = ourTeam->avPlayers();
-//    QHash<quint8, Player*> theirAvPlayers = theirTeam->avPlayers();
+void GLSoccerView::updateDetection(SSLWorld *world) {
+    graphicsMutex.lock();
 
-//	robots.clear();
-//	robotsVelocities.clear();
-//	robotsNextPositions.clear();
-//    robotsPaths.clear();
-//	ballVelocity.set(0,0);
+    robots.clear();
+    robotsVelocities.clear();
 
-//	vector2d velocity;
-//	SoccerViewRobot robot;
+    SoccerViewRobot robot;
+    for(int i=0; i<2*ROBOT_COUNT; i++) {
+        Robot *player = world->robots[i];
 
-//	for(it = ourAvPlayers.begin(); it != ourAvPlayers.end(); it++) {
-//		Player *player = it.value();
+        dReal x, y;
+        player->getXY(x, y);
 
-//		vector2d next(player->nextPosition().x() * 1000.0, player->nextPosition().y() * 1000.0);
+        robot.loc.set(x*1000.0, y*1000.0);
+        robot.id = (i<6? i : i-6);
+        robot.hasAngle = true;
+        robot.angle = player->getDir();
+        robot.team = i<6 ? teamYellow : teamBlue;
+        robot.cameraID = 0;
+        robot.conf = 1.0;
+        robots.append(robot);
+    }
 
-//		robot.loc.set(player->position().x()*1000.0, player->position().y()*1000.0);
-//		robot.id = player->playerId();
-//		robot.hasAngle = true;
-//		robot.angle = DEG(player->orientation().value());
-//		robot.team = player->team()->teamColor()==Colors::YELLOW ? teamYellow : teamBlue;
-//		robot.cameraID = 0;
-//		robot.conf = 1.0;
-//		robots.append(robot);
 
-//		robotsNextPositions.append(std::make_pair(robot.team, next));
+    dReal ballX, ballY, ballZ;
+    world->ball->getBodyPosition(ballX, ballY, ballZ);
 
-//		double velY = player->lastSpeed() * sin(player->nextDirection().value());
-//		double velX = player->lastSpeed() * cos(player->nextDirection().value());
-//		velocity.set(velX, velY);
-//		robotsVelocities.append(velocity);
+    ball.set(ballX*1000.0, ballY*1000.0);
+    ballVelocity.set(0.0, 0.0);
 
-//        QLinkedList<Position> path = player->getPath();
-//        robotsPaths.append(path);
-//	}
-
-//	for(it = theirAvPlayers.begin(); it != theirAvPlayers.end(); it++) {
-//		Player *player = it.value();
-
-//		robot.loc.set(player->position().x()*1000.0, player->position().y()*1000.0);
-//		robot.id = player->playerId();
-//		robot.hasAngle = true;
-//		robot.angle = DEG(player->orientation().value());
-//		robot.team = player->team()->teamColor()==Colors::YELLOW ? teamYellow : teamBlue;
-//		robot.cameraID = 0;
-//		robot.conf = 1.0;
-//		robots.append(robot);
-
-//		velocity.set(player->velocity().x(), player->velocity().y());
-//		robotsVelocities.append(velocity);
-//	}
-
-//	ball.set(ourTeam->loc()->ball().x() * 1000.0, ourTeam->loc()->ball().y() * 1000.0);
-
-//	ballVelocity.set(ourTeam->loc()->ballVelocity().x(), ourTeam->loc()->ballVelocity().y());
-
-//	graphicsMutex.unlock();
-//    emit postRedraw();
-//}
+    graphicsMutex.unlock();
+    emit postRedraw();
+}
