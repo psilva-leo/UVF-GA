@@ -18,9 +18,7 @@ public:
 
     // Add obstacles
     void addBall(const Position &pos, const Velocity &vel);
-    void addGoalArea(const Position &pos);
     void addRobot(const Position &pos, const Velocity &vel);
-    //void addEnemyRobot(const Position &pos, const Velocity &vel);
 
     // Return results
     float getDirection() const;

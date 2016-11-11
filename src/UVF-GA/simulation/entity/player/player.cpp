@@ -6,33 +6,41 @@
 Player::Player(int id, SSLWorld *world){
     _id = id;
     _world = world;   
-    _nav   = new Navigation(this, world);
-    configureNav();
+
+    // Create navigation
+    _nav = new Navigation(this, world);
+    _nav->setMaxASpeed(2.5*PI);
+    _nav->setMaxLSpeed(3.0);
+    _nav->setMaxLAcceleration(1.35);
 }
 
 Player::~Player() {
+    // Delete Navigation
     delete _nav;
 }
 
 QString Player::name() {
-    return "PLAYER";
+    return "Player";
 }
 
 void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots) {
-    // Set goal
+    // Set goal on navigation
     _nav->setGoal(desiredPos, angleToLook, false, false);
 
     // Linear speeds calc
     float direction = _nav->getDirection();
+    direction += direction - orientation() + PI;
+
     float distance  = _nav->getDistance();
 
     float speed = _nav->getLinearSpeed(distance);
-
     float xSpeed = speed*cos(direction);
     float ySpeed = speed*sin(direction);
 
+
+
     // Angular speed calc
-    float aError = angleToLook - _orientation;
+    float aError = angleToLook - orientation();
 
     // Fix angular error
     if(aError >  PI) aError -= 2*PI;
@@ -50,20 +58,12 @@ void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots
     _world->robots[_id]->setSpeed(xSpeed, ySpeed, wSpeed);
 }
 
-void Player::configureNav() {
-    _nav->setMaxASpeed(2.5*PI);
-    _nav->setMaxLSpeed(3.0);
-    _nav->setMaxLAcceleration(1.0);
-    _nav->setMaxLAcceleration(1.35);
-
-}
-
-void Player::updatePlayer() {
-    // Update position
+Position Player::position() const {
     dReal x, y;
     _world->robots[_id]->getXY(x, y);
-    _pos.setPosition((float)x, (float)y);
+    return Position(x, y);
+}
 
-    // Update orientation (Degrees to Radians)
-    _orientation = ( ((float) _world->robots[_id]->getDir()) * (PI/180) );
+float Player::orientation() const {
+    return _world->robots[_id]->getDir()*(PI/180);
 }

@@ -46,35 +46,36 @@ int main(int argc, char *argv[]){
 
 
 
-//    // SSL World testing
-//    RobotsFomation *form = new RobotsFomation(2);
-//    FieldConfig *cfg = new FieldConfig();
-//    SSLWorld *ssl = new SSLWorld(cfg, form, form);
+    // SSL World testing
+    RobotsFomation *form = new RobotsFomation(2);
+    FieldConfig *cfg = new FieldConfig();
+    SSLWorld *ssl = new SSLWorld(cfg, form, form);
 
-//    Player *player = new Player(0, ssl);
+    Player *player = new Player(0, ssl);
 
-//    ssl->robots[0]->setXY(0, 0);
-//    ssl->robots[0]->setDir(0.0);
+    ssl->robots[0]->setXY(0, 0);
+    ssl->robots[0]->setDir(0.0);
 
-//    forever {
-//        //ssl->robots[0]->setSpeed(0.0, 1.0, 0.0);
+    // Remove all other robots from field
+    for(int i=1; i<2*ROBOT_COUNT; i++)
+        ssl->robots[i]->setXY(0.3*i, -10);
 
-//        player->updatePlayer();
-//        player->goToLookTo(Position(-1.0, 1.0), 0.0, false);
+    forever {
+        player->goToLookTo(Position(-1.0, 0.0), 0, false);
 
-//        float ori = player->orientation();
+        float ori = player->orientation();
 
-//        dReal x, y;
-//        ssl->robots[0]->getXY(x, y);
-//        std::cout << "Robot #0: X=" << x << ", Y=" << y << ", Ori=" << ori << "\n";
+        dReal x, y;
+        ssl->robots[0]->getXY(x, y);
+        std::cout << "Robot #0: X=" << x << ", Y=" << y << ", Ori=" << ori << "\n";
 
-//        ssl->step(0.01);
-//        QThread::msleep(10);
-//    }
+        ssl->step(0.0050);
+        QThread::msleep(10);
+    }
 
-//    delete ssl;
-//    delete cfg;
-//    delete form;
+    delete ssl;
+    delete cfg;
+    delete form;
 
 
     return 0;
