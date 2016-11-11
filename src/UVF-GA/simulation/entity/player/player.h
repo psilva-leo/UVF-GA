@@ -16,28 +16,20 @@ public:
     // Entity name (class name)
     QString name();
 
-    // Updater
-    void updatePlayer();
-
     // Getters
-    Position position() { return _pos; }
-    Position nextPos() { return _nextPos; }
-    float orientation() { return _orientation; }
-    int playerId() { return _id; }
+    Position position() const;
+    float orientation() const;
+    int playerId() const { return _id; }
 
 private:
     // Player info
     int _id;
-    Position _pos;
-    Position _nextPos;
-    float _orientation;
 
     // World
     SSLWorld *_world;    
 
     // Navigation
     Navigation *_nav;
-    void configureNav();
 };
 
 #endif // PLAYER_H

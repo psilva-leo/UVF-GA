@@ -29,7 +29,6 @@ public:
     // Return results
     virtual float getDirection() const = 0;
     virtual float getDistance() const;
-//    virtual QLinkedList<Position> getPath() const;
 
 protected:
     // Origin access

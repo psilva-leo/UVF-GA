@@ -31,17 +31,9 @@ void UVF::addBall(const Position &pos, const Velocity &vel) {
     addObstacle(pos, vel);
 }
 
-void UVF::addGoalArea(const Position &pos) {
-    // TODO
-}
-
 void UVF::addRobot(const Position &pos, const Velocity &vel) {
     addObstacle(pos, vel);
 }
-
-//void UVF::addEnemyRobot(const Position &pos, const Velocity &vel) {
-//    addObstacle(pos, vel);
-//}
 
 float UVF::getDirection() const {
     return _resultantDirection;
