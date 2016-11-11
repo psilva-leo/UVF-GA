@@ -48,9 +48,9 @@ void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots
     float w = _nav->getAngularSpeed(aError);
 
     // Set command
-//    if(Utils::distance(position(), desiredPos) <= LINEAR_ERROR)
-//        idle();
-//    else
+    if(Utils::distance(position(), desiredPos) <= LINEAR_ERROR)
+        idle();
+    else
         setSpeed(x, y, w);
 }
 
@@ -87,5 +87,5 @@ void Player::setMaxSpeedAndAccel(float maxASpeed, float maxLSpeed, float maxLAcc
 }
 
 void Player::setSpeed(float x, float y, float w) {
-    _world->robots[_id]->setSpeed(x, y, w);
+    _world->robots[_id]->setSpeed(y, -x, w);
 }

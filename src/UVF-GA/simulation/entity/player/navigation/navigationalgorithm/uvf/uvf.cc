@@ -1,8 +1,8 @@
 #include "uvf.hh"
 
 UVF::UVF() {
-    _de = 0.07;
-    _kr = 0.05;
+    _de = 0.15;
+    _kr = 0.40;
     _dmin  = 0.005;
     _delta = 0.12;
     _k0 = 1;
@@ -117,11 +117,6 @@ float UVF::mergeVF(const Position &auf, float phiAUF, float phiTUF, Position tmp
 }
 
 void UVF::run() {
-//    if(originPos().isUnknown() || goalPos().isUnknown() || goalOri().isUnknown()) {
-//        std::cout << "[WARNING] UVF: originPos, goalPos or goalOri is unknown!\n";
-//        return;
-//    }
-
     float targetOri = goalOri() + PI;
 
     // Get rotation

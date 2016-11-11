@@ -17,8 +17,10 @@
 
 #define POPSIZE 10
 
-#define SIMULATION_PERIOD 0.020 // seconds
-#define RUN_PERIOD 0.020 // seconds
+#define SIMULATION_PERIOD 0.033 // seconds
+#define RUN_PERIOD 0.0 // seconds
+
+#define ENABLE_GRAPHICS false
 
 int main(int argc, char *argv[]){
 //    //if(argc < 2){return -1;}
@@ -53,7 +55,7 @@ int main(int argc, char *argv[]){
 
     // SoccerView
     GLSoccerView view;
-    view.show();
+    if(ENABLE_GRAPHICS) view.show();
 
     // Create SSLWorld
     RobotsFomation *form = new RobotsFomation(2);
@@ -65,7 +67,7 @@ int main(int argc, char *argv[]){
 
     // Set test robot initial position
     world->robots[0]->setXY(-2.0, 0);
-    world->robots[0]->setDir(0.0);
+    world->robots[0]->setDir(90.0);
 
     // Remove all other robots from field
     for(int i=1; i<2*ROBOT_COUNT; i++)
@@ -79,29 +81,32 @@ int main(int argc, char *argv[]){
         timer.start();
 
         // Process app events
-        app.processEvents();
+        if(ENABLE_GRAPHICS) app.processEvents();
 
         // Set player destination
-        Position desiredPos(2.5, -1.0);
-        player->goToLookTo(desiredPos, -PI, false, false);
-
-        // Print player info
-//        Position pos = player->position();
-//        float ori = player->orientation();
-//        std::cout << "Robot #0: X=" << pos.x() << ", Y=" << pos.y() << ", Ori=" << ori << "\n";
+        Position desiredPos(-2.5, -1.0);
+        player->goToLookTo(desiredPos, -PI/2, false, false);
 
         // Step world
         world->step(SIMULATION_PERIOD);
 
-        // Sleep run period
-        timer.stop();
-        float rest = RUN_PERIOD*1000 - timer.timemsec();
-        if(rest > 0)
-            QThread::msleep(rest);
-
         // Update view
-        view.updateDetection(world);
+        if(ENABLE_GRAPHICS) view.updateDetection(world);
+
+        timer.stop();
+
+        // Sleep run period
+        if(RUN_PERIOD!=0.0f) {
+            float rest = RUN_PERIOD*1E3 - timer.timemsec();
+            if(rest > 0)
+                QThread::msleep(rest);
+            else
+                std::cout << "[TIMER OVEREXTENDED] Time: " << -rest << " ms\n";
+        }
     }
+
+    // Close interface
+    if(ENABLE_GRAPHICS) view.close();
 
     // Deletes
     delete world;
