@@ -1,4 +1,4 @@
-# Unified Vector Field parameters optimization using Genetic Algorithm
+# Univector Field Navigation parameters optimization using Genetic Algorithm
 
 ### Grupo
  - Guilherme Caixeta de Oliveira
@@ -9,9 +9,7 @@
 
 ### Modo de uso
 ```
-$ gcc main.c myEA.c -o main -lm
-$ ./main
-```
+TODO
 
 ### Modificação dos parâmetros
 
