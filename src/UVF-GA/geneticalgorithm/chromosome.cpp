@@ -36,5 +36,4 @@ Genotype* Chromosome::getGen(int i){
  */
 void Chromosome::evaluate(){
     this->_fitness = 1.0;
-    this->_gen.last().setValue(1.0);
 }
