@@ -12,9 +12,9 @@
 #include <cmath>
 #include <iostream>
 
-#include "chromosome.h"
-#include "genotype.h"
-#include <UVF-GA/utils/utils.h>
+#include "chromosome.hh"
+#include "genotype.hh"
+#include <UVF-GA/utils/utils.hh>
 
 using namespace std;
 

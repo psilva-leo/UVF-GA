@@ -1,4 +1,4 @@
-#include "velocity.h"
+#include "velocity.hh"
 #include <cmath>
 
 Velocity::Velocity(float x, float y) {

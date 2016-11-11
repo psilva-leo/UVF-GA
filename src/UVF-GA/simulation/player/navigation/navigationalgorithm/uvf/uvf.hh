@@ -1,8 +1,8 @@
 #ifndef UVF_HH
 #define UVF_HH
 
-#include <UVF-GA/simulation/entity/player/navigation/navigationalgorithm/uvf/uvfobstacle.hh>
-#include <UVF-GA/simulation/entity/player/navigation/navigationalgorithm/navigationalgorithm.hh>
+#include <UVF-GA/simulation/player/navigation/navigationalgorithm/uvf/uvfobstacle.hh>
+#include <UVF-GA/simulation/player/navigation/navigationalgorithm/navigationalgorithm.hh>
 #include <cmath>
 #include <QList>
 

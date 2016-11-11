@@ -35,11 +35,11 @@
 #include "util/timer.hh"
 #include "util/geometry.hh"
 #include "util/field.hh"
-#include "util/util.h"
+#include "util/util.hh"
 #include "gltext.hh"
 
-#include <3rdparty/sslworld/sslworld.h>
-#include <UVF-GA/utils/utils.h>
+#include <3rdparty/sslworld/sslworld.hh>
+#include <UVF-GA/utils/utils.hh>
 
 using namespace std;
 

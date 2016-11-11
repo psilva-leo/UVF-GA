@@ -25,7 +25,7 @@
 
 #include "util/field_default_constants.hh"
 
-#include <UVF-GA/utils/utils.h>
+#include <UVF-GA/utils/utils.hh>
 
 #include <cmath>
 

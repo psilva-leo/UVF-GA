@@ -23,13 +23,13 @@ Copyright (C) 2011, Parsian Robotic Center (eew.aut.ac.ir/~parsian/grsim)
 #define WALL_COUNT 10
 
 #include <QTime>
-#include "robot.h"
-#include "fieldconfig.h"
-#include "physics/pworld.h"
-#include "physics/pball.h"
-#include "physics/pground.h"
-#include "physics/pfixedbox.h"
-#include "physics/pray.h"
+#include "robot.hh"
+#include "fieldconfig.hh"
+#include "physics/pworld.hh"
+#include "physics/pball.hh"
+#include "physics/pground.hh"
+#include "physics/pfixedbox.hh"
+#include "physics/pray.hh"
 
 class RobotsFomation {
     public:

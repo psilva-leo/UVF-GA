@@ -1,9 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <UVF-GA/utils/utils.h>
-#include <3rdparty/sslworld/sslworld.h>
-#include <UVF-GA/simulation/entity/player/navigation/navigation.hh>
+#include <UVF-GA/utils/utils.hh>
+#include <3rdparty/sslworld/sslworld.hh>
+#include <UVF-GA/simulation/player/navigation/navigation.hh>
 
 class Navigation;
 

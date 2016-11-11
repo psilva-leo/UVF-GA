@@ -1,4 +1,4 @@
-#include "genotype.h"
+#include "genotype.hh"
 
 Genotype::Genotype(){
     this->value = 0.0;

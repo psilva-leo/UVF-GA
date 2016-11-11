@@ -23,7 +23,7 @@
 #define __GVECTOR_H__
 
 #include <math.h>
-#include "util.h"
+#include "util.hh"
 
 #define V3COMP(p) p.x,p.y,p.z
 #define V2COMP(p) p.x,p.y

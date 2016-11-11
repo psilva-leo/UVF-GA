@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <float.h>
 #include "util/geometry.hh"
-#include "util/util.h"
+#include "util/util.hh"
 
 #ifndef GL_TEXT_H
 #define GL_TEXT_H

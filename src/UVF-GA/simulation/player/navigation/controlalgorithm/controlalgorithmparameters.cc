@@ -1,5 +1,5 @@
 #include "controlalgorithmparameters.hh"
-#include <UVF-GA/simulation/entity/player/navigation/controlalgorithm/pid/pid.hh>
+#include <UVF-GA/simulation/player/navigation/controlalgorithm/pid/pid.hh>
 
 ControlAlgorithmParameters::ControlAlgorithmParameters() {
     _isPidSet = false;

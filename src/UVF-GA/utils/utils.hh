@@ -5,9 +5,9 @@
 #include <cmath>
 
 // Utils include
-#include "position.h"
-#include "velocity.h"
-#include "timer.hh"
+#include "position/position.hh"
+#include "velocity/velocity.hh"
+#include "timer/timer.hh"
 
 #define FRAND_PRECISION 5
 #define PI 3.141592654

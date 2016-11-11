@@ -21,7 +21,7 @@
 
 #include "entity.hh"
 #include <iostream>
-#include <UVF-GA/utils/utils.h>
+#include <UVF-GA/utils/utils.hh>
 
 int Entity::_idcont = 0;
 

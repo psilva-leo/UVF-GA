@@ -1,4 +1,4 @@
-#include "testcase.h"
+#include "testcase.hh"
 #include <iostream>
 
 TestCase::TestCase(){

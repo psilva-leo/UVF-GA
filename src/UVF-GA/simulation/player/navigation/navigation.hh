@@ -1,10 +1,10 @@
 #ifndef NAVIGATION_HH
 #define NAVIGATION_HH
 
-#include <UVF-GA/simulation/entity/player/player.h>
-#include <UVF-GA/utils/utils.h>
-#include <UVF-GA/simulation/entity/player/navigation/navigationalgorithm/navigationalgorithm.hh>
-#include <UVF-GA/simulation/entity/player/navigation/controlalgorithm/controlalgorithm.hh>
+#include <UVF-GA/simulation/player/player.hh>
+#include <UVF-GA/utils/utils.hh>
+#include <UVF-GA/simulation/player/navigation/navigationalgorithm/navigationalgorithm.hh>
+#include <UVF-GA/simulation/player/navigation/controlalgorithm/controlalgorithm.hh>
 #include <QMutexLocker>
 
 class Player;

@@ -1,4 +1,4 @@
-#include "chromosome.h"
+#include "chromosome.hh"
 
 Chromosome::Chromosome(int genQty){
     this->_genQty = genQty;

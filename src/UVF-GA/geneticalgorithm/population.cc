@@ -1,4 +1,4 @@
-#include "population.h"
+#include "population.hh"
 #include <QMap>
 #include <iomanip>
 

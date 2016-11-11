@@ -1,16 +1,16 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
-#include <UVF-GA/geneticalgorithm/population.h>
+#include <UVF-GA/geneticalgorithm/population.hh>
 #include <time.h>
 
 #include <QApplication>
 #include <QList>
 #include <QThread>
 
-#include <UVF-GA/simulation/entity/player/player.h>
+#include <UVF-GA/simulation/player/player.hh>
 
-#include <3rdparty/sslworld/sslworld.h>
+#include <3rdparty/sslworld/sslworld.hh>
 #include <3rdparty/soccerview/soccerview.hh>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"

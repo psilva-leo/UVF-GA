@@ -1,7 +1,7 @@
 #ifndef UVFOBSTACLE_H
 #define UVFOBSTACLE_H
 
-#include <UVF-GA/utils/utils.h>
+#include <UVF-GA/utils/utils.hh>
 
 class UVFObstacle {
 private:

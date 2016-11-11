@@ -1,8 +1,8 @@
 #ifndef CONTROLALGORITHM_HH
 #define CONTROLALGORITHM_HH
 
-#include <UVF-GA/utils/utils.h>
-#include <UVF-GA/simulation/entity/player/navigation/controlalgorithm/controlalgorithmparameters.hh>
+#include <UVF-GA/utils/utils.hh>
+#include <UVF-GA/simulation/player/navigation/controlalgorithm/controlalgorithmparameters.hh>
 #include <QString>
 
 class ControlAlgorithmParameters;

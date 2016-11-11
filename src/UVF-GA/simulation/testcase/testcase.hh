@@ -1,10 +1,10 @@
 #ifndef TESTCASE_H
 #define TESTCASE_H
 
-#include <UVF-GA/simulation/entity/entity.hh>
-#include <UVF-GA/simulation/entity/player/player.h>
-#include <UVF-GA/utils/utils.h>
-#include <3rdparty/sslworld/sslworld.h>
+#include <UVF-GA/utils/entity/entity.hh>
+#include <UVF-GA/simulation/player/player.hh>
+#include <UVF-GA/utils/utils.hh>
+#include <3rdparty/sslworld/sslworld.hh>
 
 class TestCase : public Entity {
 public:

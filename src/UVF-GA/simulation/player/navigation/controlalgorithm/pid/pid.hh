@@ -1,7 +1,7 @@
 #ifndef PID_HH
 #define PID_HH
 
-#include <UVF-GA/simulation/entity/player/navigation/controlalgorithm/controlalgorithm.hh>
+#include <UVF-GA/simulation/player/navigation/controlalgorithm/controlalgorithm.hh>
 
 class PID :public ControlAlgorithm {
 public:
