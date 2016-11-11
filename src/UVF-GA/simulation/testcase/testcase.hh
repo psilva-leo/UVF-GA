@@ -11,6 +11,8 @@ public:
     TestCase();
     ~TestCase();
 
+    QString name();
+
 private:
     SSLWorld *_world;
     Player *_player;

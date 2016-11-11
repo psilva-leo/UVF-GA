@@ -87,5 +87,10 @@ void Player::setMaxSpeedAndAccel(float maxASpeed, float maxLSpeed, float maxLAcc
 }
 
 void Player::setSpeed(float x, float y, float w) {
+    std::cout << "Velocity: \n";
+    std::cout << "x = " <<  y << std::endl;
+    std::cout << "y = " << -x << std::endl;
+    std::cout << "w = " <<  w << std::endl;
+
     _world->robots[_id]->setSpeed(y, -x, w);
 }
