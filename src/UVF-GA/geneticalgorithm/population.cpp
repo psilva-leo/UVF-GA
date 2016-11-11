@@ -73,7 +73,7 @@ Population* Population::selection(QList<Population> populations){
     }
 
     //TODO: Decide if prints or not the selected chromosomes
-    cout << "##SELECTED CHORMOSOMES## coutn: " << count << " selecNum: " << selectNum << " size: " << selection->_size << endl;
+    cout << "##SELECTED CHORMOSOMES" << endl;
     for(int i=0; i<selectNum; i++){
         Chromosome temp = *selection->getChromosome(i);
         cout << "Chromosome (" << i <<")\t-\t";
@@ -110,7 +110,6 @@ Population Population::crossOver(){
         }
     }
 
-    cout << ">>> Fitness is 1.0 because of evaluate function" << endl;
     crossOverPop.evaluate();
     cout << "###CROSSOVER\n";
     crossOverPop.print();

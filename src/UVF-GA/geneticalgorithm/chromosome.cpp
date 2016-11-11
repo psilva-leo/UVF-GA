@@ -1,6 +1,5 @@
 #include "chromosome.h"
-#include <iostream>
-using namespace std;
+
 Chromosome::Chromosome(int genQty){
     this->_genQty = genQty;
     this->_fitness = 1.0;
