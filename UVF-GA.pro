@@ -83,7 +83,8 @@ SOURCES += \
     src/UVF-GA/simulation/entity/entity.cc \
     src/UVF-GA/utils/position.cpp \
     src/UVF-GA/utils/timer.cc \
-    src/UVF-GA/utils/velocity.cpp
+    src/UVF-GA/utils/velocity.cpp \
+    src/UVF-GA/simulation/entity/testCase/testcase.cpp
 
 # Header files
 HEADERS += \
@@ -114,7 +115,8 @@ HEADERS += \
     src/UVF-GA/simulation/entity/entity.hh \
     src/UVF-GA/utils/position.h \
     src/UVF-GA/utils/timer.hh \
-    src/UVF-GA/utils/velocity.h
+    src/UVF-GA/utils/velocity.h \
+    src/UVF-GA/simulation/entity/testCase/testcase.h
 
 # Other files
 DISTFILES += LICENSE
