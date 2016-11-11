@@ -2,10 +2,7 @@
 #include <iostream>
 
 TestCase::TestCase(){
-    RobotsFomation form(2);
-    FieldConfig cfg;
-
-    _world = new SSLWorld(&cfg, &form, &form);
+    _world = new SSLWorld();
     _player = new Player(0, _world);
     _timer = new Timer();
 }

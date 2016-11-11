@@ -44,7 +44,7 @@ class SSLWorld {
 private:
     dReal last_dt;
 public:    
-    SSLWorld(FieldConfig* _cfg,RobotsFomation *form1,RobotsFomation *form2);
+    SSLWorld();
     virtual ~SSLWorld();
 
     void step(dReal dt=-1);
