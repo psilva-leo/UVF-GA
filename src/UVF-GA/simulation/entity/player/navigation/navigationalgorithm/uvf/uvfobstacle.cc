@@ -4,7 +4,7 @@ UVFObstacle::UVFObstacle(const Position &pos, const Velocity &vel) {
     _pos = pos;
     _vel = vel;
 
-     _k0 = 1; // Fator multiplicativo da velocidade relativa
+    _k0 = 1; // Fator multiplicativo da velocidade relativa
 }
 
 Position UVFObstacle::position() const {

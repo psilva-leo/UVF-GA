@@ -35,6 +35,10 @@ public:
     double getLinearSpeed(float distError);
     double getAngularSpeed(float angularError);
 
+    // Avoid
+    void avoidRobots();
+    void avoidBall();
+
     // PID
     void setLinearPIDParameters(double kp, double ki, double kd, double ilimit);
     void setAngularPIDParameters(double kp, double ki, double kd, double ilimit);

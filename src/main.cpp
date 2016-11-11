@@ -61,7 +61,7 @@ int main(int argc, char *argv[]){
         ssl->robots[i]->setXY(0.3*i, -10);
 
     forever {
-        player->goToLookTo(Position(-1.0, 0.0), 0, false);
+        player->goToLookTo(Position(2.5, -1.0), 0.0, false, false);
 
         float ori = player->orientation();
 

@@ -183,6 +183,7 @@ void UVF::run() {
 
 void UVF::addObstacle(const Position &pos, const Velocity &vel) {
     _obstacles.append(UVFObstacle(pos, vel));
+    _obstacles.last().setK0(_k0);
 }
 
 float UVF::getPhi(const Position &p, bool ccw, float de) const {

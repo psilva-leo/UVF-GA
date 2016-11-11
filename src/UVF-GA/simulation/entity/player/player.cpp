@@ -23,7 +23,11 @@ QString Player::name() {
     return "Player";
 }
 
-void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots) {
+void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots, bool avoidBall) {
+    // Avoids
+    if(avoidRobots) _nav->avoidRobots();
+    if(avoidBall  ) _nav->avoidBall();
+
     // Set goal on navigation
     _nav->setGoal(desiredPos, angleToLook, false, false);
 
@@ -36,8 +40,6 @@ void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots
     float speed = _nav->getLinearSpeed(distance);
     float xSpeed = speed*cos(direction);
     float ySpeed = speed*sin(direction);
-
-
 
     // Angular speed calc
     float aError = angleToLook - orientation();
@@ -67,3 +69,22 @@ Position Player::position() const {
 float Player::orientation() const {
     return _world->robots[_id]->getDir()*(PI/180);
 }
+
+void Player::setLinearCtrlParameters(float kp, float ki, float kd, float limit) {
+    _nav->setLinearPIDParameters(kp, ki, kd, limit);
+}
+
+void Player::setAngularCtrlParameters(float kp, float ki, float kd, float limit) {
+    _nav->setAngularPIDParameters(kp, ki, kd, limit);
+}
+
+void Player::setUVFParameters(double de, double kr, double dmin, double delta, double k0) {
+    _nav->setUVFParameters(de, kr, dmin, delta, k0);
+}
+
+void Player::setMaxSpeedAndAccel(float maxASpeed, float maxLSpeed, float maxLAccel) {
+    _nav->setMaxASpeed(maxASpeed);
+    _nav->setMaxLSpeed(maxLSpeed);
+    _nav->setMaxLAcceleration(maxLAccel);
+}
+

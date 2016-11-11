@@ -114,3 +114,24 @@ double Navigation::getAngularSpeed(float angularError) {
 
     return angularSpeed;
 }
+
+void Navigation::avoidRobots() {
+    for(int i=0; i < ROBOT_COUNT*2; i++) {
+        if(_player->playerId() != i) {
+            dReal x,y;
+            _world->robots[i]->getXY(x,y);
+            _navAlg->addRobot(Position(x, y), Velocity(0.0, 0.0));
+        }
+    }
+}
+
+void Navigation::avoidBall() {
+    // Ball position
+    dReal x, y, z;
+    _world->ball->getBodyPosition(x,y,z,false);
+
+    // Ball velocity
+    /// TODO: onde achar velocidade?
+
+    _navAlg->addBall(Position(x, y), Velocity(0.0, 0.0));
+}
