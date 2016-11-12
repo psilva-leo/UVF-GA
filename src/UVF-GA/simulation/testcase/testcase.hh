@@ -35,41 +35,44 @@
 
 class TestCase : public Entity {
 public:
-    TestCase();
+    TestCase(float runTimeoutSec, float simulationStepSec);
     ~TestCase();
 
+    // Name virtual implementation
     QString name();
 
-    /// TODO: Condição de parada no loop (tempo e distancia)
-    /// TODO: Varias disposições de jogadores
+    // Configuration
+    void configMovement(const Position &origin, float originAngle, const Position &destination, float angleToLook, bool avoidRobots, bool avoidBall);
+    void configLCtrParams(float kp, float ki, float kd, float limit);
+    void configACtrParams(float kp, float ki, float kd, float limit);
+    void configUVFParams(double de, double kr, double dmin, double delta, double k0);
+    void configMaxSpeed(float maxASpeed, float maxLSpeed);
 
-    // Setters
-    void setLinearCtrlParameters(float kp, float ki, float kd, float limit);
-    void setAngularCtrlParameters(float kp, float ki, float kd, float limit);
-    void setUVFParameters(double de, double kr, double dmin, double delta, double k0);
-    void setMaxSpeed(float maxASpeed, float maxLSpeed);
-
-    // Getters
-    double timemsec() { return _timer->timemsec(); }
-    double timensec() { return _timer->timensec(); }
-    double timeusec() { return _timer->timeusec(); }
-    bool idle() { return _player->hasReachedGoal(); }
-
-    // Config
-    void configGoToLookTo(Position desiredPos, float angleToLook, bool avoidRobots, bool avoidBall);
+    // TestCase returns
+    double timesec() const { return _timer->timesec(); }
+    bool reachedGoal() const { return _player->hasReachedGoal(); }
 
 private:
-    SSLWorld *_world;
-    Player *_player;
-    Timer *_timer;
+    const float _runTimeoutSec;
+    const float _simulationStepSec;
 
-    Position _desiredPos;
-    float _desiredAngle;
+    // World access
+    SSLWorld *_world;
+
+    // TestCase info
+    Timer *_timer;
+    bool _reachedGoal;
+
+    // TestCase configuration
+    Player *_player;
+    Position _origin;
+    float _originAngle;
+    Position _destination;
+    float _targetAngle;
     bool _avoidRobots;
     bool _avoidBall;
-    bool _reachedGoal;
-    double _msecTestTime;
 
+    // Virtual implementation
     void initialization();
     void loop();
     void finalization();

@@ -43,6 +43,8 @@ class Utils {
 public:
     static double randf(int max, int min);
     static float distance(const Position &p1, const Position &p2);
+    static float toRad(float deg);
+    static float toDeg(float rad);
 };
 
 #endif // UTILS_H

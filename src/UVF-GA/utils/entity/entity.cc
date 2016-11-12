@@ -50,11 +50,13 @@ void Entity::run() {
         t.stop();
 
         if(isRunning()) {
-            long rest = loopTime() - t.timemsec();
-            if(rest >= 0)
-                msleep(rest);
-            else
-                std::cout << "[TIMER OVEREXTENDED] " << name().toStdString() << " for " <<  -rest  << " ms.\n";
+            if(loopTime()!=0) {
+                long rest = loopTime() - t.timemsec();
+                if(rest >= 0)
+                    msleep(rest);
+                else
+                    std::cout << "[TIMER OVEREXTENDED] " << name().toStdString() << " for " <<  -rest  << " ms.\n";
+            }
         }
     }
 

@@ -45,8 +45,7 @@
 
 #define POPSIZE 10
 
-#define SIMULATION_PERIOD 0.033 // seconds
-#define RUN_PERIOD 0.0 // seconds
+#define SIMULATION_STEP (1/30.0f) // seconds
 
 #define ENABLE_GRAPHICS true
 
@@ -78,70 +77,25 @@ int main(int argc, char *argv[]){
 //    GLSoccerView view;
 //    if(ENABLE_GRAPHICS) view.show();
 
-//    // Create SSLWorld
-//    RobotsFomation *form = new RobotsFomation(2);
-//    FieldConfig *cfg = new FieldConfig();
-//    SSLWorld *world = new SSLWorld(cfg, form, form);
-
-//    // Create player
-//    Player *player = new Player(0, world);
-
-//    // Set test robot initial position
-//    world->robots[0]->setXY(-2.0, 0);
-//    world->robots[0]->setDir(90.0);
-
-//    // Remove all other robots from field
-//    for(int i=1; i<2*ROBOT_COUNT; i++)
-//        world->robots[i]->setXY(0.3*i, -3.25);
-
-//    // Set ball
-//    world->ball->setBodyPosition(1.0, 0.0, 0.0);
-
-//    Timer timer;
-//    forever {
-//        timer.start();
-
-//        // Process app events
-//        if(ENABLE_GRAPHICS) app.processEvents();
-
-//        // Set player destination
-//        Position desiredPos(-2.5, -1.0);
-//        player->goToLookTo(desiredPos, -PI/2, false, false);
-
-//        // Step world
-//        world->step(SIMULATION_PERIOD);
-
-//        // Update view
-//        if(ENABLE_GRAPHICS) view.updateDetection(world);
-
-//        timer.stop();
-
-//        // Sleep run period
-//        if(RUN_PERIOD!=0.0f) {
-//            float rest = RUN_PERIOD*1E3 - timer.timemsec();
-//            if(rest > 0)
-//                QThread::msleep(rest);
-//            else
-//                std::cout << "[TIMER OVEREXTENDED] Time: " << -rest << " ms\n";
-//        }
+//    // Loop interface
+//    if(ENABLE_GRAPHICS) {
+//        app.processEvents();
+//        view.updateDetection(world);
 //    }
 
 //    // Close interface
 //    if(ENABLE_GRAPHICS) view.close();
 
-//    // Deletes
-//    delete world;
-//    delete cfg;
-//    delete form;
+    TestCase *test = new TestCase(2.0, SIMULATION_STEP);
+    test->configACtrParams(2.0, 0.0, 0.0, 20.0);
+    test->configLCtrParams(1.5, 0.0, 0.0, 0.0);
+    test->configMaxSpeed(2.5*PI, 3.0);
+    test->configUVFParams(0.15, 0.40, 0.005, 0.12, 1);
 
-    TestCase *test = new TestCase();
-    test->setLoopTime(10);
+    std::cout << "Starting test case...\n";
     test->start();
-
-
-    app.exec();
-//    test->stopEntity();
-//    test->wait()
+    test->wait();
+    std::cout << "Run time: " << test->timesec() << " seconds (reached goal: " << test->reachedGoal() << ")\n";
 
     return 0;
 }

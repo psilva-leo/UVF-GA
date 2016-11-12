@@ -39,9 +39,10 @@ Player::Player(int id, SSLWorld *world){
 
     // Create navigation
     _nav = new Navigation(this, world);
-    _nav->setMaxASpeed(2.5*PI);
+    _nav->setLinearPIDParameters(1.0, 0.0, 0.0, 0.0);
+    _nav->setAngularPIDParameters(1.0, 0.0, 0.0, 0.0);
     _nav->setMaxLSpeed(3.0);
-    _nav->setMaxLAcceleration(1.35);
+    _nav->setMaxASpeed(4*PI);
 }
 
 Player::~Player() {

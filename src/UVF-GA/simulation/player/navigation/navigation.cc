@@ -32,11 +32,12 @@
 #include <iostream>
 
 Navigation::Navigation(Player *player, SSLWorld *world) {
-    _player    = player;
-    _navAlg    = new UVF();
-    _linCtrAlg = new PID(1.5, 0.0, 0.0, 0.0);
-    _angCtrAlg = new PID(2.0, 0.0, 0.0, 20.0);
+    _player = player;
     _world = world;
+
+    _navAlg    = new UVF();
+    _linCtrAlg = new PID();
+    _angCtrAlg = new PID();
 }
 
 Navigation::~Navigation() {
