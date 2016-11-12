@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){
 //        cout << "\n\n\n\n";
 //    }
 
-    QApplication app(argc, argv);
+
 
 //    // SoccerView
 //    GLSoccerView view;
@@ -86,16 +86,45 @@ int main(int argc, char *argv[]){
 //    // Close interface
 //    if(ENABLE_GRAPHICS) view.close();
 
-    TestCase *test = new TestCase(2.0, SIMULATION_STEP);
+
+    QApplication app(argc, argv);
+
+    int numTests = 2;
+
+    // Fork tests
+    int myId = 0;
+    pid_t pid;
+    for(int i=1; i<numTests; i++) {
+        pid = fork();
+
+        if(pid==0) { // children
+            myId = i;
+            break;
+        } else { // father
+            continue;
+        }
+    }
+
+    // Create test
+    TestCase *test = new TestCase(100.0, SIMULATION_STEP);
+    test->configMovement(Position(-2.0, 0.0), 0.0, Position(2.0, 2.0), 0, false, false);
     test->configACtrParams(2.0, 0.0, 0.0, 20.0);
     test->configLCtrParams(1.5, 0.0, 0.0, 0.0);
     test->configMaxSpeed(2.5*PI, 3.0);
     test->configUVFParams(0.15, 0.40, 0.005, 0.12, 1);
 
-    std::cout << "Starting test case...\n";
+    std::cout << "Starting test case #" << myId << "...\n";
     test->start();
     test->wait();
-    std::cout << "Run time: " << test->timesec() << " seconds (reached goal: " << test->reachedGoal() << ")\n";
+    std::cout << "Test case #" << myId << ", run time: " << test->timesec() << " seconds (reached goal: " << test->reachedGoal() << ")\n";
+
+    if(myId==0) {
+        // wait pid (esperar todos acabarem)
+        // pegar os resultados
+        // ok
+    }
+
+    delete test;
 
     return 0;
 }

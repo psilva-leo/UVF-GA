@@ -56,10 +56,6 @@ void PID::reset() {
 }
 
 float PID::_iterate(float error, float dt) {
-    // dt check
-    if(dt > 0.250)
-        std::cout << "[WARNING] " << name().toStdString() << ": Very high dt! Check cause.\n";
-
     // Integration, with windup guarding
     _iError += error * dt;
     if(_iError < -_iLimit) _iError = -_iLimit;
