@@ -26,14 +26,17 @@
  */
 
 #include <cstdio>
+#include <ctime>
 #include <cstdlib>
 #include <iostream>
 #include <UVF-GA/geneticalgorithm/population.hh>
 #include <time.h>
 
 #include <QApplication>
+#include <QProcess>
 #include <QList>
 #include <QThread>
+#include <sys/wait.h>
 
 #include <UVF-GA/simulation/player/player.hh>
 #include <UVF-GA/simulation/testcase/testcase.hh>
@@ -48,6 +51,8 @@
 #define SIMULATION_STEP (1/30.0f) // seconds
 
 #define ENABLE_GRAPHICS true
+
+#define SIMULTANEOUS_PROCESS 5
 
 int main(int argc, char *argv[]){
 //    int iteration = 1;
@@ -89,18 +94,29 @@ int main(int argc, char *argv[]){
 
     QApplication app(argc, argv);
 
-    int numTests = 2;
+    Timer timer;
+    timer.start();
+
+    int numTests = 50;
 
     // Fork tests
     int myId = 0;
-    pid_t pid;
+    QList<pid_t> child;
     for(int i=1; i<numTests; i++) {
-        pid = fork();
+        pid_t pid = fork();
 
         if(pid==0) { // children
             myId = i;
             break;
         } else { // father
+            child.append(pid);
+
+            // Limit simultaneous process
+            if(child.size() >= SIMULTANEOUS_PROCESS) {
+                waitpid(child.first(), NULL, 0);
+                child.removeFirst();
+            }
+
             continue;
         }
     }
@@ -118,13 +134,15 @@ int main(int argc, char *argv[]){
     test->wait();
     std::cout << "Test case #" << myId << ", run time: " << test->timesec() << " seconds (reached goal: " << test->reachedGoal() << ")\n";
 
-    if(myId==0) {
-        // wait pid (esperar todos acabarem)
-        // pegar os resultados
-        // ok
-    }
+    if(myId==0)
+        for(int i=0; i < child.size(); i++) waitpid(child.at(i), NULL, 0);
 
     delete test;
 
-    return 0;
+    if(myId==0) {
+        timer.stop();
+        std::cout << "total time: " << timer.timesec() << " seconds\n";
+    }
+
+    exit(0);
 }
