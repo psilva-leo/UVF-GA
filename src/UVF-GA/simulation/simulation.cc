@@ -1,4 +1,5 @@
 #include "simulation.hh"
+#include <cstdio>
 
 Simulation::Simulation() {
     _numTests = 10;
@@ -36,7 +37,8 @@ void Simulation::run() {
     test->configACtrParams(2.0, 0.0, 0.0, 20.0);
     test->configLCtrParams(1.5, 0.0, 0.0, 0.0);
     test->configMaxSpeed(2.5*PI, 3.0);
-    test->configUVFParams(0.15, 0.40, 0.005, 0.12, 1);
+    //test->configUVFParams(0.15, 0.40, 0.005, 0.12, 1);
+    test->configUVFParams(_params.at(_myId).at(0),_params.at(_myId).at(1),_params.at(_myId).at(2),_params.at(_myId).at(3),_params.at(_myId).at(4));
 
     // Starting case
     std::cout << "Starting test case #" << _myId << "...\n";
@@ -51,8 +53,6 @@ void Simulation::run() {
         _timer.stop();
         std::cout << "total time: " << _timer.timesec() << " seconds\n";
     }
-
-
 
     // Comunication process
     if(_myId == 0){ // Read

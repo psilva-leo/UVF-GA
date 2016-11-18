@@ -48,7 +48,7 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define POPSIZE 10
+#define POPSIZE 15
 
 #define SIMULATION_STEP (1/30.0f) // seconds
 
@@ -93,8 +93,24 @@ int main(int argc, char *argv[]){
 
 //    QApplication app(argc, argv);
 
+    // Paramets example
+    QList<QList<float> > popParams;
+    for(int i = 0; i < POPSIZE; i++) {
+        QList<float> specimen;
+        specimen.append(0.150);
+        specimen.append(0.400);
+        specimen.append(0.005);
+        specimen.append(0.120);
+        specimen.append(1.000);
+        popParams.append(specimen);
+    }
+
+    // Simulate one pop
     Simulation *simul = new Simulation();
+    simul->setPopulationSize(POPSIZE);
+    simul->setPopulationParams(popParams);
     simul->run();
+    QList<QList<float> > results = simul->results();
     delete simul;
 
     return 0;
