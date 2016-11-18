@@ -1,7 +1,7 @@
 #include "simulation.hh"
 
 Simulation::Simulation() {
-    _numTests = 50;
+    _numTests = 10;
     _myId = 0;
 }
 
@@ -52,8 +52,16 @@ void Simulation::run() {
         std::cout << "total time: " << _timer.timesec() << " seconds\n";
     }
 
+
+
     // Comunication process
     if(_myId == 0){ // Read
+        // Write my results
+        QList<float> myResult;
+
+        myResult.append(test->timesec());
+        myResult.append(test->reachedGoal());
+        _results.append(myResult);
 
         for(int i=1; i < _numTests; i++) {
             // Configuring file name
@@ -67,11 +75,18 @@ void Simulation::run() {
             fileName[11] += unit;
 
             // Open file
-            ifstream myfile(fileName);
+            ifstream myfile(fileName, std::ios_base::in);
 
             // Get message and print
-            string line; getline(myfile, line);
-            std::cout << "Message from the child #" << i << ": " << line << std::endl;
+            float simulTime, reachedGoal;
+            myfile >> simulTime >> reachedGoal;
+            std::cout << "Message from the child #" << i << ": " << simulTime << " " << reachedGoal << std::endl;
+
+            // Write child result
+            QList<float> childResult;
+            childResult.append(simulTime);
+            childResult.append(reachedGoal);
+            _results.append(childResult);
 
             // Close and remove file
             myfile.close();
@@ -92,14 +107,15 @@ void Simulation::run() {
         myfile.open(fileName);
 
         // Write
-        myfile << "I took " << test->timesec() << " seconds to simulate ";
-        myfile << "and I " << (test->reachedGoal()? "reached goal" : "not reached goal") << std::endl;
+        myfile << test->timesec() << " " << test->reachedGoal();
 
         // Close file
         myfile.close();
     }
 
-    // Delete teste case and exit
+    // Delete teste case
     delete test;
-    exit(0);
+
+    // Exit if child
+    if(_myId != 0) exit(0);
 }

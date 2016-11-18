@@ -78,8 +78,6 @@ int main(int argc, char *argv[]){
 //        cout << "\n\n\n\n";
 //    }
 
-
-
 ///   // SoccerView
 //    GLSoccerView view;
 //    if(ENABLE_GRAPHICS) view.show();
@@ -99,5 +97,5 @@ int main(int argc, char *argv[]){
     simul->run();
     delete simul;
 
-    exit(0);
+    return 0;
 }
