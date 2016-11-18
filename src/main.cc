@@ -29,6 +29,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include <UVF-GA/geneticalgorithm/population.hh>
 #include <time.h>
 
@@ -134,15 +135,57 @@ int main(int argc, char *argv[]){
     test->wait();
     std::cout << "Test case #" << myId << ", run time: " << test->timesec() << " seconds (reached goal: " << test->reachedGoal() << ")\n";
 
+    // Waiting for the childrens
     if(myId==0)
         for(int i=0; i < child.size(); i++) waitpid(child.at(i), NULL, 0);
 
     delete test;
 
+    // Simulation time
     if(myId==0) {
         timer.stop();
         std::cout << "total time: " << timer.timesec() << " seconds\n";
     }
+
+    // Process comunication
+    if(myId == 0){ // Read
+        ofstream myfile;
+
+        for(int i=1; i < numTests; i++) {
+            int unit = i%10;
+            int ten  = (i - unit)/10;
+            int hundred = (i - 10*ten - unit)/100;
+
+            char fileName[18] = "testecase000.txt\0";
+
+            fileName[9]  += hundred;
+            fileName[10] += ten;
+            fileName[11] += unit;
+
+            ifstream myfile(fileName);
+            string line;
+            getline(myfile, line);
+            std::cout << "Message from the child: " << line << std::endl;
+            myfile.close();
+            remove(fileName);
+        }
+
+
+    } else {       // Write
+        ofstream myfile;
+        char men[18] = "testecase000.txt\0";
+
+        int tmp = myId;
+        while(tmp >= 100) { men[9]++ ; tmp -=100; }
+        while(tmp >=  10) { men[10]++; tmp -= 10; }
+        while(tmp >=   1) { men[11]++; tmp -=  1; }
+
+        myfile.open(men);
+        myfile << "Hello, Im child " << men[9] << men[10] << men[11];
+        myfile.close();
+    }
+
+
 
     exit(0);
 }
