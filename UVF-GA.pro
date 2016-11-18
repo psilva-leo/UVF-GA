@@ -86,7 +86,8 @@ SOURCES += \
     src/UVF-GA/utils/timer/timer.cc \
     src/UVF-GA/utils/velocity/velocity.cc \
     src/UVF-GA/utils/utils.cc \
-    src/main.cc
+    src/main.cc \
+    src/UVF-GA/simulation/simulation.cc
 
 # Header files
 HEADERS += \
@@ -126,7 +127,8 @@ HEADERS += \
     src/UVF-GA/utils/position/position.hh \
     src/UVF-GA/utils/timer/timer.hh \
     src/UVF-GA/utils/velocity/velocity.hh \
-    src/UVF-GA/utils/utils.hh
+    src/UVF-GA/utils/utils.hh \
+    src/UVF-GA/simulation/simulation.hh
 
 # Other files
 DISTFILES += LICENSE

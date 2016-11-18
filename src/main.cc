@@ -41,6 +41,7 @@
 
 #include <UVF-GA/simulation/player/player.hh>
 #include <UVF-GA/simulation/testcase/testcase.hh>
+#include <UVF-GA/simulation/simulation.hh>
 
 #include <3rdparty/sslworld/sslworld.hh>
 #include <3rdparty/soccerview/soccerview.hh>
@@ -79,7 +80,7 @@ int main(int argc, char *argv[]){
 
 
 
-//    // SoccerView
+///   // SoccerView
 //    GLSoccerView view;
 //    if(ENABLE_GRAPHICS) view.show();
 
@@ -92,100 +93,11 @@ int main(int argc, char *argv[]){
 //    // Close interface
 //    if(ENABLE_GRAPHICS) view.close();
 
+//    QApplication app(argc, argv);
 
-    QApplication app(argc, argv);
-
-    Timer timer;
-    timer.start();
-
-    int numTests = 50;
-
-    // Fork tests
-    int myId = 0;
-    QList<pid_t> child;
-    for(int i=1; i<numTests; i++) {
-        pid_t pid = fork();
-
-        if(pid==0) { // children
-            myId = i;
-            break;
-        } else { // father
-            child.append(pid);
-
-            // Limit simultaneous process
-            if(child.size() >= SIMULTANEOUS_PROCESS) {
-                waitpid(child.first(), NULL, 0);
-                child.removeFirst();
-            }
-
-            continue;
-        }
-    }
-
-    // Create test
-    TestCase *test = new TestCase(100.0, SIMULATION_STEP);
-    test->configMovement(Position(-2.0, 0.0), 0.0, Position(2.0, 2.0), 0, false, false);
-    test->configACtrParams(2.0, 0.0, 0.0, 20.0);
-    test->configLCtrParams(1.5, 0.0, 0.0, 0.0);
-    test->configMaxSpeed(2.5*PI, 3.0);
-    test->configUVFParams(0.15, 0.40, 0.005, 0.12, 1);
-
-    std::cout << "Starting test case #" << myId << "...\n";
-    test->start();
-    test->wait();
-    std::cout << "Test case #" << myId << ", run time: " << test->timesec() << " seconds (reached goal: " << test->reachedGoal() << ")\n";
-
-    // Waiting for the childrens
-    if(myId==0)
-        for(int i=0; i < child.size(); i++) waitpid(child.at(i), NULL, 0);
-
-    delete test;
-
-    // Simulation time
-    if(myId==0) {
-        timer.stop();
-        std::cout << "total time: " << timer.timesec() << " seconds\n";
-    }
-
-    // Process comunication
-    if(myId == 0){ // Read
-        ofstream myfile;
-
-        for(int i=1; i < numTests; i++) {
-            int unit = i%10;
-            int ten  = (i - unit)/10;
-            int hundred = (i - 10*ten - unit)/100;
-
-            char fileName[18] = "testecase000.txt\0";
-
-            fileName[9]  += hundred;
-            fileName[10] += ten;
-            fileName[11] += unit;
-
-            ifstream myfile(fileName);
-            string line;
-            getline(myfile, line);
-            std::cout << "Message from the child: " << line << std::endl;
-            myfile.close();
-            remove(fileName);
-        }
-
-
-    } else {       // Write
-        ofstream myfile;
-        char men[18] = "testecase000.txt\0";
-
-        int tmp = myId;
-        while(tmp >= 100) { men[9]++ ; tmp -=100; }
-        while(tmp >=  10) { men[10]++; tmp -= 10; }
-        while(tmp >=   1) { men[11]++; tmp -=  1; }
-
-        myfile.open(men);
-        myfile << "Hello, Im child " << men[9] << men[10] << men[11];
-        myfile.close();
-    }
-
-
+    Simulation *simul = new Simulation();
+    simul->run();
+    delete simul;
 
     exit(0);
 }
