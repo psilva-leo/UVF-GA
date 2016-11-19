@@ -38,7 +38,6 @@
 #include <UVF-GA/simulation/testcase/testcase.hh>
 
 #include <3rdparty/sslworld/sslworld.hh>
-#include <3rdparty/soccerview/soccerview.hh>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 

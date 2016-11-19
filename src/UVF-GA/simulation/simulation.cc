@@ -27,6 +27,7 @@
 
 #include "simulation.hh"
 #include <cstdio>
+#include <unistd.h>
 
 Simulation::Simulation() {
     _numTests = 10;
@@ -102,7 +103,7 @@ void Simulation::run() {
             fileName[11] += unit;
 
             // Open file
-            ifstream myfile(fileName, std::ios_base::in);
+            std::ifstream myfile(fileName, std::ios_base::in);
 
             // Get message and print
             float simulTime, reachedGoal;
@@ -130,7 +131,7 @@ void Simulation::run() {
         while(tmp >=   1) { fileName[11]++; tmp -=  1; }
 
         // Open file
-        ofstream myfile;
+        std::ofstream myfile;
         myfile.open(fileName);
 
         // Write
