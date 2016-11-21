@@ -52,45 +52,24 @@ public:
     void run();
 
     // Population param
-    void setPopulationParams(QList<QList<float> > params) { _params = params; }
+    void setPopulationParams(QList<UVFParams*> params) { _UVFParams = params; }
+    void setPopulationParams(QList<SpeedParams*> params) { _speedParams = params; }
     void setPopulationSize(int size) { _numTests = size; }
 
     // Get the results
-    QList<QList<float> > results() { return _results; }
+    QList<Results*> results() { return _results; }
 
 private:
     // Intern
     int _numTests;
     int _myId;
-    QList<QList<float> > _params;
-    QList<QList<float> > _results;
+    QList<UVFParams*> _UVFParams;
+    QList<SpeedParams*> _speedParams;
+    QList<Results*> _results;
 
     // Remover depois
     Timer _timer;
     QList<pid_t> _child;
-
-    // Max speed
-    float _maxASpeed;
-    float _maxLSpeed;
-
-    // UVF params
-    double _de;
-    double _kr;
-    double _dmin;
-    double _delta;
-    double _k0;
-
-    // Angular control algorithm params
-    float _akp;
-    float _aki;
-    float _akd;
-    float _alimit;
-
-    // Linear control algorithm params
-    float _lkp;
-    float _lki;
-    float _lkd;
-    float _llimit;
 };
 
 #endif // SIMULATION_H

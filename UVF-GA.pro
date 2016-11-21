@@ -128,7 +128,8 @@ HEADERS += \
     src/UVF-GA/utils/timer/timer.hh \
     src/UVF-GA/utils/velocity/velocity.hh \
     src/UVF-GA/utils/utils.hh \
-    src/UVF-GA/simulation/simulation.hh
+    src/UVF-GA/simulation/simulation.hh \
+    src/UVF-GA/utils/params.hh
 
 # Other files
 DISTFILES += LICENSE

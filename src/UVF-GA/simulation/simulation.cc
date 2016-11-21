@@ -61,12 +61,33 @@ void Simulation::run() {
 
     // Create test
     TestCase *test = new TestCase(100.0, SIMULATION_STEP);
+
+    // Config movement
     test->configMovement(Position(-2.0, 0.0), 0.0, Position(2.0, 2.0), 0, false, false);
+
+    // Config angular controller
     test->configACtrParams(2.0, 0.0, 0.0, 20.0);
+
+    // Config angular controller
     test->configLCtrParams(1.5, 0.0, 0.0, 0.0);
-    test->configMaxSpeed(2.5*PI, 3.0);
-    //test->configUVFParams(0.15, 0.40, 0.005, 0.12, 1);
-    test->configUVFParams(_params.at(_myId).at(0),_params.at(_myId).at(1),_params.at(_myId).at(2),_params.at(_myId).at(3),_params.at(_myId).at(4));
+
+    // Config max speeds
+    if(_speedParams.size()-1 >= _myId) {
+        test->configMaxSpeed(_speedParams.at(_myId)->maxASpeed, _speedParams.at(_myId)->maxLSpeed);
+    } else {
+        test->configMaxSpeed(2.5*PI, 3.0);
+        std::cout << "[WARNING] Speed constants not set, using default values" << std::endl;
+    }
+
+    // Config UVF
+    if(_UVFParams.size()-1 >= _myId) {
+        test->configUVFParams(_UVFParams.at(_myId)->de,_UVFParams.at(_myId)->kr,
+                              _UVFParams.at(_myId)->dmin,_UVFParams.at(_myId)->delta,
+                              _UVFParams.at(_myId)->k0);
+    } else  { // Use default values
+        test->configUVFParams(0.15, 0.40, 0.005, 0.12, 1);
+        std::cout << "[WARNING] UVF constants not set, using default values" << std::endl;
+    }
 
     // Starting case
     std::cout << "Starting test case #" << _myId << "...\n";
@@ -85,11 +106,11 @@ void Simulation::run() {
     // Comunication process
     if(_myId == 0){ // Read
         // Write my results
-        QList<float> myResult;
+        struct Results *myResults = new Results;
+        myResults->time = test->timesec();
+        myResults->reachedGoal = test->reachedGoal();
 
-        myResult.append(test->timesec());
-        myResult.append(test->reachedGoal());
-        _results.append(myResult);
+        _results.append(myResults);
 
         for(int i=1; i < _numTests; i++) {
             // Configuring file name
@@ -106,14 +127,12 @@ void Simulation::run() {
             std::ifstream myfile(fileName, std::ios_base::in);
 
             // Get message and print
-            float simulTime, reachedGoal;
-            myfile >> simulTime >> reachedGoal;
-            std::cout << "Message from the child #" << i << ": " << simulTime << " " << reachedGoal << std::endl;
+            struct Results *childResult = new Results;
+            myfile >> childResult->time >> childResult->reachedGoal;
+            std::cout << "Message from the child #" << i << ": " << childResult->time << " "
+                      << childResult->reachedGoal << std::endl;
 
             // Write child result
-            QList<float> childResult;
-            childResult.append(simulTime);
-            childResult.append(reachedGoal);
             _results.append(childResult);
 
             // Close and remove file
@@ -134,8 +153,13 @@ void Simulation::run() {
         std::ofstream myfile;
         myfile.open(fileName);
 
+        // Struct
+        struct Results *myResults = new Results;
+        myResults->time = test->timesec();
+        myResults->reachedGoal = test->reachedGoal();
+
         // Write
-        myfile << test->timesec() << " " << test->reachedGoal();
+        myfile << myResults->time << ' ' << myResults->reachedGoal;
 
         // Close file
         myfile.close();

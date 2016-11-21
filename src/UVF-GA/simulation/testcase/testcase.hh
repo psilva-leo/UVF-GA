@@ -50,7 +50,7 @@ public:
 
     // TestCase returns
     double timesec() const { return _timer->timesec(); }
-    bool reachedGoal() const { return _player->hasReachedGoal(); }
+    int reachedGoal() const { return _player->hasReachedGoal()? 1 : 0; }
 
 private:
     const float _runTimeoutSec;

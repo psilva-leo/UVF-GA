@@ -35,6 +35,7 @@
 #include "position/position.hh"
 #include "velocity/velocity.hh"
 #include "timer/timer.hh"
+#include "params.hh"
 
 #define FRAND_PRECISION 5
 #define PI 3.141592654

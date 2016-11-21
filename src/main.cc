@@ -93,24 +93,34 @@ int main(int argc, char *argv[]){
 
 //    QApplication app(argc, argv);
 
-    // Paramets example
-    QList<QList<float> > popParams;
+    // UVF Parameters example
+    QList<UVFParams*> popParams0;
     for(int i = 0; i < POPSIZE; i++) {
-        QList<float> specimen;
-        specimen.append(0.150);
-        specimen.append(0.400);
-        specimen.append(0.005);
-        specimen.append(0.120);
-        specimen.append(1.000);
-        popParams.append(specimen);
+        UVFParams *specimen = new UVFParams;
+        specimen->de    = 0.150;
+        specimen->kr    = 0.400;
+        specimen->dmin  = 0.005;
+        specimen->delta = 0.120;
+        specimen->k0    = 1.000;
+        popParams0.append(specimen);
+    }
+
+    // Speeds Parameters example
+    QList<SpeedParams*> popParams1;
+    for(int i = 0; i < POPSIZE; i++) {
+        SpeedParams *specimen = new SpeedParams;
+        specimen->maxASpeed = 2.5*PI;
+        specimen->maxLSpeed = 3.0;
+        popParams1.append(specimen);
     }
 
     // Simulate one pop
     Simulation *simul = new Simulation();
-    simul->setPopulationSize(POPSIZE);
-    simul->setPopulationParams(popParams);
+    simul->setPopulationSize(1);
+    simul->setPopulationParams(popParams0);
+    simul->setPopulationParams(popParams1);
     simul->run();
-    QList<QList<float> > results = simul->results();
+    QList<Results*> results = simul->results();
     delete simul;
 
     return 0;
