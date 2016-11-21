@@ -34,13 +34,15 @@
 
 Player::Player(int id, SSLWorld *world){
     _id = id;
+    _idle = false;
     _world = world;   
 
     // Create navigation
     _nav = new Navigation(this, world);
-    _nav->setMaxASpeed(2.5*PI);
+    _nav->setLinearPIDParameters(1.0, 0.0, 0.0, 0.0);
+    _nav->setAngularPIDParameters(1.0, 0.0, 0.0, 0.0);
     _nav->setMaxLSpeed(3.0);
-    _nav->setMaxLAcceleration(1.35);
+    _nav->setMaxASpeed(4*PI);
 }
 
 Player::~Player() {
@@ -83,6 +85,7 @@ void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots
 
 void Player::idle() {
     _world->robots[_id]->setSpeed(0.0, 0.0, 0.0);
+    _idle = true;
 }
 
 Position Player::position() const {
@@ -107,12 +110,16 @@ void Player::setUVFParameters(double de, double kr, double dmin, double delta, d
     _nav->setUVFParameters(de, kr, dmin, delta, k0);
 }
 
-void Player::setMaxSpeedAndAccel(float maxASpeed, float maxLSpeed, float maxLAccel) {
+void Player::setMaxSpeed(float maxASpeed, float maxLSpeed) {
     _nav->setMaxASpeed(maxASpeed);
     _nav->setMaxLSpeed(maxLSpeed);
-    _nav->setMaxLAcceleration(maxLAccel);
 }
 
 void Player::setSpeed(float x, float y, float w) {
     _world->robots[_id]->setSpeed(y, -x, w);
+    _idle = false;
+}
+
+bool Player::hasReachedGoal() {
+    return _idle;
 }

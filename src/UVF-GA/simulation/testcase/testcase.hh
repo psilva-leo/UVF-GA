@@ -35,14 +35,44 @@
 
 class TestCase : public Entity {
 public:
-    TestCase();
+    TestCase(float runTimeoutSec, float simulationStepSec);
     ~TestCase();
 
-private:
-    SSLWorld *_world;
-    Player *_player;
-    Timer *_timer;
+    // Name virtual implementation
+    QString name();
 
+    // Configuration
+    void configMovement(const Position &origin, float originAngle, const Position &destination, float angleToLook, bool avoidRobots, bool avoidBall);
+    void configLCtrParams(float kp, float ki, float kd, float limit);
+    void configACtrParams(float kp, float ki, float kd, float limit);
+    void configUVFParams(double de, double kr, double dmin, double delta, double k0);
+    void configMaxSpeed(float maxASpeed, float maxLSpeed);
+
+    // TestCase returns
+    double timesec() const { return _timer->timesec(); }
+    bool reachedGoal() const { return _player->hasReachedGoal(); }
+
+private:
+    const float _runTimeoutSec;
+    const float _simulationStepSec;
+
+    // World access
+    SSLWorld *_world;
+
+    // TestCase info
+    Timer *_timer;
+    bool _reachedGoal;
+
+    // TestCase configuration
+    Player *_player;
+    Position _origin;
+    float _originAngle;
+    Position _destination;
+    float _targetAngle;
+    bool _avoidRobots;
+    bool _avoidBall;
+
+    // Virtual implementation
     void initialization();
     void loop();
     void finalization();

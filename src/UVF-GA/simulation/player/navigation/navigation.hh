@@ -48,14 +48,12 @@ public:
     void setGoal(const Position &destination, const float &orientation, bool avoidRobots, bool avoidBall);
     void setMaxLSpeed(float maxLSpeed) { _maxLSpeed = fabs(maxLSpeed); }
     void setMaxASpeed(float maxASpeed) { _maxASpeed = fabs(maxASpeed); }
-    void setMaxLAcceleration(float maxLAcceleration) { _maxLAcceleration = maxLAcceleration; }
 
     // Getters
     float getDirection() const;
     float getDistance() const;
     float getMaxLSpeed() const { return _maxLSpeed; }
     float getMaxASpeed() const { return _maxASpeed; }
-    float getmaxLAcceleration() const { return _maxLAcceleration; }
 
     // Interface functions
     void reset();
@@ -89,9 +87,6 @@ private:
     // Maximum speed
     float _maxLSpeed;
     float _maxASpeed;
-
-    // Maximum acceleration
-    float _maxLAcceleration;
 
     float _calculateLinearSpeed(float distError);
     float _calculateAngularSpeed(float angGoal );

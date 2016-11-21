@@ -50,16 +50,18 @@ public:
     int playerId() const { return _id; }
     Position position() const;
     float orientation() const;
+    bool hasReachedGoal();
 
     // Setters
     void setLinearCtrlParameters(float kp, float ki, float kd, float limit);
     void setAngularCtrlParameters(float kp, float ki, float kd, float limit);
     void setUVFParameters(double de, double kr, double dmin, double delta, double k0);
-    void setMaxSpeedAndAccel(float maxASpeed, float maxLSpeed, float maxLAccel);
+    void setMaxSpeed(float maxASpeed, float maxLSpeed);
 
 private:
     // Player info
     int _id;
+    bool _idle;
 
     // World
     SSLWorld *_world;    

@@ -56,3 +56,11 @@ double Utils::randf(int max, int min) {
 float Utils::distance(const Position &p1, const Position &p2) {
     return sqrt(pow(p2.x()-p1.x(),2)+pow(p2.y()-p1.y(),2));
 }
+
+float Utils::toRad(float deg) {
+    return deg * (PI/180);
+}
+
+float Utils::toDeg(float rad) {
+    return rad * (180/PI);
+}

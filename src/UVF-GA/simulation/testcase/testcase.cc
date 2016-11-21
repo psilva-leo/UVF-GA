@@ -28,13 +28,17 @@
 #include "testcase.hh"
 #include <iostream>
 
-TestCase::TestCase(){
-    RobotsFomation form(2);
-    FieldConfig cfg;
-
-    _world = new SSLWorld(&cfg, &form, &form);
+TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _runTimeoutSec(runTimeoutSec), _simulationStepSec(simulationStepSec) {
+    _world = new SSLWorld();
     _player = new Player(0, _world);
     _timer = new Timer();
+    _reachedGoal = false;
+
+    // Default movement
+    configMovement(Position(0.0, 0.0), 0.0, Position(1.0, 1.0), PI/4, false, false);
+
+    // Set loop time (higher speed possible)
+    this->setLoopTime(0);
 }
 
 TestCase::~TestCase() {
@@ -43,28 +47,78 @@ TestCase::~TestCase() {
     delete _timer;
 }
 
+QString TestCase::name() {
+    return "TestCase";
+}
+
 void TestCase::initialization() {
-    _world->robots[0]->setXY(0, 0);
-    _world->robots[0]->setDir(0.0);
+    // Set robot origin position and angle
+    _world->robots[0]->setXY(_origin.x(), _origin.y());
+    _world->robots[0]->setDir(Utils::toRad(_originAngle));
 
     // Remove all other robots from field
     for(int i=1; i<2*ROBOT_COUNT; i++)
         _world->robots[i]->setXY(0.3*i, -10);
+
+    // Remove ball from field
+    _world->ball->setBodyPosition(0.0, -10, 0.0);
+
+    // Start timer
+    _timer->start();
 }
 
 void TestCase::loop() {
-    _player->goToLookTo(Position(-1.0, 0.0), 0, false, false);
+    // Go to look to
+    _player->goToLookTo(_destination, _targetAngle, _avoidRobots, _avoidBall);
 
-    float ori = _player->orientation();
+    // Step world
+    _world->step(_simulationStepSec);
 
-    dReal x, y;
-    _world->robots[0]->getXY(x, y);
-    std::cout << "Robot #0: X=" << x << ", Y=" << y << ", Ori=" << ori << "\n";
+    // Update timer
+    _timer->stop();
 
-    _world->step(0.0050);
-    QThread::msleep(10);
+    // STOP CONDITION: time out
+    if(_timer->timesec() >= _runTimeoutSec) {
+        _reachedGoal = false;
+
+        // Stop entity
+        this->stopEntity();
+    }
+
+    // STOP CONDITION: player reached goal
+    if(_player->hasReachedGoal()) {
+        _reachedGoal = true;
+
+        // Stop entity
+        this->stopEntity();
+    }
 }
 
 void TestCase::finalization() {
 
+}
+
+void TestCase::configLCtrParams(float kp, float ki, float kd, float limit) {
+    _player->setLinearCtrlParameters(kp, ki, kd, limit);
+}
+
+void TestCase::configACtrParams(float kp, float ki, float kd, float limit) {
+    _player->setAngularCtrlParameters(kp, ki, kd, limit);
+}
+
+void TestCase::configUVFParams(double de, double kr, double dmin, double delta, double k0) {
+    _player->setUVFParameters(de, kr, dmin, delta, k0);
+}
+
+void TestCase::configMaxSpeed(float maxASpeed, float maxLSpeed) {
+    _player->setMaxSpeed(maxASpeed, maxLSpeed);
+}
+
+void TestCase::configMovement(const Position &origin, float originAngle, const Position &destination, float angleToLook, bool avoidRobots, bool avoidBall) {
+    _origin = origin;
+    _originAngle = originAngle;
+    _destination = destination;
+    _targetAngle = angleToLook;
+    _avoidBall = avoidBall;
+    _avoidRobots = avoidRobots;
 }

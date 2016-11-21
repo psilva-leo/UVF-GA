@@ -97,9 +97,12 @@ bool ballCallBack(dGeomID o1,dGeomID o2,PSurface* s) {
     return true;
 }
 
-SSLWorld::SSLWorld(FieldConfig* _cfg, RobotsFomation *form1, RobotsFomation *form2) {
+SSLWorld::SSLWorld() {
+    cfg = new FieldConfig();
+    RobotsFomation form(2);
+
     _w = this;
-    cfg = _cfg;
+
     last_dt = -1;    
     p = new PWorld(0.05,9.81f);
     ball = new PBall (0,0,0.5,cfg->BallRadius(),cfg->BallMass(), 1,0.7,0);
@@ -179,10 +182,10 @@ SSLWorld::SSLWorld(FieldConfig* _cfg, RobotsFomation *form1, RobotsFomation *for
 
     cfg->robotSettings = cfg->blueSettings;
     for (int k=0;k<ROBOT_COUNT;k++)
-        robots[k] = new Robot(p,ball,cfg,-form1->x[k],form1->y[k],ROBOT_START_Z(cfg),ROBOT_GRAY,ROBOT_GRAY,ROBOT_GRAY,k+1,wheeltexid,1);
+        robots[k] = new Robot(p,ball,cfg,-form.x[k],form.y[k],ROBOT_START_Z(cfg),ROBOT_GRAY,ROBOT_GRAY,ROBOT_GRAY,k+1,wheeltexid,1);
     cfg->robotSettings = cfg->yellowSettings;
     for (int k=0;k<ROBOT_COUNT;k++)
-        robots[k+ROBOT_COUNT] = new Robot(p,ball,cfg,form2->x[k],form2->y[k],ROBOT_START_Z(cfg),ROBOT_GRAY,ROBOT_GRAY,ROBOT_GRAY,k+ROBOT_COUNT+1,wheeltexid,-1);//XXX
+        robots[k+ROBOT_COUNT] = new Robot(p,ball,cfg,form.x[k],form.y[k],ROBOT_START_Z(cfg),ROBOT_GRAY,ROBOT_GRAY,ROBOT_GRAY,k+ROBOT_COUNT+1,wheeltexid,-1);//XXX
 
     p->initAllObjects();
 
@@ -245,6 +248,7 @@ SSLWorld::SSLWorld(FieldConfig* _cfg, RobotsFomation *form1, RobotsFomation *for
 
 SSLWorld::~SSLWorld() {
     delete p;
+    delete cfg;
 }
 
 void SSLWorld::step(dReal dt) {
