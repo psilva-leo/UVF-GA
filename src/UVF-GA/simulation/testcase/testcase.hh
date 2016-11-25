@@ -52,6 +52,10 @@ public:
     double timesec() const { return _time; }
     int reachedGoal() const { return _player->hasReachedGoal()? 1 : 0; }
 
+    // External access
+    Player* player() const { return _player; }
+    SSLWorld* world() const { return _world; }
+
 private:
     const float _simulationTimeoutSec;
     const float _simulationStepSec;

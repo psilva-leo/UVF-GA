@@ -26,42 +26,82 @@
  */
 
 #include <iostream>
+#include <QApplication>
 #include <UVF-GA/geneticalgorithm/population.hh>
+#include <3rdparty/soccerview/soccerview.hh>
+#include <UVF-GA/simulation/testcase/testcase.hh>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 #define POPULATION_SIZE 10
 #define MUTATION_RATE 0.5
-#define MAX_ITERATIONS 10
+#define MAX_ITERATIONS 5
+
+#define VIEW_STEP (1/30.0f) // seconds
 
 int main(int argc, char *argv[]){
+    srand(time(NULL));
     int iteration = 1;
 
     // Run GA
-    Population *p = new Population(POPULATION_SIZE);
-    QList<Population> popList;
-    srand(time(NULL));
+    cout << "Generating initial random population...\n";
+    Population *pop = new Population(POPULATION_SIZE);
 
+    cout << "Evaluating initial population...\n\n";
+    pop->evaluate();
+
+    QList<Population> popList;
     while(iteration < MAX_ITERATIONS) {
         cout << ">>> ITERATION " << iteration << " <<<" << endl;
-        cout << "Population:" << endl;
-        p->print();
+        pop->print();
         cout << "\n";
 
-        Population crossPop = p->crossOver();
-        Population mutPop = p->mutation(MUTATION_RATE);
+        Population crossPop = pop->crossOver();
+        Population mutPop = pop->mutation(MUTATION_RATE);
         popList.clear();
         popList.append(crossPop);
         popList.append(mutPop);
-        popList.append(*p);
-        p = p->selection(popList);
+        popList.append(*pop);
+        pop = pop->selection(popList);
 
         iteration++;
     }
 
-    // Show best result
-    Chromosome better = p->getBetter();
+    // Get better result
+    Chromosome *better = pop->getBetter();
+    double de    = better->getGen(0)->getValue();
+    double kr    = better->getGen(1)->getValue();
+    double dmin  = better->getGen(2)->getValue();
+    double delta = better->getGen(3)->getValue();
+    double k0    = better->getGen(4)->getValue();
+    double maxASpeed = better->getGen(5)->getValue();
+    double maxLSpeed = better->getGen(6)->getValue();
 
+    // Create test case with better result
+    TestCase test(10.0, VIEW_STEP);
+    test.configUVFParams(de, kr, dmin, delta, k0);
+    test.configMaxSpeed(maxASpeed, maxLSpeed);
+
+    // Get access to player and world
+    Player *player = test.player();
+    SSLWorld *world = test.world();
+
+    // Run view
+    QApplication app(argc, argv);
+    GLSoccerView view;
+    view.show();
+
+    test.start();
+    while(player->hasReachedGoal()==false) {
+        app.processEvents();
+        view.updateDetection(world);
+    }
+
+    // Stop
+    app.exec();
+
+    // Close interface
+    view.close();
 
     return 0;
 }

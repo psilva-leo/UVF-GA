@@ -42,9 +42,7 @@
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 #define SIMULATION_STEP (1/30.0f) // seconds
-
 #define SIMULTANEOUS_PROCESS 5
-
 
 class Simulation {
 public:

@@ -34,7 +34,7 @@ Chromosome::Chromosome(int genQty) {
     // TODO: Adjust mins e maxs
     for(int i=0; i<genQty; i++) {
         genMaxs.append(5.0);
-        genMins.append(0.0);
+        genMins.append(0.01);
     }
 
     for(int i=0; i<genQty; i++) {

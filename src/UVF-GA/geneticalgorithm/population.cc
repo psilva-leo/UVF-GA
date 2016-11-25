@@ -35,7 +35,8 @@
  * @brief Creates a population with a number of individuals
  * @param size - Qty of elements inside the populaiton
  */
-Population::Population(int size) : _better(size) {
+Population::Population(int size) {
+    this->_better = new Chromosome(size);
     this->_size = 0;
 
     for(int i=0; i<size; i++){
@@ -132,12 +133,12 @@ Population* Population::selection(QList<Population> populations) {
 
     // TODO: Should this be here?
     // Selecting best chromosome
-    if(this->_better.getFitness() < selection->getChromosome(0)->getFitness()){
-        this->_better = *selection->getChromosome(0);
+    if(this->_better->getFitness() < selection->getChromosome(0)->getFitness()){
+        this->_better = selection->getChromosome(0);
     }
 
     //TODO: Decide if prints or not the selected chromosomes
-//    cout << "##SELECTED CHORMOSOMES" << endl;
+//    cout << "##SELECTED CHROMOSOMES" << endl;
 //    for(int i=0; i<selectNum; i++){
 //        Chromosome temp = *selection->getChromosome(i);
 //        cout << "Chromosome (" << i <<")\t-\t";
