@@ -42,7 +42,7 @@ public:
     Genotype operator*(double nun);
     Genotype operator=(double nun);
 private:
-    double min, max, value;
+    double _min, _max, _value;
 };
 
 #endif // GENOTYPE_H

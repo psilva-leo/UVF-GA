@@ -40,7 +40,7 @@ public:
     void evaluate();
     int getGenQty();
     double getFitness();
-    void setFitness(double x);
+    void setFitness(double fitness);
 
 private:
     int _genQty;

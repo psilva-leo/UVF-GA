@@ -29,43 +29,43 @@
 #include <cstdlib>
 
 Genotype::Genotype() {
-    this->value = 0.0;
+    this->_value = 0.0;
 }
 
 Genotype::~Genotype() {
-    this->min = 0.0;
-    this->max = 0.0;
-    this->value = 0.0;
+    this->_min = 0.0;
+    this->_max = 0.0;
+    this->_value = 0.0;
 }
 
 Genotype::Genotype(double min, double max) {
-    this->min = min;
-    this->max = max;
-    this->value = (double)rand()/RAND_MAX;
+    this->_min = min;
+    this->_max = max;
+    this->_value = (double)rand()/RAND_MAX;
 }
 
 double Genotype::getValue() const {
-    return this->value;
+    return this->_value;
 }
 
 void Genotype::setMax(double max) {
-    this->max = max;
+    this->_max = max;
 }
 
 void Genotype::setMin(double min) {
-    this->min = min;
+    this->_min = min;
 }
 
 void Genotype::setValue(double x) {
-    if(x > max) x = max;
-    if(x < min) x = min;
+    if(x > _max) x = _max;
+    if(x < _min) x = _min;
 
-    this->value = x;
+    this->_value = x;
 }
 
 Genotype Genotype::operator*(double nun) {
     Genotype aux(0,0);
-    aux.setValue(this->value*nun);
+    aux.setValue(this->_value*nun);
     return aux;
 }
 

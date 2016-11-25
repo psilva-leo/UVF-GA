@@ -29,6 +29,8 @@
 #include <QMap>
 #include <iomanip>
 
+#include <UVF-GA/simulation/simulation.hh>
+
 /**
  * @brief Creates a population with a number of individuals
  * @param size - Qty of elements inside the populaiton
@@ -59,11 +61,48 @@ void Population::insertChromosome(Chromosome& newChromosome, int& position) {
     this->_pop.insert(position, newChromosome);
 }
 
-//TODO: Population->Evaluate
 void Population::evaluate() {
-    for(int i=0; i<this->_size; i++){
-        this->getChromosome(i)->evaluate();
+
+    QList<UVFParams*> popParams0;
+    QList<SpeedParams*> popParams1;
+
+    // For each chromossome, generate params
+    for(int i=0; i<_size; i++) {
+        // UVF params
+        UVFParams *params1 = new UVFParams();
+        params1->de    = _pop[i].getGen(0)->getValue();
+        params1->kr    = _pop[i].getGen(1)->getValue();
+        params1->dmin  = _pop[i].getGen(2)->getValue();
+        params1->delta = _pop[i].getGen(3)->getValue();
+        params1->k0    = _pop[i].getGen(4)->getValue();
+        popParams0.append(params1);
+
+        // Speed params
+        SpeedParams *params2 = new SpeedParams();
+        params2->maxASpeed = _pop[i].getGen(5)->getValue();
+        params2->maxLSpeed = _pop[i].getGen(6)->getValue();
+        popParams1.append(params2);
     }
+
+    // Simulate population
+    Simulation simul;
+    simul.setPopulationSize(_size);
+    simul.setPopulationParams(popParams0);
+    simul.setPopulationParams(popParams1);
+    simul.run();
+
+    // Get results
+    QList<Results*> results = simul.results();
+
+    // Update population fitness
+    for(int i=0; i<_size; i++) {
+        Results *result = results.at(i);
+
+        // Calc fitness
+        double fitness = 10*result->reachedGoal + 5/result->time;
+        _pop[i].setFitness(fitness);
+    }
+
 }
 
 /**
@@ -98,18 +137,18 @@ Population* Population::selection(QList<Population> populations) {
     }
 
     //TODO: Decide if prints or not the selected chromosomes
-    cout << "##SELECTED CHORMOSOMES" << endl;
-    for(int i=0; i<selectNum; i++){
-        Chromosome temp = *selection->getChromosome(i);
-        cout << "Chromosome (" << i <<")\t-\t";
-        cout << "FITNESS[" << fixed  << setprecision(5) << temp.getFitness() << "]\t";
-        cout << "GEN";
-        for(int j=0; j<GEN_SIZE; j++){
-            cout << "[" << fixed  << setprecision(5) << temp.getGen(j)->getValue() << "]";
-        }
-        cout << endl;
-    }
-    cout << endl;
+//    cout << "##SELECTED CHORMOSOMES" << endl;
+//    for(int i=0; i<selectNum; i++){
+//        Chromosome temp = *selection->getChromosome(i);
+//        cout << "Chromosome (" << i <<")\t-\t";
+//        cout << "FITNESS[" << fixed  << setprecision(5) << temp.getFitness() << "]\t";
+//        cout << "GEN";
+//        for(int j=0; j<GEN_SIZE; j++){
+//            cout << "[" << fixed  << setprecision(5) << temp.getGen(j)->getValue() << "]";
+//        }
+//        cout << endl;
+//    }
+//    cout << endl;
 
     return selection;
 }
@@ -136,8 +175,8 @@ Population Population::crossOver() {
     }
 
     crossOverPop.evaluate();
-    cout << "###CROSSOVER\n";
-    crossOverPop.print();
+//    cout << "###CROSSOVER\n";
+//    crossOverPop.print();
     return crossOverPop;
 }
 
@@ -172,8 +211,8 @@ Population Population::mutation(float tax) {
     }
 
     newPop.evaluate();
-    cout << "###MUTATION\n";
-    newPop.print();
+//    cout << "###MUTATION\n";
+//    newPop.print();
 
     return newPop;
 }

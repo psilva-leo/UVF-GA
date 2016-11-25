@@ -32,7 +32,7 @@
 #define MUT_MAX_LIMIT 2.5
 #define MUT_MIN_LIMIT -2.0
 
-#define GEN_SIZE 4
+#define GEN_SIZE 7
 
 #include <cstdio>
 #include <cstdlib>

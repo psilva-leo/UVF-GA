@@ -60,7 +60,7 @@ void Simulation::run() {
     }
 
     // Create test
-    TestCase *test = new TestCase(100.0, SIMULATION_STEP);
+    TestCase *test = new TestCase(3.0, SIMULATION_STEP);
 
     // Config movement
     test->configMovement(Position(-2.0, 0.0), 0.0, Position(2.0, 2.0), 0, false, false);
@@ -90,7 +90,7 @@ void Simulation::run() {
     }
 
     // Starting case
-    std::cout << "Starting test case #" << _myId << "...\n";
+//    std::cout << "Starting test case #" << _myId << "...\n";
     test->start();
     test->wait();
 
@@ -100,13 +100,13 @@ void Simulation::run() {
     // Simulation time
     if(_myId==0) {
         _timer.stop();
-        std::cout << "total time: " << _timer.timesec() << " seconds\n";
+//        std::cout << "total time: " << _timer.timesec() << " seconds\n";
     }
 
     // Comunication process
     if(_myId == 0){ // Read
         // Write my results
-        struct Results *myResults = new Results;
+        Results *myResults = new Results();
         myResults->time = test->timesec();
         myResults->reachedGoal = test->reachedGoal();
 
@@ -129,8 +129,8 @@ void Simulation::run() {
             // Get message and print
             struct Results *childResult = new Results;
             myfile >> childResult->time >> childResult->reachedGoal;
-            std::cout << "Message from the child #" << i << ": " << childResult->time << " "
-                      << childResult->reachedGoal << std::endl;
+//            std::cout << "Message from the child #" << i << ": " << childResult->time << " "
+//                      << childResult->reachedGoal << std::endl;
 
             // Write child result
             _results.append(childResult);

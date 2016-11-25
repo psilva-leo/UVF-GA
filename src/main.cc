@@ -25,103 +25,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdio>
-#include <ctime>
-#include <cstdlib>
 #include <iostream>
-#include <fstream>
 #include <UVF-GA/geneticalgorithm/population.hh>
-#include <time.h>
-
-#include <QApplication>
-#include <QProcess>
-#include <QList>
-#include <QThread>
-#include <sys/wait.h>
-
-#include <UVF-GA/simulation/player/player.hh>
-#include <UVF-GA/simulation/testcase/testcase.hh>
-#include <UVF-GA/simulation/simulation.hh>
-
-#include <3rdparty/sslworld/sslworld.hh>
-#include <3rdparty/soccerview/soccerview.hh>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define POPSIZE 15
-
-#define SIMULATION_STEP (1/30.0f) // seconds
-
-#define ENABLE_GRAPHICS true
-
-#define SIMULTANEOUS_PROCESS 5
+#define POPULATION_SIZE 10
+#define MUTATION_RATE 0.5
 
 int main(int argc, char *argv[]){
-//    int iteration = 1;
+    int iteration = 1;
 
-//    Population *P = new Population(POPSIZE);
-//    QList<Population> popList;
-//    srand(time(NULL));
+    Population *P = new Population(POPULATION_SIZE);
+    QList<Population> popList;
+    srand(time(NULL));
 
-//    while(iteration < 2){
-//        cout << ">>> ITERATION " << iteration << " <<<" << endl;
-//        cout << "Inital population of Iteration" << endl;
-//        P->print();
-//        Population crossPop = P->crossOver();
-//        Population mutPop = P->mutation(0.5);
-//        popList.clear();
-//        popList.append(crossPop);
-//        popList.append(mutPop);
-//        popList.append(*P);
-//        P = P->selection(popList);
-//        iteration++;
-//        cout << "\n\n\n\n";
-//    }
-
-///   // SoccerView
-//    GLSoccerView view;
-//    if(ENABLE_GRAPHICS) view.show();
-
-//    // Loop interface
-//    if(ENABLE_GRAPHICS) {
-//        app.processEvents();
-//        view.updateDetection(world);
-//    }
-
-//    // Close interface
-//    if(ENABLE_GRAPHICS) view.close();
-
-//    QApplication app(argc, argv);
-
-    // UVF Parameters example
-    QList<UVFParams*> popParams0;
-    for(int i = 0; i < POPSIZE; i++) {
-        UVFParams *specimen = new UVFParams;
-        specimen->de    = 0.150;
-        specimen->kr    = 0.400;
-        specimen->dmin  = 0.005;
-        specimen->delta = 0.120;
-        specimen->k0    = 1.000;
-        popParams0.append(specimen);
+    forever {
+        cout << ">>> ITERATION " << iteration << " <<<" << endl;
+        cout << "Population:" << endl;
+        P->print();
+        Population crossPop = P->crossOver();
+        Population mutPop = P->mutation(MUTATION_RATE);
+        popList.clear();
+        popList.append(crossPop);
+        popList.append(mutPop);
+        popList.append(*P);
+        P = P->selection(popList);
+        iteration++;
+        cout << "\n";
     }
-
-    // Speeds Parameters example
-    QList<SpeedParams*> popParams1;
-    for(int i = 0; i < POPSIZE; i++) {
-        SpeedParams *specimen = new SpeedParams;
-        specimen->maxASpeed = 2.5*PI;
-        specimen->maxLSpeed = 3.0;
-        popParams1.append(specimen);
-    }
-
-    // Simulate one pop
-    Simulation *simul = new Simulation();
-    simul->setPopulationSize(POPSIZE);
-    simul->setPopulationParams(popParams0);
-    simul->setPopulationParams(popParams1);
-    simul->run();
-    QList<Results*> results = simul->results();
-    delete simul;
 
     return 0;
 }
