@@ -32,28 +32,36 @@
 
 #define POPULATION_SIZE 10
 #define MUTATION_RATE 0.5
+#define MAX_ITERATIONS 10
 
 int main(int argc, char *argv[]){
     int iteration = 1;
 
-    Population *P = new Population(POPULATION_SIZE);
+    // Run GA
+    Population *p = new Population(POPULATION_SIZE);
     QList<Population> popList;
     srand(time(NULL));
 
-    forever {
+    while(iteration < MAX_ITERATIONS) {
         cout << ">>> ITERATION " << iteration << " <<<" << endl;
         cout << "Population:" << endl;
-        P->print();
-        Population crossPop = P->crossOver();
-        Population mutPop = P->mutation(MUTATION_RATE);
+        p->print();
+        cout << "\n";
+
+        Population crossPop = p->crossOver();
+        Population mutPop = p->mutation(MUTATION_RATE);
         popList.clear();
         popList.append(crossPop);
         popList.append(mutPop);
-        popList.append(*P);
-        P = P->selection(popList);
+        popList.append(*p);
+        p = p->selection(popList);
+
         iteration++;
-        cout << "\n";
     }
+
+    // Show best result
+    Chromosome better = p->getBetter();
+
 
     return 0;
 }

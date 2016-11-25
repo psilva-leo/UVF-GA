@@ -60,7 +60,7 @@ void Simulation::run() {
     }
 
     // Create test
-    TestCase *test = new TestCase(3.0, SIMULATION_STEP);
+    TestCase *test = new TestCase(5.0, SIMULATION_STEP);
 
     // Config movement
     test->configMovement(Position(-2.0, 0.0), 0.0, Position(2.0, 2.0), 0, false, false);
