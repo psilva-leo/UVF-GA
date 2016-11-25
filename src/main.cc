@@ -35,6 +35,7 @@
 
 #define POPULATION_SIZE 10
 #define MUTATION_RATE 0.5
+#define CROSSOVER_RATE 0.5
 #define MAX_ITERATIONS 5
 
 #define VIEW_STEP (1/30.0f) // seconds
@@ -56,7 +57,7 @@ int main(int argc, char *argv[]){
         pop->print();
         cout << "\n";
 
-        Population crossPop = pop->crossOver();
+        Population crossPop = pop->crossOver(CROSSOVER_RATE);
         Population mutPop = pop->mutation(MUTATION_RATE);
         popList.clear();
         popList.append(crossPop);

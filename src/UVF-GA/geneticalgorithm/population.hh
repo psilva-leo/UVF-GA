@@ -62,11 +62,11 @@ public:
     void print();
 
     // Return better
-    Chromosome* getBetter() const { return _better; }
+    Chromosome* getBetter() { return &_better; }
 
 private:
     int _size;                   /* Population Length */
-    Chromosome *_better;             /* Better Individual of Population */
+    Chromosome _better;             /* Better Individual of Population */
     QList<Chromosome> _pop;
 
 };
