@@ -49,7 +49,7 @@ class Population{
 public:
     Population(int size);
 
-    //Genetic Functions
+    // Genetic Functions
     void evaluate();
     Population crossOver();
     Population mutation(float tax);
@@ -60,6 +60,9 @@ public:
     void insertChromosome(Chromosome& newChromosome, int& position);
     Chromosome* getChromosome(int index);
     void print();
+
+    // Return better
+    Chromosome getBetter() const { return _better; }
 
 private:
     int _size;                   /* Population Length */

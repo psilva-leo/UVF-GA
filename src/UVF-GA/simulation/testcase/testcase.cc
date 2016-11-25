@@ -28,10 +28,9 @@
 #include "testcase.hh"
 #include <iostream>
 
-TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _runTimeoutSec(runTimeoutSec), _simulationStepSec(simulationStepSec) {
+TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _simulationTimeoutSec(runTimeoutSec), _simulationStepSec(simulationStepSec) {
     _world = new SSLWorld();
     _player = new Player(0, _world);
-    _timer = new Timer();
     _reachedGoal = false;
 
     // Default movement
@@ -44,7 +43,6 @@ TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _runTimeoutSe
 TestCase::~TestCase() {
     delete _world;
     delete _player;
-    delete _timer;
 }
 
 QString TestCase::name() {
@@ -63,8 +61,8 @@ void TestCase::initialization() {
     // Remove ball from field
     _world->ball->setBodyPosition(0.0, -10, 0.0);
 
-    // Start timer
-    _timer->start();
+    // Initialize time
+    _time = 0.0f;
 }
 
 void TestCase::loop() {
@@ -74,11 +72,11 @@ void TestCase::loop() {
     // Step world
     _world->step(_simulationStepSec);
 
-    // Update timer
-    _timer->stop();
+    // Update time
+    _time += _simulationStepSec;
 
     // STOP CONDITION: time out
-    if(_timer->timesec() >= _runTimeoutSec) {
+    if(_time >= _simulationTimeoutSec) {
         _reachedGoal = false;
 
         // Stop entity

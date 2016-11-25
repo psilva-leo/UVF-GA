@@ -49,19 +49,19 @@ public:
     void configMaxSpeed(float maxASpeed, float maxLSpeed);
 
     // TestCase returns
-    double timesec() const { return _timer->timesec(); }
+    double timesec() const { return _time; }
     int reachedGoal() const { return _player->hasReachedGoal()? 1 : 0; }
 
 private:
-    const float _runTimeoutSec;
+    const float _simulationTimeoutSec;
     const float _simulationStepSec;
 
     // World access
     SSLWorld *_world;
 
     // TestCase info
-    Timer *_timer;
     bool _reachedGoal;
+    float _time;
 
     // TestCase configuration
     Player *_player;
