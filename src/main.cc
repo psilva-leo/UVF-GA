@@ -116,7 +116,7 @@ int main(int argc, char *argv[]){
 
     // Simulate one pop
     Simulation *simul = new Simulation();
-    simul->setPopulationSize(1);
+    simul->setPopulationSize(POPSIZE);
     simul->setPopulationParams(popParams0);
     simul->setPopulationParams(popParams1);
     simul->run();

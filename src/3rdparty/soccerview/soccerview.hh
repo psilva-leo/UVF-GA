@@ -80,15 +80,15 @@ public:
 	} TeamTypes;
 
 private:
-	static const double minZValue = -10;
-	static const double maxZValue = 10;
-	static const double FieldZ = 1.0;
-	static const double RobotZ = 2.0;
-	static const double BallZ = 3.0;
-	static const int PreferedWidth = 1024;
-	static const int PreferedHeight = 768;
-	static const double MinRedrawInterval = 0.01; ///Minimum time between graphics updates (limits the fps)
-	static const int unknownRobotID = -1;
+    static constexpr double minZValue = -10;
+    static constexpr double maxZValue = 10;
+    static constexpr double FieldZ = 1.0;
+    static constexpr double RobotZ = 2.0;
+    static constexpr double BallZ = 3.0;
+    static constexpr int PreferedWidth = 1024;
+    static constexpr int PreferedHeight = 768;
+    static constexpr double MinRedrawInterval = 0.01; ///Minimum time between graphics updates (limits the fps)
+    static constexpr int unknownRobotID = -1;
 
 	QVector<SoccerViewRobot> robots;
 	QVector<vector2d> robotsVelocities;

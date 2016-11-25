@@ -84,7 +84,7 @@ private:
   static void tessEndCB();
   static void tessVertexCB(const GLvoid *data);
   static void tessErrorCB(GLenum errorCode);
-  static const double FontRenderSize = 1000.0;
+  static constexpr double FontRenderSize = 1000.0;
 };
 
 #endif //GL_TEXT_H
