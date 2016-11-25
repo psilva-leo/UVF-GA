@@ -158,18 +158,44 @@ Population* Population::selection(QList<Population> populations) {
  * the second parent gives one more Gene.
  * @return Population with crossover with size half of original.
  */
-Population Population::crossOver() {
-    Population crossOverPop = Population((this->_size)/2);
+Population Population::crossOver(double rate) {
+    Population crossOverPop = Population(_size);
     int parent1GenesNum = this->getChromosome(0)->getGenQty()/2;
 
     for(int i=0; i<crossOverPop._size; i++){
-        for(int j = 0; j<this->getChromosome(0)->getGenQty(); j++){
-            if(j < parent1GenesNum){
-                Genotype genAux = *this->getChromosome(2*i)->getGen(j);
-                crossOverPop.getChromosome(i)->getGen(j)->setValue(genAux.getValue());
-            }else{
-                Genotype genAux = *this->getChromosome((2*i)+1)->getGen(j);
-                crossOverPop.getChromosome(i)->getGen(j)->setValue(genAux.getValue());
+        if(rate > (rand()%1)){
+            // First child
+            for(int j = 0; j<this->getChromosome(0)->getGenQty(); j++){
+                if(j < parent1GenesNum){
+                    Genotype genAux = *this->getChromosome(2*i)->getGen(j);
+                    crossOverPop.getChromosome(i)->getGen(j)->setValue(genAux.getValue());
+                }else{
+                    Genotype genAux = *this->getChromosome((2*i)+1)->getGen(j);
+                    crossOverPop.getChromosome(i)->getGen(j)->setValue(genAux.getValue());
+                }
+            }
+
+            // Second child
+            for(int j = 0; j<this->getChromosome(0)->getGenQty(); j++){
+                if(j < parent1GenesNum){
+                    Genotype genAux = *this->getChromosome((2*i)+1)->getGen(j);
+                    crossOverPop.getChromosome(i)->getGen(j)->setValue(genAux.getValue());
+                }else{
+                    Genotype genAux = *this->getChromosome(2*i)->getGen(j);
+                    crossOverPop.getChromosome(i)->getGen(j)->setValue(genAux.getValue());
+                }
+            }
+        }else{
+            // First child
+            Chromosome chromAux1 = *this->getChromosome(2*i);
+            for(int j=0; j<this->getChromosome(0)->getGenQty(); j++){
+                crossOverPop.getChromosome(i)->getGen(j)->setValue(chromAux1.getGen(j)->getValue());
+            }
+
+            // Second child
+            Chromosome chromAux2 = *this->getChromosome(2*i);
+            for(int j=0; j<this->getChromosome(0)->getGenQty(); j++){
+                crossOverPop.getChromosome(i)->getGen(j)->setValue(chromAux2.getGen(j)->getValue());
             }
         }
     }

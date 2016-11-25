@@ -51,7 +51,7 @@ public:
 
     // Genetic Functions
     void evaluate();
-    Population crossOver();
+    Population crossOver(double rate);
     Population mutation(float tax);
     Population* selection(QList<Population> populations);
 
