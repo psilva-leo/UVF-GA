@@ -33,6 +33,7 @@ TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _runTimeoutSe
     _player = new Player(0, _world);
     _timer = new Timer();
     _reachedGoal = false;
+    _distance = 100.0;
 
     // Default movement
     configMovement(Position(0.0, 0.0), 0.0, Position(1.0, 1.0), PI/4, false, false);
@@ -80,6 +81,7 @@ void TestCase::loop() {
     // STOP CONDITION: time out
     if(_timer->timesec() >= _runTimeoutSec) {
         _reachedGoal = false;
+        _distance = Utils::distance(_player->position(), _destination);
 
         // Stop entity
         this->stopEntity();
@@ -87,7 +89,8 @@ void TestCase::loop() {
 
     // STOP CONDITION: player reached goal
     if(_player->hasReachedGoal()) {
-        _reachedGoal = true;
+        _reachedGoal = true;        
+        _distance = Utils::distance(_player->position(), _destination);
 
         // Stop entity
         this->stopEntity();

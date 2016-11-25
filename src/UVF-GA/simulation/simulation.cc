@@ -108,6 +108,7 @@ void Simulation::run() {
         // Write my results
         Results *myResults = new Results();
         myResults->time = test->timesec();
+        myResults->distance = test->distanceToGoal();
         myResults->reachedGoal = test->reachedGoal();
 
         _results.append(myResults);
@@ -128,7 +129,7 @@ void Simulation::run() {
 
             // Get message and print
             struct Results *childResult = new Results;
-            myfile >> childResult->time >> childResult->reachedGoal;
+            myfile >> childResult->time >> childResult->reachedGoal >> childResult->distance;
 //            std::cout << "Message from the child #" << i << ": " << childResult->time << " "
 //                      << childResult->reachedGoal << std::endl;
 
@@ -156,10 +157,11 @@ void Simulation::run() {
         // Struct
         struct Results *myResults = new Results;
         myResults->time = test->timesec();
+        myResults->distance = test->distanceToGoal();
         myResults->reachedGoal = test->reachedGoal();
 
         // Write
-        myfile << myResults->time << ' ' << myResults->reachedGoal;
+        myfile << myResults->time << ' ' << myResults->reachedGoal << ' ' << myResults->distance;
 
         // Close file
         myfile.close();

@@ -50,6 +50,7 @@ public:
 
     // TestCase returns
     double timesec() const { return _timer->timesec(); }
+    double distanceToGoal() const { return _distance; }
     int reachedGoal() const { return _player->hasReachedGoal()? 1 : 0; }
 
 private:
@@ -62,6 +63,7 @@ private:
     // TestCase info
     Timer *_timer;
     bool _reachedGoal;
+    float _distance;
 
     // TestCase configuration
     Player *_player;
