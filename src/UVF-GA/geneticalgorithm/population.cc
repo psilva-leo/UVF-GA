@@ -132,8 +132,8 @@ Population* Population::selection(QList<Population> populations) {
 
     // TODO: Should this be here?
     // Selecting best chromosome
-    if(this->_better->getFitness() < selection->getChromosome(0)->getFitness()){
-        this->_better = selection->getChromosome(0);
+    if(this->_better.getFitness() < selection->getChromosome(0)->getFitness()){
+        this->_better = *selection->getChromosome(0);
     }
 
     //TODO: Decide if prints or not the selected chromosomes
