@@ -50,6 +50,7 @@ public:
 
     // TestCase returns
     double timesec() const { return _time; }
+    double distanceToGoal() const { return _distance; }
     int reachedGoal() const { return _player->hasReachedGoal()? 1 : 0; }
 
     // External access
@@ -64,8 +65,9 @@ private:
     SSLWorld *_world;
 
     // TestCase info
-    bool _reachedGoal;
     float _time;
+    bool _reachedGoal;
+    float _distance;
 
     // TestCase configuration
     Player *_player;
