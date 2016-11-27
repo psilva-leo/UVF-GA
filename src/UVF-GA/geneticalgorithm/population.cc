@@ -35,7 +35,7 @@
  * @brief Creates a population with a number of individuals
  * @param size - Qty of elements inside the populaiton
  */
-Population::Population(int size) : _better(size) {
+Population::Population(int size) : _better(GEN_SIZE) {
     this->_size = 0;
 
     for(int i=0; i<size; i++){
@@ -133,7 +133,15 @@ Population* Population::selection(QList<Population> populations) {
     // TODO: Should this be here?
     // Selecting best chromosome
     if(this->_better.getFitness() < selection->getChromosome(0)->getFitness()){
-        this->_better = *selection->getChromosome(0);
+        selection->getBetter()->setFitness(selection->getChromosome(0)->getFitness());
+        for(int i=0; i<_better.getGenQty(); i++){
+            selection->getBetter()->getGen(i)->setValue(selection->getChromosome(0)->getGen(i)->getValue());
+        }
+    }else{
+        selection->getBetter()->setFitness(_better.getFitness());
+        for(int i=0; i<_better.getGenQty(); i++){
+            selection->getBetter()->getGen(i)->setValue(_better.getGen(i)->getValue());
+        }
     }
 
     //TODO: Decide if prints or not the selected chromosomes
@@ -162,7 +170,7 @@ Population Population::crossOver(double rate) {
     Population crossOverPop = Population(_size);
     int parent1GenesNum = this->getChromosome(0)->getGenQty()/2;
 
-    for(int i=0; i<crossOverPop._size; i++){
+    for(int i=0; i<crossOverPop._size; i+=2){
         if(rate > (((double) rand() / (RAND_MAX)))){
             Chromosome chromAux1 = *this->getChromosome(rand()%_size);
             Chromosome chromAux2 = *this->getChromosome(rand()%_size);
@@ -179,9 +187,9 @@ Population Population::crossOver(double rate) {
             // Second child
             for(int j = 0; j<this->getChromosome(0)->getGenQty(); j++){
                 if(j < parent1GenesNum){
-                    crossOverPop.getChromosome(i)->getGen(j)->setValue(chromAux2.getGen(j)->getValue());
+                    crossOverPop.getChromosome(i+1)->getGen(j)->setValue(chromAux2.getGen(j)->getValue());
                 }else{
-                    crossOverPop.getChromosome(i)->getGen(j)->setValue(chromAux1.getGen(j)->getValue());
+                    crossOverPop.getChromosome(i+1)->getGen(j)->setValue(chromAux1.getGen(j)->getValue());
                 }
             }
         }else{
@@ -194,7 +202,7 @@ Population Population::crossOver(double rate) {
             // Second child
             Chromosome chromAux2 = *this->getChromosome(rand()%_size);
             for(int j=0; j<this->getChromosome(0)->getGenQty(); j++){
-                crossOverPop.getChromosome(i)->getGen(j)->setValue(chromAux2.getGen(j)->getValue());
+                crossOverPop.getChromosome(i+1)->getGen(j)->setValue(chromAux2.getGen(j)->getValue());
             }
         }
     }
