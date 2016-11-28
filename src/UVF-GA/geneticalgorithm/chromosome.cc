@@ -31,10 +31,18 @@ Chromosome::Chromosome(int genQty) {
     this->_genQty = genQty;
     this->_fitness = 0.0;
 
-    // TODO: Adjust mins e maxs
+    // Adjust mins
     for(int i=0; i<genQty; i++) {
-        genMaxs.append(5.0);
         genMins.append(0.01);
+    }
+
+    // Adjust maxs
+    for(int i=0; i<genQty; i++){
+        if(i<=4){
+            genMaxs.append(1.0);
+        }else{
+            genMaxs.append(5.0);
+        }
     }
 
     for(int i=0; i<genQty; i++) {

@@ -30,19 +30,23 @@
 #include <UVF-GA/geneticalgorithm/population.hh>
 #include <3rdparty/soccerview/soccerview.hh>
 #include <UVF-GA/simulation/testcase/testcase.hh>
+# include <time.h>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define POPULATION_SIZE 10
+#define POPULATION_SIZE 50
 #define MUTATION_RATE 0.5
 #define CROSSOVER_RATE 0.5
-#define MAX_ITERATIONS 5
+#define MAX_ITERATIONS 20
 
 #define VIEW_STEP (1/30.0f) // seconds
 
 int main(int argc, char *argv[]){
     srand(time(NULL));
     int iteration = 1;
+
+    time_t start;
+    time(&start);
 
     // Run GA
     cout << "Generating initial random population...\n";
@@ -52,7 +56,7 @@ int main(int argc, char *argv[]){
     pop->evaluate();
 
     QList<Population> popList;
-    while(iteration < MAX_ITERATIONS) {
+    while(iteration <= MAX_ITERATIONS) {
         cout << ">>> ITERATION " << iteration << " <<<" << endl;
         pop->print();
         cout << "\n";
@@ -68,6 +72,10 @@ int main(int argc, char *argv[]){
         iteration++;
     }
 
+    // Last Population
+    cout << "\n Last Population" << endl;
+    pop->print();
+
     // Get better result
     Chromosome *better = pop->getBetter();
     double de    = better->getGen(0)->getValue();
@@ -77,6 +85,13 @@ int main(int argc, char *argv[]){
     double k0    = better->getGen(4)->getValue();
     double maxASpeed = better->getGen(5)->getValue();
     double maxLSpeed = better->getGen(6)->getValue();
+
+    // Print
+    cout << "de: " << de << "\nkr: " << kr << "\ndmin: " << dmin << "\ndelta: " << delta << "\nk0: " << k0 << "\nmaxASpeed: " << maxASpeed << "\nmaxLSpeed: " << maxLSpeed << endl;
+    cout << "Fitness: " << better->getFitness() << endl;
+    time_t end;
+    time(&end);
+    cout << "\n>>Execution time: " << ((double) (end - start))/60 << " min" << endl;
 
     // Create test case with better result
     TestCase test(10.0, VIEW_STEP);

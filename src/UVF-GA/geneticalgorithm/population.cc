@@ -216,6 +216,7 @@ Population Population::crossOver(double rate) {
 Population Population::mutation(float tax) {
     int qtyMuted = (int) floor((this->_pop[0].getGenQty())*tax);
     Population newPop = Population(this->_size);
+    double step = 0.03;
 
     // Go over the population chromosome by chromosome
     for(int i=0; i<this->_size; i++){
@@ -234,7 +235,10 @@ Population Population::mutation(float tax) {
         // Mutate gene
         for(int j=0; j<_pop[0].getGenQty(); j++){
             if(mutedId.contains(j)){
-                double value = this->_pop[i].getGen(j)->getValue()*Utils::randf(MUT_MAX_LIMIT, MUT_MIN_LIMIT);
+                if(0.5 > (((double) rand() / (RAND_MAX)))){
+                    step *= -1;
+                }
+                double value = this->_pop[i].getGen(j)->getValue()+step;
                 newPop.getChromosome(i)->getGen(j)->setValue(value);
             }else{
                 double value = this->_pop[i].getGen(j)->getValue();
