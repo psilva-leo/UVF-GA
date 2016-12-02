@@ -34,10 +34,10 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define POPULATION_SIZE 50
+#define POPULATION_SIZE 5
 #define MUTATION_RATE 0.5
 #define CROSSOVER_RATE 0.5
-#define MAX_ITERATIONS 20
+#define MAX_ITERATIONS 2
 
 #define VIEW_STEP (1/30.0f) // seconds
 
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
         cout << "\n";
 
         Population crossPop = pop->crossOver(CROSSOVER_RATE);
-        Population mutPop = pop->mutation(MUTATION_RATE);
+        Population mutPop = crossPop.mutation(MUTATION_RATE);
         popList.clear();
         popList.append(crossPop);
         popList.append(mutPop);

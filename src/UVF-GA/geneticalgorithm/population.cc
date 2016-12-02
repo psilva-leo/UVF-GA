@@ -185,11 +185,13 @@ Population Population::crossOver(double rate) {
             }
 
             // Second child
-            for(int j = 0; j<this->getChromosome(0)->getGenQty(); j++){
-                if(j < parent1GenesNum){
-                    crossOverPop.getChromosome(i+1)->getGen(j)->setValue(chromAux2.getGen(j)->getValue());
-                }else{
-                    crossOverPop.getChromosome(i+1)->getGen(j)->setValue(chromAux1.getGen(j)->getValue());
+            if(i+1 < _size){
+                for(int j = 0; j<this->getChromosome(0)->getGenQty(); j++){
+                    if(j < parent1GenesNum){
+                        crossOverPop.getChromosome(i+1)->getGen(j)->setValue(chromAux2.getGen(j)->getValue());
+                    }else{
+                        crossOverPop.getChromosome(i+1)->getGen(j)->setValue(chromAux1.getGen(j)->getValue());
+                    }
                 }
             }
         }else{
@@ -200,9 +202,11 @@ Population Population::crossOver(double rate) {
             }
 
             // Second child
-            Chromosome chromAux2 = *this->getChromosome(rand()%_size);
-            for(int j=0; j<this->getChromosome(0)->getGenQty(); j++){
-                crossOverPop.getChromosome(i+1)->getGen(j)->setValue(chromAux2.getGen(j)->getValue());
+            if(i+1 < _size){
+                Chromosome chromAux2 = *this->getChromosome(rand()%_size);
+                for(int j=0; j<this->getChromosome(0)->getGenQty(); j++){
+                    crossOverPop.getChromosome(i+1)->getGen(j)->setValue(chromAux2.getGen(j)->getValue());
+                }
             }
         }
     }
