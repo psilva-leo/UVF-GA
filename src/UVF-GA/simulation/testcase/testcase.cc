@@ -32,7 +32,8 @@ TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _simulationTi
     _world = new SSLWorld();
     _player = new Player(0, _world);
     _reachedGoal = false;
-    _distance = 100.0;
+    _linError = 100.0;
+    _angError = 100.0;
 
     // Default movement
     configMovement(Position(0.0, 0.0), 0.0, Position(1.0, 1.0), PI/4, false, false);
@@ -91,7 +92,8 @@ void TestCase::iterate(float step) {
     // STOP CONDITION: time out
     if(_time >= _simulationTimeoutSec) {
         _reachedGoal = false;
-        _distance = Utils::distance(_player->position(), _destination);
+        _linError = Utils::distance(_player->position(), _destination);
+        _angError = fabs(_player->orientation() - _targetAngle);
 
         // Stop entity
         this->stopEntity();
@@ -100,7 +102,8 @@ void TestCase::iterate(float step) {
     // STOP CONDITION: player reached goal
     if(_player->hasReachedGoal()) {
         _reachedGoal = true;
-        _distance = Utils::distance(_player->position(), _destination);
+        _linError = Utils::distance(_player->position(), _destination);
+        _angError = fabs(_player->orientation() - _targetAngle);
 
         // Stop entity
         this->stopEntity();

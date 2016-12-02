@@ -50,7 +50,8 @@ public:
 
     // TestCase returns
     double timesec() const { return _time; }
-    double distanceToGoal() const { return _distance; }
+    double linearError() const { return _linError; }
+    double angularError() const { return _angError; }
     int reachedGoal() const { return _player->hasReachedGoal()? 1 : 0; }
 
     // External access
@@ -72,7 +73,8 @@ private:
     // TestCase info
     float _time;
     bool _reachedGoal;
-    float _distance;
+    float _linError;
+    float _angError;
 
     // TestCase configuration
     Player *_player;
