@@ -98,6 +98,10 @@ int main(int argc, char *argv[]){
     test.configUVFParams(de, kr, dmin, delta, k0);
     test.configMaxSpeed(maxASpeed, maxLSpeed);
 
+    test.configMovement(Position(-2.0, 0.0), Utils::toRad(90), Position(2.0, 2.0), 0, false, false);
+    test.configACtrParams(2.0, 0.0, 0.0, 20.0);
+    test.configLCtrParams(1.5, 0.0, 0.0, 0.0);
+
     // Get access to player and world
     Player *player = test.player();
     SSLWorld *world = test.world();

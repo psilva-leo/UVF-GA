@@ -31,6 +31,7 @@
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 #define LINEAR_ERROR 0.04f
+#define ANGULAR_ERROR Utils::toRad(4)
 
 Player::Player(int id, SSLWorld *world){
     _id = id;
@@ -39,8 +40,8 @@ Player::Player(int id, SSLWorld *world){
 
     // Create navigation
     _nav = new Navigation(this, world);
-    _nav->setLinearPIDParameters(1.0, 0.0, 0.0, 0.0);
-    _nav->setAngularPIDParameters(1.0, 0.0, 0.0, 0.0);
+    _nav->setLinearPIDParameters(1.5, 0.0, 0.0, 0.0);
+    _nav->setAngularPIDParameters(1.5, 0.0, 0.0, 0.0);
     _nav->setMaxLSpeed(3.0);
     _nav->setMaxASpeed(4*PI);
 }
@@ -77,7 +78,7 @@ void Player::goToLookTo(Position desiredPos, float angleToLook, bool avoidRobots
     float w = _nav->getAngularSpeed(aError);
 
     // Set command
-    if(Utils::distance(position(), desiredPos) <= LINEAR_ERROR)
+    if(lError <= LINEAR_ERROR && fabs(aError) <= ANGULAR_ERROR)
         idle();
     else
         setSpeed(x, y, w);
