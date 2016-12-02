@@ -34,7 +34,7 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define POPULATION_SIZE 6
+#define POPULATION_SIZE 10
 #define MUTATION_RATE 0.5
 #define CROSSOVER_RATE 0.5
 #define MAX_ITERATIONS 4
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]){
     test.configUVFParams(de, kr, dmin, delta, k0);
     test.configMaxSpeed(maxASpeed, maxLSpeed);
 
-    test.configMovement(Position(-2.0, 0.0), Utils::toRad(90), Position(2.0, 2.0), 0, false, false);
+    test.configMovement(Position(-2.0, 0.0), Utils::toRad(120), Position(2.0, 2.0), 0, false, false);
     test.configACtrParams(2.0, 0.0, 0.0, 20.0);
     test.configLCtrParams(1.5, 0.0, 0.0, 0.0);
 
