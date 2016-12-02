@@ -67,8 +67,8 @@ int main(int argc, char *argv[]){
         popList.clear();
         popList.append(crossPop);
         popList.append(mutPop);
-        Population selectoin_old = pop->selection_old(OLD_POP_SLECTION_RATE*POPULATION_SIZE);
-        popList.append(selectoin_old);
+//        Population selection_old = pop->selection_old(OLD_POP_SLECTION_RATE*POPULATION_SIZE);
+//        popList.append(selectoin_old);
         pop = pop->selection(popList);
 
         iteration++;
