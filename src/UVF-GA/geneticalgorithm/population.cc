@@ -145,7 +145,6 @@ Population* Population::selection(QList<Population> populations) {
         }
     }
 
-    //TODO: Decide if prints or not the selected chromosomes
 //    cout << "##SELECTED CHROMOSOMES" << endl;
 //    for(int i=0; i<selectNum; i++){
 //        Chromosome temp = *selection->getChromosome(i);
@@ -160,6 +159,21 @@ Population* Population::selection(QList<Population> populations) {
 //    cout << endl;
 
     return selection;
+}
+
+Population Population::selection_old(int size){
+    Population selection_old = Population(size);
+    for(int i=0; i<size; i++){
+        for(int j=0; j<selection_old.getChromosome(0)->getGenQty(); j++){
+            selection_old.getChromosome(i)->getGen(j)->setValue(this->getChromosome(i)->getGen(j)->getValue());
+        }
+        selection_old.getChromosome(i)->setFitness(this->getChromosome(i)->getFitness());
+    }
+
+    cout << "PRINT!!!" << endl;
+    this->print();
+    selection_old.print();
+    return selection_old;
 }
 
 /**

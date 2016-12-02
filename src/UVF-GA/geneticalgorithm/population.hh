@@ -53,6 +53,7 @@ public:
     void evaluate();
     Population crossOver(double rate);
     Population mutation(float tax);
+    Population selection_old(int size);
     Population* selection(QList<Population> populations);
 
     // Other Functins

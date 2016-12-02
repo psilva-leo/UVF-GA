@@ -34,10 +34,11 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define POPULATION_SIZE 10
+#define POPULATION_SIZE 15
 #define MUTATION_RATE 0.5
 #define CROSSOVER_RATE 0.5
-#define MAX_ITERATIONS 4
+#define MAX_ITERATIONS 100
+#define OLD_POP_SLECTION_RATE 0.3
 
 #define VIEW_STEP (1/60.0f) // seconds
 
@@ -66,7 +67,8 @@ int main(int argc, char *argv[]){
         popList.clear();
         popList.append(crossPop);
         popList.append(mutPop);
-        popList.append(*pop);
+        Population selectoin_old = pop->selection_old(OLD_POP_SLECTION_RATE*POPULATION_SIZE);
+        popList.append(selectoin_old);
         pop = pop->selection(popList);
 
         iteration++;
