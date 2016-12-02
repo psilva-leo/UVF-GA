@@ -16,6 +16,7 @@ struct SpeedParams {
 
 struct Results {
     float time;
+    float angularTime;
     float linearError;
     float angularError;
     int reachedGoal;

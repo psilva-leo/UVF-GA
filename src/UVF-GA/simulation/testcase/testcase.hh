@@ -50,6 +50,7 @@ public:
 
     // TestCase returns
     double timesec() const { return _time; }
+    double angularTimesec() const { return _angTime; }
     double linearError() const { return _linError; }
     double angularError() const { return _angError; }
     int reachedGoal() const { return _player->hasReachedGoal()? 1 : 0; }
@@ -72,9 +73,12 @@ private:
 
     // TestCase info
     float _time;
+    float _angTime;
     bool _reachedGoal;
     float _linError;
     float _angError;
+    Timer _timer;
+    bool _hasReachedTargetAngle;
 
     // TestCase configuration
     Player *_player;
