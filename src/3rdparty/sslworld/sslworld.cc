@@ -99,7 +99,7 @@ bool ballCallBack(dGeomID o1,dGeomID o2,PSurface* s) {
 
 SSLWorld::SSLWorld() {
     cfg = new FieldConfig();
-    RobotsFomation form(2);
+    RobotsFomation form(1);
 
     _w = this;
 

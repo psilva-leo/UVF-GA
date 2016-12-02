@@ -37,7 +37,7 @@
 #define POPULATION_SIZE 15
 #define MUTATION_RATE 0.5
 #define CROSSOVER_RATE 0.5
-#define MAX_ITERATIONS 100
+#define MAX_ITERATIONS 20
 #define OLD_POP_SLECTION_RATE 0.3
 
 #define VIEW_STEP (1/60.0f) // seconds
@@ -67,8 +67,8 @@ int main(int argc, char *argv[]){
         popList.clear();
         popList.append(crossPop);
         popList.append(mutPop);
-        Population selectoin_old = pop->selection_old(OLD_POP_SLECTION_RATE*POPULATION_SIZE);
-        popList.append(selectoin_old);
+//        Population selectoin_old = pop->selection_old(OLD_POP_SLECTION_RATE*POPULATION_SIZE);
+//        popList.append(selectoin_old);
         pop = pop->selection(popList);
 
         iteration++;
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]){
     test.configUVFParams(de, kr, dmin, delta, k0);
     test.configMaxSpeed(maxASpeed, maxLSpeed);
 
-    test.configMovement(Position(-2.0, 0.0), Utils::toRad(120), Position(2.0, 2.0), 0, false, false);
+    test.configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);
     test.configACtrParams(2.0, 0.0, 0.0, 20.0);
     test.configLCtrParams(1.5, 0.0, 0.0, 0.0);
 
