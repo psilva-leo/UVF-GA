@@ -57,6 +57,11 @@ public:
     Player* player() const { return _player; }
     SSLWorld* world() const { return _world; }
 
+    // Manual iteration
+    void initialize();
+    void iterate(float step);
+    void finalize();
+
 private:
     const float _simulationTimeoutSec;
     const float _simulationStepSec;

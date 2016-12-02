@@ -51,6 +51,18 @@ QString TestCase::name() {
 }
 
 void TestCase::initialization() {
+    initialize();
+}
+
+void TestCase::loop() {
+    iterate(_simulationStepSec);
+}
+
+void TestCase::finalization() {
+    finalize();
+}
+
+void TestCase::initialize() {
     // Set robot origin position and angle
     _world->robots[0]->setXY(_origin.x(), _origin.y());
     _world->robots[0]->setDir(Utils::toRad(_originAngle));
@@ -66,15 +78,15 @@ void TestCase::initialization() {
     _time = 0.0f;
 }
 
-void TestCase::loop() {
+void TestCase::iterate(float step) {
     // Go to look to
     _player->goToLookTo(_destination, _targetAngle, _avoidRobots, _avoidBall);
 
     // Step world
-    _world->step(_simulationStepSec);
+    _world->step(step);
 
     // Update time
-    _time += _simulationStepSec;
+    _time += step;
 
     // STOP CONDITION: time out
     if(_time >= _simulationTimeoutSec) {
@@ -87,7 +99,7 @@ void TestCase::loop() {
 
     // STOP CONDITION: player reached goal
     if(_player->hasReachedGoal()) {
-        _reachedGoal = true;        
+        _reachedGoal = true;
         _distance = Utils::distance(_player->position(), _destination);
 
         // Stop entity
@@ -95,7 +107,7 @@ void TestCase::loop() {
     }
 }
 
-void TestCase::finalization() {
+void TestCase::finalize() {
 
 }
 

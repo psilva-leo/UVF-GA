@@ -37,9 +37,9 @@
 #define POPULATION_SIZE 5
 #define MUTATION_RATE 0.5
 #define CROSSOVER_RATE 0.5
-#define MAX_ITERATIONS 2
+#define MAX_ITERATIONS 4
 
-#define VIEW_STEP (1/30.0f) // seconds
+#define VIEW_STEP (1/60.0f) // seconds
 
 int main(int argc, char *argv[]){
     srand(time(NULL));
@@ -107,11 +107,15 @@ int main(int argc, char *argv[]){
     GLSoccerView view;
     view.show();
 
-    test.start();
+    test.initialize();
     while(player->hasReachedGoal()==false) {
         app.processEvents();
         view.updateDetection(world);
+
+        test.iterate(VIEW_STEP);
+        QThread::msleep(VIEW_STEP*1E3f);
     }
+    test.finalize();
 
     // Stop
     app.exec();
