@@ -66,7 +66,7 @@ void TestCase::finalization() {
 void TestCase::initialize() {
     // Set robot origin position and angle
     _world->robots[0]->setXY(_origin.x(), _origin.y());
-    _world->robots[0]->setDir(Utils::toRad(_originAngle));
+    _world->robots[0]->setDir(Utils::toDeg(_originAngle));
 
     // Remove all other robots from field
     for(int i=1; i<2*ROBOT_COUNT; i++)

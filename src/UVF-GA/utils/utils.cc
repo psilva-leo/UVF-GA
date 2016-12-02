@@ -58,9 +58,9 @@ float Utils::distance(const Position &p1, const Position &p2) {
 }
 
 float Utils::toRad(float deg) {
-    return deg * (PI/180);
+    return deg * (PI/180.0f);
 }
 
 float Utils::toDeg(float rad) {
-    return rad * (180/PI);
+    return rad * (180.0f/PI);
 }

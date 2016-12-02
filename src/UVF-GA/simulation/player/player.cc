@@ -30,7 +30,7 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define LINEAR_ERROR 0.04f
+#define LINEAR_ERROR 0.05f
 #define ANGULAR_ERROR Utils::toRad(4)
 
 Player::Player(int id, SSLWorld *world){
