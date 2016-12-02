@@ -170,8 +170,8 @@ Population Population::selection_old(int size){
         selection_old.getChromosome(i)->setFitness(this->getChromosome(i)->getFitness());
     }
 
-    cout << "PRINT!!!" << endl;
-    this->print();
+//    cout << "PRINT!!!" << endl;
+//    this->print();
     selection_old.print();
     return selection_old;
 }
@@ -252,7 +252,11 @@ Population Population::mutation(float tax) {
 
         // Mutate gene
         for(int j=0; j<_pop[0].getGenQty(); j++){
-            double step = ((double) rand() / (RAND_MAX))*0.3;
+            double step = 0.0;
+            while(step < 0.05){
+                step = ((double) rand() / (RAND_MAX))*0.3;
+            }
+
             if(mutedId.contains(j)){
                 if(0.7 > (((double) rand() / (RAND_MAX)))){
                     step *= -1;
@@ -267,6 +271,7 @@ Population Population::mutation(float tax) {
     }
 
     newPop.evaluate();
+//    this->print();
 //    cout << "###MUTATION\n";
 //    newPop.print();
 
