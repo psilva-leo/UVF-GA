@@ -108,6 +108,7 @@ void Simulation::run() {
         // Write my results
         Results *myResults = new Results();
         myResults->time = test->timesec();
+        myResults->angularTime = test->angularTimesec();
         myResults->linearError = test->linearError();
         myResults->angularError = test->angularError();
         myResults->reachedGoal = test->reachedGoal();
@@ -130,7 +131,7 @@ void Simulation::run() {
 
             // Get message and print
             struct Results *childResult = new Results;
-            myfile >> childResult->time >> childResult->reachedGoal >>
+            myfile >> childResult->time >> childResult->angularTime >> childResult->reachedGoal >>
                     childResult->linearError >> childResult->angularError;
 //            std::cout << "Message from the child #" << i << ": " << childResult->time << " "
 //                      << childResult->reachedGoal << std::endl;
@@ -159,12 +160,13 @@ void Simulation::run() {
         // Struct
         struct Results *myResults = new Results;
         myResults->time = test->timesec();
+        myResults->angularTime = test->angularTimesec();
         myResults->reachedGoal = test->reachedGoal();
         myResults->linearError = test->linearError();
         myResults->angularError = test->angularError();
 
         // Write
-        myfile << myResults->time << ' ' << myResults->reachedGoal << ' ' <<
+        myfile << myResults->time << ' ' << myResults->angularTime << ' ' << myResults->reachedGoal << ' ' <<
                   myResults->linearError << ' ' << myResults->angularError;
 
         // Close file

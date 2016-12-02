@@ -100,7 +100,7 @@ void Population::evaluate() {
 
         // Calc fitness
         double fitness = 10*result->reachedGoal + 3/(0.3 + 2*result->angularError) +
-                10/result->time + 3/(0.2 + result->linearError);
+                10/result->time + 3/(0.2 + result->linearError) + 5/(0.2 + result->angularTime);
         _pop[i].setFitness(fitness);
     }
 
