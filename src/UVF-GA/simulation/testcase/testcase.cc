@@ -74,8 +74,8 @@ void TestCase::initialize() {
     _world->robots[0]->setDir(Utils::toDeg(_originAngle));
 
     // Remove all other robots from field
-    for(int i=1; i<2*ROBOT_COUNT; i++)
-        _world->robots[i]->setXY(0.3*i, -10);
+//    for(int i=1; i<2*ROBOT_COUNT; i++)
+//        _world->robots[i]->setXY(0.3*i, -10);
 
     // Remove ball from field
     _world->ball->setBodyPosition(0.0, -10, 0.0);

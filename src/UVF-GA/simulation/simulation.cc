@@ -63,7 +63,7 @@ void Simulation::run() {
     TestCase *test = new TestCase(5.0, SIMULATION_STEP);
 
     // Config movement
-    test->configMovement(Position(-2.0, 0.0), Utils::toRad(120), Position(2.0, 2.0), 0, false, false);
+    test->configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);
 
     // Config angular controller
     test->configACtrParams(2.0, 0.0, 0.0, 20.0);
