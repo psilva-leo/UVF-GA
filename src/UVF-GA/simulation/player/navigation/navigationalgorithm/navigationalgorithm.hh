@@ -40,7 +40,7 @@ public:
     void runNavigationAlgorithm();
 
     // Config
-    virtual void setParameters(double de, double kr, double dmin, double delta, double k0) = 0;
+    virtual void setParameters(double de, double kr, double dmin, double delta) = 0;
 
     // Reset algorithm
     virtual void reset() = 0;

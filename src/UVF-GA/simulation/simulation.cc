@@ -30,7 +30,7 @@
 #include <unistd.h>
 
 Simulation::Simulation() {
-    _numTests = 10;
+    _numTests = 0;
     _myId = 0;
 }
 
@@ -60,7 +60,7 @@ void Simulation::run() {
     }
 
     // Create test
-    TestCase *test = new TestCase(5.0, SIMULATION_STEP);
+    TestCase *test = new TestCase(SIMULATION_TIMEOUT, SIMULATION_STEP);
 
     // Config movement
     test->configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);
@@ -84,10 +84,9 @@ void Simulation::run() {
         test->configUVFParams(_UVFParams.at(_myId)->de,
                               _UVFParams.at(_myId)->kr,
                               _UVFParams.at(_myId)->dmin,
-                              _UVFParams.at(_myId)->delta,
-                              _UVFParams.at(_myId)->k0);
+                              _UVFParams.at(_myId)->delta);
     } else  { // Use default values
-        test->configUVFParams(0.15, 0.40, 0.005, 0.12, 1);
+        test->configUVFParams(0.15, 0.40, 0.005, 0.12);
         std::cout << "[WARNING] UVF constants not set, using default values" << std::endl;
     }
 
@@ -109,7 +108,7 @@ void Simulation::run() {
     if(_myId == 0){ // Read
         // Write my results
         Results *myResults = new Results();
-        myResults->time = test->linearTimesec();
+        myResults->linearTime = test->linearTimesec();
         myResults->angularTime = test->angularTimesec();
         myResults->linearError = test->linearError();
         myResults->angularError = test->angularError();
@@ -133,7 +132,7 @@ void Simulation::run() {
 
             // Get message and print
             struct Results *childResult = new Results;
-            myfile >> childResult->time;
+            myfile >> childResult->linearTime;
             myfile >> childResult->angularTime;
             myfile >> childResult->reachedGoal;
             myfile >> childResult->linearError;
@@ -162,14 +161,14 @@ void Simulation::run() {
 
         // Struct
         struct Results *myResults = new Results;
-        myResults->time = test->linearTimesec();
+        myResults->linearTime = test->linearTimesec();
         myResults->angularTime = test->angularTimesec();
         myResults->reachedGoal = test->reachedGoal();
         myResults->linearError = test->linearError();
         myResults->angularError = test->angularError();
 
         // Write
-        myfile << myResults->time << ' ';
+        myfile << myResults->linearTime << ' ';
         myfile << myResults->angularTime << ' ';
         myfile << myResults->reachedGoal << ' ';
         myfile << myResults->linearError << ' ';

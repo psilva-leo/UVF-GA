@@ -43,6 +43,7 @@
 
 #define SIMULATION_STEP (1/30.0f) // seconds
 #define SIMULTANEOUS_PROCESS 5
+#define SIMULATION_TIMEOUT 15.0f
 
 class Simulation {
 public:

@@ -107,8 +107,8 @@ void Player::setAngularCtrlParameters(float kp, float ki, float kd, float limit)
     _nav->setAngularPIDParameters(kp, ki, kd, limit);
 }
 
-void Player::setUVFParameters(double de, double kr, double dmin, double delta, double k0) {
-    _nav->setUVFParameters(de, kr, dmin, delta, k0);
+void Player::setUVFParameters(double de, double kr, double dmin, double delta) {
+    _nav->setUVFParameters(de, kr, dmin, delta);
 }
 
 void Player::setMaxSpeed(float maxASpeed, float maxLSpeed) {

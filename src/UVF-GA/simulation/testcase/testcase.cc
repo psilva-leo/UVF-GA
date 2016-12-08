@@ -137,8 +137,8 @@ void TestCase::configACtrParams(float kp, float ki, float kd, float limit) {
     _player->setAngularCtrlParameters(kp, ki, kd, limit);
 }
 
-void TestCase::configUVFParams(double de, double kr, double dmin, double delta, double k0) {
-    _player->setUVFParameters(de, kr, dmin, delta, k0);
+void TestCase::configUVFParams(double de, double kr, double dmin, double delta) {
+    _player->setUVFParameters(de, kr, dmin, delta);
 }
 
 void TestCase::configMaxSpeed(float maxASpeed, float maxLSpeed) {

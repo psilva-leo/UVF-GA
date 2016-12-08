@@ -37,8 +37,8 @@
 #define POPULATION_SIZE 15
 #define MUTATION_RATE 0.6
 #define CROSSOVER_RATE 0.6
-#define MAX_ITERATIONS 3
-#define OLD_POP_SLECTION_RATE 0.1
+#define MAX_ITERATIONS 5
+#define OLD_POP_SLECTION_RATE 0.05
 
 #define VIEW_STEP (1/60.0f) // seconds
 
@@ -67,8 +67,8 @@ int main(int argc, char *argv[]){
         popList.clear();
         popList.append(crossPop);
         popList.append(mutPop);
-//        Population selection_old = pop->selection_old(OLD_POP_SLECTION_RATE*POPULATION_SIZE);
-//        popList.append(selectoin_old);
+        Population selection_old = pop->selection_old(OLD_POP_SLECTION_RATE*POPULATION_SIZE);
+        popList.append(selection_old);
         pop = pop->selection(popList);
 
         iteration++;
@@ -84,20 +84,18 @@ int main(int argc, char *argv[]){
     double kr    = better->getGen(1)->getValue();
     double dmin  = better->getGen(2)->getValue();
     double delta = better->getGen(3)->getValue();
-    double k0    = better->getGen(4)->getValue();
-    double maxASpeed = better->getGen(5)->getValue();
-    double maxLSpeed = better->getGen(6)->getValue();
+    double maxASpeed = better->getGen(4)->getValue();
+    double maxLSpeed = better->getGen(5)->getValue();
 
 //    de = 0.15;
 //    kr = 0.50;
 //    dmin = 0.005;
 //    delta = 0.25;
-//    k0 = 1;
 //    maxASpeed = 4*PI;
 //    maxLSpeed = 1.5;
 
     // Print
-    cout << "de: " << de << "\nkr: " << kr << "\ndmin: " << dmin << "\ndelta: " << delta << "\nk0: " << k0 << "\nmaxASpeed: " << maxASpeed << "\nmaxLSpeed: " << maxLSpeed << endl;
+    cout << "de: " << de << "\nkr: " << kr << "\ndmin: " << dmin << "\ndelta: " << delta << "\nmaxASpeed: " << maxASpeed << "\nmaxLSpeed: " << maxLSpeed << endl;
     cout << "Fitness: " << better->getFitness() << endl;
     time_t end;
     time(&end);
@@ -105,7 +103,7 @@ int main(int argc, char *argv[]){
 
     // Create test case with better result
     TestCase test(10.0, VIEW_STEP);
-    test.configUVFParams(de, kr, dmin, delta, k0);
+    test.configUVFParams(de, kr, dmin, delta);
     test.configMaxSpeed(maxASpeed, maxLSpeed);
 
     test.configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);

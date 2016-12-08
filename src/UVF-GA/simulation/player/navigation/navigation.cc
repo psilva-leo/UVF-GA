@@ -114,8 +114,8 @@ void Navigation::setAngularPIDParameters(double kp, double ki, double kd, double
     params.setTo(_angCtrAlg);
 }
 
-void Navigation::setUVFParameters(double de, double kr, double dmin, double delta, double k0) {
-    _navAlg->setParameters(de, kr, dmin, delta, k0);
+void Navigation::setUVFParameters(double de, double kr, double dmin, double delta) {
+    _navAlg->setParameters(de, kr, dmin, delta);
 }
 
 double Navigation::getLinearSpeed(float distError) {    

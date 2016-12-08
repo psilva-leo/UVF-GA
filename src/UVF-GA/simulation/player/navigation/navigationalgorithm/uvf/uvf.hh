@@ -41,7 +41,7 @@ public:
     void reset();
 
     // Config
-    void setParameters(double de, double kr, double dmin, double delta, double k0);
+    void setParameters(double de, double kr, double dmin, double delta);
 
     // Add obstacles
     void addBall(const Position &pos, const Velocity &vel);

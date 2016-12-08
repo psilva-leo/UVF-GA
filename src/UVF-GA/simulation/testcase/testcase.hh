@@ -45,7 +45,7 @@ public:
     void configMovement(const Position &origin, float originAngle, const Position &destination, float angleToLook, bool avoidRobots, bool avoidBall);
     void configLCtrParams(float kp, float ki, float kd, float limit);
     void configACtrParams(float kp, float ki, float kd, float limit);
-    void configUVFParams(double de, double kr, double dmin, double delta, double k0);
+    void configUVFParams(double de, double kr, double dmin, double delta);
     void configMaxSpeed(float maxASpeed, float maxLSpeed);
 
     // TestCase returns

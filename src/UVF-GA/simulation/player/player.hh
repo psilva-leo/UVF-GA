@@ -55,7 +55,7 @@ public:
     // Setters
     void setLinearCtrlParameters(float kp, float ki, float kd, float limit);
     void setAngularCtrlParameters(float kp, float ki, float kd, float limit);
-    void setUVFParameters(double de, double kr, double dmin, double delta, double k0);
+    void setUVFParameters(double de, double kr, double dmin, double delta);
     void setMaxSpeed(float maxASpeed, float maxLSpeed);
 
 private:

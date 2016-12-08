@@ -6,7 +6,6 @@ struct UVFParams {
     double kr;
     double dmin;
     double delta;
-    double k0;
 };
 
 struct SpeedParams {
@@ -15,7 +14,7 @@ struct SpeedParams {
 };
 
 struct Results {
-    float time;
+    float linearTime;
     float angularTime;
     float linearError;
     float angularError;

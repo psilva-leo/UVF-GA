@@ -67,7 +67,7 @@ public:
     // PID
     void setLinearPIDParameters(double kp, double ki, double kd, double ilimit);
     void setAngularPIDParameters(double kp, double ki, double kd, double ilimit);
-    void setUVFParameters(double de, double kr, double dmin, double delta, double k0);
+    void setUVFParameters(double de, double kr, double dmin, double delta);
 
 private:
     // General access

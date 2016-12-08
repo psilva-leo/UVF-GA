@@ -47,12 +47,11 @@ void UVF::reset() {
     _obstacles.clear();
 }
 
-void UVF::setParameters(double de, double kr, double dmin, double delta, double k0) {
+void UVF::setParameters(double de, double kr, double dmin, double delta) {
     _de = de;
     _kr = kr;
     _dmin = dmin;
     _delta = delta;
-    _k0 = k0;
 }
 
 void UVF::addBall(const Position &pos, const Velocity &vel) {

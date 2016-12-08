@@ -74,13 +74,12 @@ void Population::evaluate() {
         params1->kr    = _pop[i].getGen(1)->getValue();
         params1->dmin  = _pop[i].getGen(2)->getValue();
         params1->delta = _pop[i].getGen(3)->getValue();
-        params1->k0    = _pop[i].getGen(4)->getValue();
         popParams0.append(params1);
 
         // Speed params
         SpeedParams *params2 = new SpeedParams();
-        params2->maxASpeed = _pop[i].getGen(5)->getValue();
-        params2->maxLSpeed = _pop[i].getGen(6)->getValue();
+        params2->maxASpeed = _pop[i].getGen(4)->getValue();
+        params2->maxLSpeed = _pop[i].getGen(5)->getValue();
         popParams1.append(params2);
     }
 
@@ -99,11 +98,11 @@ void Population::evaluate() {
         Results *result = results.at(i);
 
         // Calc fitness
-        double f1 = 10.0f*result->reachedGoal;
-        double f2 = 3.0f/(0.3f + 2.0f*result->angularError);
-        double f3 = 10.0f/result->time;
-        double f4 = 3.0f/(0.2 + result->linearError);
-        double f5 = 5.0f/(0.2f + result->angularTime);
+        double f1 = 20.0f*result->reachedGoal;
+        double f2 = 1.0f/(0.1f + result->linearError);
+        double f3 = 1.0f/(0.1f + result->angularError);
+        double f4 = 4.0f/(0.1f + result->linearTime);
+        double f5 = 4.0f/(0.1f + result->angularTime);
 
         const double fitness = f1+f2+f3+f4+f5;
         _pop[i].setFitness(fitness);
