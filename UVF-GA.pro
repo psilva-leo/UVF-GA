@@ -87,7 +87,8 @@ SOURCES += \
     src/UVF-GA/utils/velocity/velocity.cc \
     src/UVF-GA/utils/utils.cc \
     src/main.cc \
-    src/UVF-GA/simulation/simulation.cc
+    src/UVF-GA/simulation/simulation.cc \
+    src/UVF-GA/visualizator.cc
 
 # Header files
 HEADERS += \
@@ -129,7 +130,8 @@ HEADERS += \
     src/UVF-GA/utils/velocity/velocity.hh \
     src/UVF-GA/utils/utils.hh \
     src/UVF-GA/simulation/simulation.hh \
-    src/UVF-GA/utils/params.hh
+    src/UVF-GA/utils/params.hh \
+    src/UVF-GA/visualizator.hh
 
 # Other files
 DISTFILES += LICENSE

@@ -30,19 +30,22 @@
 #include <UVF-GA/geneticalgorithm/population.hh>
 #include <3rdparty/soccerview/soccerview.hh>
 #include <UVF-GA/simulation/testcase/testcase.hh>
-# include <time.h>
+#include <time.h>
+#include <UVF-GA/visualizator.hh>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define POPULATION_SIZE 15
+#define POPULATION_SIZE 10
 #define MUTATION_RATE 0.6
 #define CROSSOVER_RATE 0.6
-#define MAX_ITERATIONS 5
+#define MAX_ITERATIONS 2
 #define OLD_POP_SLECTION_RATE 0.05
 
 #define VIEW_STEP (1/60.0f) // seconds
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+
     srand(time(NULL));
     int iteration = 1;
 
@@ -101,39 +104,27 @@ int main(int argc, char *argv[]){
     time(&end);
     cout << "\n>>Execution time: " << ((double) (end - start))/60 << " min" << endl;
 
-    // Create test case with better result
-    TestCase test(10.0, VIEW_STEP);
-    test.configUVFParams(de, kr, dmin, delta);
-    test.configMaxSpeed(maxASpeed, maxLSpeed);
+    // Visualize better result
+    GLSoccerView soccerView;
+    Visualizator *view = new Visualizator(&soccerView);
+    view->configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);
+    view->configUVFParams(de, kr, dmin, delta);
+    view->configMaxSpeed(maxASpeed, maxLSpeed);
+    view->configACtrParams(2.0, 0.0, 0.0, 20.0);
+    view->configLCtrParams(1.5, 0.0, 0.0, 0.0);
 
-    test.configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);
-    test.configACtrParams(2.0, 0.0, 0.0, 20.0);
-    test.configLCtrParams(1.5, 0.0, 0.0, 0.0);
-
-    // Get access to player and world
-    Player *player = test.player();
-    SSLWorld *world = test.world();
-
-    // Run view
-    QApplication app(argc, argv);
-    GLSoccerView view;
-    view.show();
-
-    test.initialize();
-    while(player->hasReachedGoal()==false) {
+    view->start();
+    soccerView.show();
+    while(view->wait(1)==false) {
         app.processEvents();
-        view.updateDetection(world);
-
-        test.iterate(VIEW_STEP);
-        QThread::msleep(VIEW_STEP*1E3f);
+        QThread::msleep(5);
     }
-    test.finalize();
+    soccerView.close();
+
+    return 0;
 
     // Stop
     app.exec();
-
-    // Close interface
-    view.close();
 
     return 0;
 }
