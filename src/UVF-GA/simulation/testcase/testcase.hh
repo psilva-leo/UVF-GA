@@ -49,7 +49,7 @@ public:
     void configMaxSpeed(float maxASpeed, float maxLSpeed);
 
     // TestCase returns
-    double timesec() const { return _time; }
+    double linearTimesec() const { return _linTime; }
     double angularTimesec() const { return _angTime; }
     double linearError() const { return _linError; }
     double angularError() const { return _angError; }
@@ -72,12 +72,11 @@ private:
     SSLWorld *_world;
 
     // TestCase info
-    float _time;
+    float _linTime;
     float _angTime;
     bool _reachedGoal;
     float _linError;
     float _angError;
-    Timer _timer;
     bool _hasReachedTargetAngle;
 
     // TestCase configuration

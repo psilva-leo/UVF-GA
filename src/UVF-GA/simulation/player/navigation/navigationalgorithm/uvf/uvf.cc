@@ -26,6 +26,7 @@
  */
 
 #include "uvf.hh"
+#include <iostream>
 
 UVF::UVF() {
     _de = 0.15;

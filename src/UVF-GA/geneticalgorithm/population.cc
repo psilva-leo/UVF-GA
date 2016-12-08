@@ -99,8 +99,13 @@ void Population::evaluate() {
         Results *result = results.at(i);
 
         // Calc fitness
-        double fitness = 10.0f*result->reachedGoal + 3.0f/(0.3f + 2.0f*result->angularError) +
-                10.0f/result->time + 3.0f/(0.2 + result->linearError) + 5.0f/(0.2f + result->angularTime);
+        double f1 = 10.0f*result->reachedGoal;
+        double f2 = 3.0f/(0.3f + 2.0f*result->angularError);
+        double f3 = 10.0f/result->time;
+        double f4 = 3.0f/(0.2 + result->linearError);
+        double f5 = 5.0f/(0.2f + result->angularTime);
+
+        const double fitness = f1+f2+f3+f4+f5;
         _pop[i].setFitness(fitness);
     }
 

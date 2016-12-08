@@ -66,16 +66,19 @@ void Navigation::setGoal(const Position &destination, const float &orientation, 
     if(avoidBall)
         _navAlg->addBall(Position(ballX, ballY), Velocity(0.0, 0.0));
 
-    /// TODO: ADD ROBOTS
     // Adds robots as repulsive
     if(avoidRobots) {
-//        QList<Player*> avOpPlayers = _opTeam->avPlayers().values();
-//        for(int i=0; i<avOpPlayers.size(); i++) {
-//            Player *opponent = avOpPlayers.at(i);
+        for(int i=0; i<2*ROBOT_COUNT; i++) {
+            Robot *robot = _world->robots[i];
+            if(i==_player->playerId())
+                continue;
 
-//            // Add robot as repulsive
-//            _navAlg->addEnemyRobot(opponent->position(), opponent->velocity());
-//        }
+            // Get position
+            dReal x, y;
+            robot->getXY(x, y);
+
+            _navAlg->addRobot(Position(x, y), Velocity(0.0f,0.0f));
+        }
     }
 
 }

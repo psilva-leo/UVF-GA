@@ -28,7 +28,7 @@
 #include "testcase.hh"
 #include <iostream>
 
-#define A_ERROR Utils::toRad(5)
+#define A_ERROR Utils::toRad(4)
 
 TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _simulationTimeoutSec(runTimeoutSec), _simulationStepSec(simulationStepSec) {
     _world = new SSLWorld();
@@ -57,7 +57,6 @@ QString TestCase::name() {
 
 void TestCase::initialization() {
     initialize();
-    _timer.start();
 }
 
 void TestCase::loop() {
@@ -80,8 +79,8 @@ void TestCase::initialize() {
     // Remove ball from field
     _world->ball->setBodyPosition(0.0, -10, 0.0);
 
-    // Initialize time
-    _time = 0.0f;
+    // Initialize timers
+    _linTime = 0.0f;
 }
 
 void TestCase::iterate(float step) {
@@ -92,24 +91,25 @@ void TestCase::iterate(float step) {
     _world->step(step);
 
     // Update time
-    _time += step;
+    _linTime += step;
 
     // Update angular error
     _angError = fabs(_player->orientation() - _targetAngle);
 
     // If has reached target angle
-    if(_angError < A_ERROR && !_hasReachedTargetAngle) {
-        _timer.stop();
+    if(_hasReachedTargetAngle==false && _angError <= A_ERROR) {
         _hasReachedTargetAngle = true;
-    } else if (_angError > 3*A_ERROR) {
+        _angTime = _linTime;
+
+    } else if(_hasReachedTargetAngle && _angError >= 1.25*A_ERROR) {
         _hasReachedTargetAngle = false;
+
     }
 
     // STOP CONDITION: time out
-    if(_time >= _simulationTimeoutSec) {
+    if(_linTime >= _simulationTimeoutSec) {
         _reachedGoal = false;
         _linError = Utils::distance(_player->position(), _destination);
-        _angTime = _timer.timesec();
 
         // Stop entity
         this->stopEntity();
@@ -119,7 +119,6 @@ void TestCase::iterate(float step) {
     if(_player->hasReachedGoal()) {
         _reachedGoal = true;
         _linError = Utils::distance(_player->position(), _destination);
-        _angTime = _timer.timesec();
 
         // Stop entity
         this->stopEntity();

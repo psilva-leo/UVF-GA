@@ -37,7 +37,7 @@
 #define POPULATION_SIZE 15
 #define MUTATION_RATE 0.6
 #define CROSSOVER_RATE 0.6
-#define MAX_ITERATIONS 5
+#define MAX_ITERATIONS 3
 #define OLD_POP_SLECTION_RATE 0.1
 
 #define VIEW_STEP (1/60.0f) // seconds
@@ -87,6 +87,14 @@ int main(int argc, char *argv[]){
     double k0    = better->getGen(4)->getValue();
     double maxASpeed = better->getGen(5)->getValue();
     double maxLSpeed = better->getGen(6)->getValue();
+
+//    de = 0.15;
+//    kr = 0.50;
+//    dmin = 0.005;
+//    delta = 0.25;
+//    k0 = 1;
+//    maxASpeed = 4*PI;
+//    maxLSpeed = 1.5;
 
     // Print
     cout << "de: " << de << "\nkr: " << kr << "\ndmin: " << dmin << "\ndelta: " << delta << "\nk0: " << k0 << "\nmaxASpeed: " << maxASpeed << "\nmaxLSpeed: " << maxLSpeed << endl;

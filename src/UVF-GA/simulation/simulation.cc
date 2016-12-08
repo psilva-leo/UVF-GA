@@ -81,8 +81,10 @@ void Simulation::run() {
 
     // Config UVF
     if(_UVFParams.size()-1 >= _myId) {
-        test->configUVFParams(_UVFParams.at(_myId)->de,_UVFParams.at(_myId)->kr,
-                              _UVFParams.at(_myId)->dmin,_UVFParams.at(_myId)->delta,
+        test->configUVFParams(_UVFParams.at(_myId)->de,
+                              _UVFParams.at(_myId)->kr,
+                              _UVFParams.at(_myId)->dmin,
+                              _UVFParams.at(_myId)->delta,
                               _UVFParams.at(_myId)->k0);
     } else  { // Use default values
         test->configUVFParams(0.15, 0.40, 0.005, 0.12, 1);
@@ -107,7 +109,7 @@ void Simulation::run() {
     if(_myId == 0){ // Read
         // Write my results
         Results *myResults = new Results();
-        myResults->time = test->timesec();
+        myResults->time = test->linearTimesec();
         myResults->angularTime = test->angularTimesec();
         myResults->linearError = test->linearError();
         myResults->angularError = test->angularError();
@@ -131,10 +133,11 @@ void Simulation::run() {
 
             // Get message and print
             struct Results *childResult = new Results;
-            myfile >> childResult->time >> childResult->angularTime >> childResult->reachedGoal >>
-                    childResult->linearError >> childResult->angularError;
-//            std::cout << "Message from the child #" << i << ": " << childResult->time << " "
-//                      << childResult->reachedGoal << std::endl;
+            myfile >> childResult->time;
+            myfile >> childResult->angularTime;
+            myfile >> childResult->reachedGoal;
+            myfile >> childResult->linearError;
+            myfile >> childResult->angularError;
 
             // Write child result
             _results.append(childResult);
@@ -159,15 +162,18 @@ void Simulation::run() {
 
         // Struct
         struct Results *myResults = new Results;
-        myResults->time = test->timesec();
+        myResults->time = test->linearTimesec();
         myResults->angularTime = test->angularTimesec();
         myResults->reachedGoal = test->reachedGoal();
         myResults->linearError = test->linearError();
         myResults->angularError = test->angularError();
 
         // Write
-        myfile << myResults->time << ' ' << myResults->angularTime << ' ' << myResults->reachedGoal << ' ' <<
-                  myResults->linearError << ' ' << myResults->angularError;
+        myfile << myResults->time << ' ';
+        myfile << myResults->angularTime << ' ';
+        myfile << myResults->reachedGoal << ' ';
+        myfile << myResults->linearError << ' ';
+        myfile << myResults->angularError;
 
         // Close file
         myfile.close();
