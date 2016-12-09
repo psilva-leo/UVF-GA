@@ -75,9 +75,18 @@ void TestCase::initialize() {
     _world->robots[0]->setXY(_origin.x(), _origin.y());
     _world->robots[0]->setDir(Utils::toDeg(_originAngle));
 
-    // Remove all other robots from field
-//    for(int i=1; i<2*ROBOT_COUNT; i++)
-//        _world->robots[i]->setXY(0.3*i, -10);
+    // Randomize robots positions
+    for(int i=1; i<2*ROBOT_COUNT; i++) {
+
+        // Get original pos
+        dReal x, y;
+        _world->robots[i]->getXY(x, y);
+
+        // Randomize
+        float dx = ((float)rand()/RAND_MAX)*0.6 - 0.3;
+        float dy = ((float)rand()/RAND_MAX)*0.6 - 0.3;
+        _world->robots[i]->setXY(x+dx, y+dy);
+    }
 
     // Remove ball from field
     _world->ball->setBodyPosition(0.0, -10, 0.0);

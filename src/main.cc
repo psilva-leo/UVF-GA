@@ -72,6 +72,9 @@ void runView(QApplication *app, double de, double kr, double dmin, double delta,
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
+    // Randomization
+    srand(time(NULL));
+
     // Check arguments
     if(argc < 3) {
         std::cout << "Usage: ./UVF-GA <mode> <better-file>\n\n";
@@ -86,9 +89,6 @@ int main(int argc, char *argv[]) {
     switch(mode) {
         default:
         case 0: { // run GA
-            // Randomization
-            srand(time(NULL));
-
             // Measure time
             time_t start;
             time(&start);
@@ -149,6 +149,11 @@ int main(int argc, char *argv[]) {
 
                 // Inc iteration
                 iteration++;
+
+                // Print exec time
+                time_t end;
+                time(&end);
+                cout << ">> Execution time: " << ((double) (end - start))/60 << " min\n\n";
             }
 
             betterFile.close();
