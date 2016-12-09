@@ -19,6 +19,8 @@ struct Results {
     float linearError;
     float angularError;
     int reachedGoal;
+    float entryAngError;
+    unsigned collisions;
 };
 
 #endif // PARAMS_H

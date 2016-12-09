@@ -33,15 +33,15 @@ Chromosome::Chromosome(int genQty) {
 
     // Adjust mins
     for(int i=0; i<genQty; i++) {
-        genMins.append(0.01);
+        genMins.append(0.005);
     }
 
     // Adjust maxs
     for(int i=0; i<genQty; i++){
-        if(i<=4){
-            genMaxs.append(1.0);
-        }else{
-            genMaxs.append(5.0);
+        if(i<=4) {
+            genMaxs.append(0.5);
+        } else {
+            genMaxs.append(4.0);
         }
     }
 

@@ -98,13 +98,15 @@ void Population::evaluate() {
         Results *result = results.at(i);
 
         // Calc fitness
-        double f1 = 20.0f*result->reachedGoal;
+        double f1 = 100.0f*result->reachedGoal;
         double f2 = 1.0f/(0.1f + result->linearError);
         double f3 = 1.0f/(0.1f + result->angularError);
-        double f4 = 4.0f/(0.1f + result->linearTime);
-        double f5 = 4.0f/(0.1f + result->angularTime);
+        double f4 = 2.0f/(0.1f + result->linearTime);
+        double f5 = 1.5f/(0.1f + result->angularTime);
+        double f6 = 1.5f/(0.1f + result->entryAngError);
+        double f7 = 1.25f/(0.1f + 10*result->collisions);
 
-        const double fitness = f1+f2+f3+f4+f5;
+        const double fitness = f1+f2+f3+f4+f5+f6+f7;
         _pop[i].setFitness(fitness);
     }
 
@@ -258,11 +260,11 @@ Population Population::mutation(float tax) {
         for(int j=0; j<_pop[0].getGenQty(); j++){
             double step = 0.0;
             while(step < 0.05){
-                step = ((double) rand() / (RAND_MAX))*0.3;
+                step = ((double) rand() / (RAND_MAX))*0.10f;
             }
 
             if(mutedId.contains(j)){
-                if(0.7 > (((double) rand() / (RAND_MAX)))){
+                if((((double) rand() / (RAND_MAX))) > 0.6f){
                     step *= -1;
                 }
                 double value = this->_pop[i].getGen(j)->getValue()+step;

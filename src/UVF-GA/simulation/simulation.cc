@@ -66,10 +66,10 @@ void Simulation::run() {
     test->configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);
 
     // Config angular controller
-    test->configACtrParams(2.0, 0.0, 0.0, 20.0);
+    test->configACtrParams(3.0, 0.0, 0.0, 20.0);
 
     // Config angular controller
-    test->configLCtrParams(1.5, 0.0, 0.0, 0.0);
+    test->configLCtrParams(2.0, 0.0, 0.0, 0.0);
 
     // Config max speeds
     if(_speedParams.size()-1 >= _myId) {
@@ -113,6 +113,8 @@ void Simulation::run() {
         myResults->linearError = test->linearError();
         myResults->angularError = test->angularError();
         myResults->reachedGoal = test->reachedGoal();
+        myResults->entryAngError = test->entryAngError();
+        myResults->collisions = test->collisions();
 
         _results.append(myResults);
 
@@ -137,6 +139,8 @@ void Simulation::run() {
             myfile >> childResult->reachedGoal;
             myfile >> childResult->linearError;
             myfile >> childResult->angularError;
+            myfile >> childResult->entryAngError;
+            myfile >> childResult->collisions;
 
             // Write child result
             _results.append(childResult);
@@ -166,13 +170,17 @@ void Simulation::run() {
         myResults->reachedGoal = test->reachedGoal();
         myResults->linearError = test->linearError();
         myResults->angularError = test->angularError();
+        myResults->entryAngError = test->entryAngError();
+        myResults->collisions = test->collisions();
 
         // Write
         myfile << myResults->linearTime << ' ';
         myfile << myResults->angularTime << ' ';
         myfile << myResults->reachedGoal << ' ';
         myfile << myResults->linearError << ' ';
-        myfile << myResults->angularError;
+        myfile << myResults->angularError << ' ';
+        myfile << myResults->entryAngError << ' ';
+        myfile << myResults->collisions;
 
         // Close file
         myfile.close();

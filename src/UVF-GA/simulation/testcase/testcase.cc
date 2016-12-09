@@ -29,6 +29,7 @@
 #include <iostream>
 
 #define A_ERROR Utils::toRad(4)
+#define OBSTACLE_COLLISION_RADIUS 0.25f
 
 TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _simulationTimeoutSec(runTimeoutSec), _simulationStepSec(simulationStepSec) {
     _world = new SSLWorld();
@@ -38,6 +39,8 @@ TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _simulationTi
     _angError = 100.0;
     _angTime  = 100.0;
     _hasReachedTargetAngle = false;
+    _entryAngError = 100.0;
+    _collisions = 0;
 
     // Default movement
     configMovement(Position(0.0, 0.0), 0.0, Position(1.0, 1.0), PI/4, false, false);
@@ -89,6 +92,33 @@ void TestCase::iterate(float step) {
 
     // Step world
     _world->step(step);
+
+    // Update entry ang error
+    Position delta(_player->position().x()-_lastPos.x(), _player->position().y()-_lastPos.y());
+    double entryAng = atan2(delta.y(), delta.x());
+    _entryAngError = fabs(_targetAngle - entryAng);
+    _lastPos = _player->position();
+
+    // Check collisions
+    for(int i=0; i<2*ROBOT_COUNT; i++) {
+        // Discard self player
+        if(i==_player->playerId())
+            continue;
+
+        // Get obstacle position
+        dReal x, y;
+        _world->robots[i]->getXY(x, y);
+        Position obstacle(x, y);
+
+        // Update collision counter
+        if(Utils::distance(_player->position(), obstacle) <= OBSTACLE_COLLISION_RADIUS) {
+            if(_collisionRobots.contains(i)==false) {
+                _collisions++;
+                _collisionRobots.append(i);
+            }
+        }
+    }
+
 
     // Update time
     _linTime += step;

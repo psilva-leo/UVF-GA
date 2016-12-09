@@ -36,10 +36,10 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define POPULATION_SIZE 5
-#define MUTATION_RATE 0.75
+#define POPULATION_SIZE 15
+#define MUTATION_RATE 0.6
 #define CROSSOVER_RATE 0.5
-#define MAX_ITERATIONS 50
+#define MAX_ITERATIONS 1000
 #define OLD_POP_SLECTION_RATE 0.05
 
 #define VIEW_STEP (1/60.0f) // seconds
@@ -51,14 +51,20 @@ void runView(QApplication *app, double de, double kr, double dmin, double delta,
     view->configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);
     view->configUVFParams(de, kr, dmin, delta);
     view->configMaxSpeed(maxASpeed, maxLSpeed);
-    view->configACtrParams(2.0, 0.0, 0.0, 20.0);
-    view->configLCtrParams(1.5, 0.0, 0.0, 0.0);
+    view->configACtrParams(3.0, 0.0, 0.0, 20.0);
+    view->configLCtrParams(2.0, 0.0, 0.0, 0.0);
 
+    Timer timer;
+    timer.start();
     view->start();
     soccerView.show();
     while(view->wait(1)==false) {
         app->processEvents();
         QThread::msleep(5);
+
+        timer.stop();
+        if(timer.timesec()>15)
+            break;
     }
     soccerView.close();
 }
@@ -138,12 +144,14 @@ int main(int argc, char *argv[]) {
                 double maxLSpeed = better->getGen(5)->getValue();
                 betterFile.clear();
                 betterFile.seekg(0, std::ios::beg);
-                betterFile << de << " " << kr << " " << dmin << " " << delta << " " << maxASpeed << " " << maxLSpeed << "\n";
+                betterFile << de << " " << kr << " " << dmin << " " << delta << " " << maxASpeed << " " << maxLSpeed << " " << better->getFitness() << "\n";
                 betterFile.flush();
 
                 // Inc iteration
                 iteration++;
             }
+
+            betterFile.close();
 
             // Last Population
             cout << "\n Last Population" << endl;
@@ -180,11 +188,16 @@ int main(int argc, char *argv[]) {
             }
 
             // Read from file
-            double de=0, kr=0, dmin=0, delta=0, maxASpeed=0, maxLSpeed=0;
-            betterFile >> kr >> dmin >> delta >> maxASpeed >> maxLSpeed;
+            double de=0, kr=0, dmin=0, delta=0, maxASpeed=0, maxLSpeed=0, fitness=0;
+            betterFile >> de >> kr >> dmin >> delta >> maxASpeed >> maxLSpeed >> fitness;
+            betterFile.close();
+
+            // Print
+            cout << "de: " << de << "\nkr: " << kr << "\ndmin: " << dmin << "\ndelta: " << delta << "\nmaxASpeed: " << maxASpeed << "\nmaxLSpeed: " << maxLSpeed << "\nFitness: " << fitness << endl;
 
             // Run view
             runView(&app, de, kr, dmin, delta, maxASpeed, maxLSpeed);
+
 
         } break;
     }

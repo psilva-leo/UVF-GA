@@ -54,6 +54,8 @@ public:
     double linearError() const { return _linError; }
     double angularError() const { return _angError; }
     int reachedGoal() const { return _player->hasReachedGoal()? 1 : 0; }
+    double entryAngError() const { return _entryAngError; }
+    unsigned collisions() const { return _collisions; }
 
     // External access
     Player* player() const { return _player; }
@@ -77,7 +79,13 @@ private:
     bool _reachedGoal;
     float _linError;
     float _angError;
+    float _entryAngError;
+    unsigned _collisions;
+
+    // Internal
     bool _hasReachedTargetAngle;
+    Position _lastPos;
+    QList<unsigned> _collisionRobots;
 
     // TestCase configuration
     Player *_player;
