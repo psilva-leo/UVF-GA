@@ -81,10 +81,6 @@ void Visualizator::run() {
     test.configUVFParams(_de, _kr, _dmin, _delta);
     test.configMaxSpeed(_maxASpeed, _maxLSpeed);
 
-    test.configMovement(_origin, _originAngle, _destination, _angleToLook, _avoidRobots, _avoidBall);
-    test.configACtrParams(_aKp, _aKi, _aKd, _aLimit);
-    test.configLCtrParams(_lKp, _lKi, _lKd, _lLimit);
-
     // Get access to player and world
     Player *player = test.player();
     SSLWorld *world = test.world();

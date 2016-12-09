@@ -38,8 +38,10 @@ Chromosome::Chromosome(int genQty) {
 
     // Adjust maxs
     for(int i=0; i<genQty; i++){
-        if(i<=4) {
+        if(i<=3) {
             genMaxs.append(0.5);
+        } else if(i==4) {
+            genMaxs.append(10*3.14);
         } else {
             genMaxs.append(4.0);
         }

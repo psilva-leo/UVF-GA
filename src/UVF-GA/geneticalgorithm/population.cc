@@ -259,8 +259,8 @@ Population Population::mutation(float tax) {
         // Mutate gene
         for(int j=0; j<_pop[0].getGenQty(); j++){
             double step = 0.0;
-            while(step < 0.05){
-                step = ((double) rand() / (RAND_MAX))*0.10f;
+            while(step < 0.01f){
+                step = ((double) rand() / (RAND_MAX))*0.075f;
             }
 
             if(mutedId.contains(j)){

@@ -42,9 +42,6 @@ TestCase::TestCase(float runTimeoutSec, float simulationStepSec) : _simulationTi
     _entryAngError = 100.0;
     _collisions = 0;
 
-    // Default movement
-    configMovement(Position(0.0, 0.0), 0.0, Position(1.0, 1.0), PI/4, false, false);
-
     // Set loop time (higher speed possible)
     this->setLoopTime(0);
 }
@@ -71,6 +68,11 @@ void TestCase::finalization() {
 }
 
 void TestCase::initialize() {
+    // Default movement
+    configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);
+    configACtrParams(3.0, 0.0, 0.0, 20.0);
+    configLCtrParams(2.0, 0.0, 0.0, 0.0);
+
     // Set robot origin position and angle
     _world->robots[0]->setXY(_origin.x(), _origin.y());
     _world->robots[0]->setDir(Utils::toDeg(_originAngle));

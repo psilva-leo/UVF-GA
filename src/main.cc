@@ -39,7 +39,7 @@
 #define POPULATION_SIZE 15
 #define MUTATION_RATE 0.6
 #define CROSSOVER_RATE 0.5
-#define MAX_ITERATIONS 1000
+#define MAX_ITERATIONS 3000
 #define OLD_POP_SLECTION_RATE 0.05
 
 #define VIEW_STEP (1/60.0f) // seconds
@@ -48,11 +48,8 @@ void runView(QApplication *app, double de, double kr, double dmin, double delta,
     // Visualize better result on SoccerView
     GLSoccerView soccerView;
     Visualizator *view = new Visualizator(&soccerView);
-    view->configMovement(Position(-2.5, -1.3), Utils::toRad(120), Position(2.75, 1.75), Utils::toRad(90), true, true);
     view->configUVFParams(de, kr, dmin, delta);
     view->configMaxSpeed(maxASpeed, maxLSpeed);
-    view->configACtrParams(3.0, 0.0, 0.0, 20.0);
-    view->configLCtrParams(2.0, 0.0, 0.0, 0.0);
 
     Timer timer;
     timer.start();
