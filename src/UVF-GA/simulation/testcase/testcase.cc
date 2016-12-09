@@ -88,6 +88,10 @@ void TestCase::initialize() {
         float dx = ((float)rand()/RAND_MAX)*0.6 - 0.3;
         float dy = ((float)rand()/RAND_MAX)*0.6 - 0.3;
         _world->robots[i]->setXY(x+dx, y+dy);
+
+        float vx = ((float)rand()/RAND_MAX)*1.5 - 1.5f/2.0f;
+        float vy = ((float)rand()/RAND_MAX)*1.5 - 1.5f/2.0f;
+        _world->robots[i]->setSpeed(vx, vy, 0.0);
     }
 
     // Remove ball from field
