@@ -36,10 +36,10 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define POPULATION_SIZE 50
+#define POPULATION_SIZE 15
 #define MUTATION_RATE 0.6
 #define CROSSOVER_RATE 0.5
-#define MAX_ITERATIONS 10
+#define MAX_ITERATIONS 15
 #define OLD_POP_SLECTION_RATE 0.05
 
 #define VIEW_STEP (1/60.0f) // seconds
